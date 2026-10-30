@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="vi" data-studio-version="2">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NEXT GEN ROBOTICS · Robot Studio</title>
+  <link rel="stylesheet" href="LiemsStudio.css">
+</head>
+<body>
+  <svg aria-hidden="true" style="display:none" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-robot" viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="14" rx="4"/><path d="M12 3v3M1 11v5M23 11v5M9 16h6"/><circle cx="8.5" cy="11" r=".8"/><circle cx="15.5" cy="11" r=".8"/></symbol>
+    <symbol id="i-edit" viewBox="0 0 24 24"><path d="m15 4 5 5M4 20l5-1L20 8a3.5 3.5 0 0 0-5-5L4 14z"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7V5h6l2 2h10v13H3zM3 10h18"/></symbol>
+    <symbol id="i-save" viewBox="0 0 24 24"><path d="M5 3h13l3 3v15H3V3zM7 3v6h10V3M7 21v-8h10v8"/></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 9a3 3 0 0 1 6 0c0 2-3 2-3 4M12 16v.1"/></symbol>
+    <symbol id="i-blocks" viewBox="0 0 24 24"><path d="M3 3h7v3a2 2 0 1 0 4 0V3h7v7h-3a2 2 0 1 0 0 4h3v7H3z"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="m7 7-5 5 5 5m10-10 5 5-5 5m-4-13-2 16"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="m6 3 15 9-15 9z"/></symbol>
+    <symbol id="i-stop" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/></symbol>
+    <symbol id="i-reset" viewBox="0 0 24 24"><path d="M3 10a9 9 0 1 1 2 8M3 4v6h6"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 2"/></symbol>
+    <symbol id="i-theme" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+    <symbol id="i-center" viewBox="0 0 24 24"><path d="M3 9V3h6M15 3h6v6M21 15v6h-6M9 21H3v-6"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V3H3v13h5"/></symbol>
+    <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M9 18c0-5-4-5-4-10a7 7 0 0 1 14 0c0 5-4 5-4 10M9 18h6M10 21h4"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 3h16v13H9l-5 5zM8 8h8M8 12h5"/></symbol>
+    <symbol id="i-motion" viewBox="0 0 24 24"><path d="M3 17h6V7h12m-5-5 5 5-5 5"/></symbol>
+    <symbol id="i-loop" viewBox="0 0 24 24"><path d="M4 8h12a4 4 0 0 1 0 8H7m0-4-4 4 4 4"/></symbol>
+    <symbol id="i-gripper" viewBox="0 0 24 24"><path d="M4 3v7l5 4v6h6v-6l5-4V3M4 6h4v4l4 3 4-3V6h4"/></symbol>
+    <symbol id="i-sensor" viewBox="0 0 24 24"><path d="M4 7a12 12 0 0 1 16 0M7 10a8 8 0 0 1 10 0M10 13a3 3 0 0 1 4 0"/><circle cx="12" cy="18" r="1.5"/></symbol>
+    <symbol id="i-math" viewBox="0 0 24 24"><path d="M3 7h7M6.5 3.5v7M15 7h6M3 16l7 5M3 21l7-5M15 16h6M15 20h6"/></symbol>
+    <symbol id="i-text" viewBox="0 0 24 24"><path d="M4 4h16M12 4v16M8 20h8M4 4v3M20 4v3"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="8" cy="6" r="2"/><circle cx="16" cy="12" r="2"/><circle cx="10" cy="18" r="2"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 4v16M16 4v16" stroke-width="4"/></symbol>
+    <symbol id="i-advanced" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="9" cy="6" r="2" fill="currentColor"/><circle cx="15" cy="12" r="2" fill="currentColor"/><circle cx="7" cy="18" r="2" fill="currentColor"/></symbol>
+  </svg>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-logos"><img class="logo-ayor" src="ayor.png" alt="AYOR 2026 — A Year of Robotics"><span class="logo-divider"></span><img class="logo-nextgen" src="logo_nextgen.jpg" alt="NextGen Robotics"></div>
+    </div>
+    <div class="project-title"><div class="project-name"><label for="projectName" data-i18n="currentProject">Chương trình đang mở</label><div class="project-name-row"><input id="projectName" aria-label="Tên dự án" data-i18n-aria="projectName" maxlength="60"><svg aria-hidden="true"><use href="#i-edit"/></svg><span id="saveState"></span></div></div></div>
+    <div class="top-actions">
+      <button class="btn" id="resetWorld" disabled data-i18n-title="worldResetTooltip"><svg aria-hidden="true"><use href="#i-reset"/></svg><span data-i18n="worldReset">Reset World</span></button>
+      <button class="btn ghost" id="openProjects" data-i18n-aria="files"><svg aria-hidden="true"><use href="#i-folder"/></svg><span data-i18n="files">Tệp</span></button>
+      <button class="btn primary" id="saveProject"><svg aria-hidden="true"><use href="#i-save"/></svg><span data-i18n="save">Lưu</span></button>
+      <button class="btn ghost icon-only" id="openSettings" data-i18n-aria="settings"><svg aria-hidden="true"><use href="#i-settings"/></svg></button>
+      <button class="btn ghost icon-only" id="openHelp" data-i18n-aria="help" aria-label="Hướng dẫn"><svg aria-hidden="true"><use href="#i-help"/></svg></button>
+    </div>
+  </header>
+  <div class="workbar">
+    <div class="workspace-tabs">
+      <button class="tab active" id="blocksTab" aria-pressed="true"><svg aria-hidden="true"><use href="#i-blocks"/></svg><span data-i18n="blocks">Khối lệnh</span></button>
+      <span class="connection" id="connectionStatus" role="status"><span class="connection-dot"></span><span id="connectionLabel">Chưa kết nối Webots</span></span>
+    </div>
+    <div class="view-actions">
+      <button class="tab" id="pythonTab" aria-pressed="false" aria-controls="pythonPanel" data-i18n-aria="python" data-i18n-title="python"><svg aria-hidden="true"><use href="#i-code"/></svg><span data-i18n="python">Xem Python</span></button>
+      <button class="btn theme" id="themeToggle" aria-pressed="false" data-i18n-aria="theme"><svg aria-hidden="true"><use href="#i-theme"/></svg><span id="themeLabel">Sáng</span></button>
+      <button class="btn language" id="languageToggle" data-i18n-aria="language"><span id="langVi" class="lang-current">VIE</span><span class="lang-divider">/</span><span id="langEn" class="lang-other">ENG</span></button>
+    </div>
+  </div>
+  <main>
+    <section class="card editor">
+      <div class="editor-head">
+        <div class="editor-heading"><h1 data-i18n="codeStudio">Lập trình robot</h1><div class="subtitle" data-i18n="codeSubtitle">Từng khối lệnh. Một ý tưởng mới.</div></div>
+        <div class="run-controls">
+          <div class="sim-time" id="webotsClock" data-i18n-title="clockHint" title="Chờ dữ liệu từ Webots"><svg aria-hidden="true"><use href="#i-clock"/></svg><div><small data-i18n="webotsTime">Thời gian Webots</small><span id="timerDisplay">--:--.--</span></div></div>
+          <button class="btn primary run" id="runProgram"><svg aria-hidden="true"><use href="#i-play"/></svg><span id="runButtonLabel" data-i18n="run">Chạy thử</span></button>
+          <button class="btn stop" id="stopProgram" disabled><svg aria-hidden="true"><use id="playPauseIcon" href="#i-pause"/></svg><span id="playPauseLabel">Tạm dừng</span></button>
+          <button class="btn" id="resetProgram" data-i18n-title="resetTooltip"><svg aria-hidden="true"><use href="#i-reset"/></svg><span data-i18n="reset">Reset</span></button>
+        </div>
+      </div>
+      <div class="canvas-wrap">
+        <div id="blocklyDiv"></div><span class="canvas-watermark">NEXT GEN ROBOTICS</span>
+        <div class="canvas-tools">
+          <button class="btn icon-only" id="zoomIn" data-i18n-aria="zoomIn"><svg aria-hidden="true"><use href="#i-plus"/></svg></button>
+          <button class="btn icon-only" id="zoomOut" data-i18n-aria="zoomOut"><svg aria-hidden="true"><use href="#i-minus"/></svg></button>
+          <button class="btn icon-only" id="centerBlocks" data-i18n-aria="center"><svg aria-hidden="true"><use href="#i-center"/></svg></button>
+        </div>
+      </div>
+      <div class="editor-foot"><span class="foot-hint"><svg aria-hidden="true"><use href="#i-bulb"/></svg><span data-i18n="workspaceHint"></span></span><span id="blockCount"></span></div>
+    </section>
+    <aside class="side">
+      <section class="card assistant-card">
+        <div class="assistant-tabs" role="tablist">
+          <button class="assistant-tab active" id="guideTab" role="tab" aria-selected="true" aria-controls="guidePanel"><svg aria-hidden="true"><use href="#i-bulb"/></svg><span data-i18n="guide">Cùng thử nhé</span></button>
+          <button class="assistant-tab" id="cabiTab" role="tab" aria-selected="false" aria-controls="cabiPanel"><svg aria-hidden="true"><use href="#i-chat"/></svg><span>CabiBot</span></button>
+        </div>
+        <div class="assistant-content" id="guidePanel" role="tabpanel" aria-labelledby="guideTab">
+          <p class="lesson-kicker" id="lessonKicker"></p><h2 id="lessonTitle"></h2><p class="description" id="lessonDescription"></p>
+          <div class="lesson-visual" role="img" data-i18n-aria="guideIllustration" aria-label="Robot và đường đi">
+            <svg viewBox="0 0 230 80" aria-hidden="true">
+              <path class="path" d="M61 57h75V24h68" stroke-dasharray="4 5"/><path class="path" d="m199 19 6 5-6 5"/><path d="M17 72h198" stroke="var(--color-scrollbar)"/>
+              <g class="robot"><rect x="25" y="36" width="42" height="30" rx="9" fill="var(--color-robot-body)"/><path d="M35 36V26h22v10M46 20v6M20 45v12M72 45v12"/><rect x="33" y="43" width="26" height="11" rx="4" fill="var(--accent)" stroke="none"/><circle cx="39" cy="48.5" r="2" fill="var(--color-paper)" stroke="none"/><circle cx="53" cy="48.5" r="2" fill="var(--color-paper)" stroke="none"/><path d="M42 59h8"/><rect x="29" y="64" width="8" height="8" rx="2" fill="var(--color-robot-wheel)" stroke="none"/><rect x="55" y="64" width="8" height="8" rx="2" fill="var(--color-robot-wheel)" stroke="none"/></g>
+              <rect x="184" y="39" width="29" height="24" rx="6" fill="var(--color-goal-paper)" stroke="var(--color-goal-line)"/><path d="m191 51 5 5 10-12" stroke="var(--color-goal-ink)"/>
+            </svg>
+          </div>
+          <ol class="steps" id="lessonSteps"></ol>
+          <button class="btn wide" id="moreExamples"><svg aria-hidden="true"><use href="#i-folder"/></svg><span data-i18n="examples"></span></button>
+          <p class="try-note" id="lessonNote"></p>
+        </div>
+        <div class="assistant-content cabi-panel" id="cabiPanel" role="tabpanel" aria-labelledby="cabiTab" hidden>
+          <div class="cabi-intro"><span class="cabi-avatar">C</span><div class="cabi-intro-copy"><h2>CabiBot</h2><small data-i18n="cabiOffline"></small></div><button class="btn cabi-reset" id="cabiReset" data-i18n="cabiReset" data-i18n-title="cabiResetTooltip">Bắt đầu lại</button></div>
+          <div class="cabi-body" id="cabiBody">
+          <div class="cabi-welcome"><h2 data-i18n="cabiTitle"></h2><p data-i18n="cabiDescription"></p></div>
+          <button class="btn wide" id="cabiReview"><svg aria-hidden="true"><use href="#i-bulb"/></svg><span data-i18n="cabiReview">Góp ý bài này</span></button>
+          <div class="suggestions" id="cabiSuggestions"></div>
+          <section id="cabiResponse" class="cabi-response" aria-live="polite" hidden><small id="cabiContext"></small><h3 id="cabiAnswerTitle"></h3><p id="cabiAnswerBody"></p><p id="cabiEvidence" class="cabi-evidence"></p><p id="cabiAction" class="cabi-action"></p><p id="cabiQuestion"></p></section>
+          </div>
+          <div class="cabi-composer"><label for="cabiDraft" data-i18n="cabiInputLabel">Câu hỏi của bạn</label><textarea id="cabiDraft" data-i18n-placeholder="cabiPlaceholder" aria-label="CabiBot" maxlength="1000"></textarea><div class="cabi-composer-foot"><small data-i18n="cabiOffline"></small><button class="btn primary" id="cabiSend"><span data-i18n="cabiSend"></span><svg aria-hidden="true"><use href="#i-play"/></svg></button></div></div>
+        </div>
+      </section>
+      <section class="card code-card" id="pythonPanel">
+        <div class="code-head"><h2 data-i18n="pythonTitle"></h2><button class="btn ghost icon-only" id="copyCode" data-i18n-aria="copyCode"><svg aria-hidden="true"><use href="#i-copy"/></svg></button></div><p class="code-note" data-i18n="pythonNote"></p><pre id="codeOutput"></pre><div class="code-foot"><span data-i18n="pythonFooter"></span><span id="lineCount"></span></div>
+      </section>
+      <section class="card result-card"><div class="result-head"><h2 data-i18n="results"></h2><span id="runBadge"></span></div><p id="runStatus" aria-live="polite"></p><div class="estimate"><span data-i18n="estimatedTime"></span> <span id="runTime">—</span><small id="estimateHint" data-i18n="estimatedHint"></small></div></section>
+    </aside>
+  </main>
+  <dialog id="projectsDialog">
+    <div class="dialog-head"><h2 data-i18n="projectsTitle"></h2><button class="btn ghost icon-only" data-close data-i18n-aria="close"><svg aria-hidden="true"><use href="#i-close"/></svg></button></div>
+    <p class="description" data-i18n="projectsDescription"></p>
+    <div class="file-tools"><button class="btn" id="newProject" data-i18n="newProject"></button><button class="btn" id="importXml" data-i18n="importXml"></button><button class="btn" id="exportXml" data-i18n="exportXml"></button><input id="xmlFile" type="file" accept=".xml,text/xml,application/xml" hidden></div>
+    <h3 class="file-heading" data-i18n="yourFiles"></h3><div id="projectFiles" class="example-list"></div>
+    <h3 class="file-heading" data-i18n="sampleFiles"></h3>
+    <div class="example-list">
+      <button class="example" data-example="first"><strong data-i18n="firstProject"></strong><small data-i18n="exampleFirstHint"></small></button>
+      <button class="example" data-example="square"><strong data-i18n="loopProject"></strong><small data-i18n="exampleLoopHint"></small></button>
+      <button class="example" data-original-example="TEST"><strong>TEST</strong><small data-i18n="originalTestHint"></small></button>
+      <button class="example" data-original-example="SENSOR_ADV"><strong>SENSOR_ADV</strong><small data-i18n="originalSensorHint"></small></button>
+    </div>
+  </dialog>
+  <dialog id="settingsDialog"><div class="dialog-head"><h2 data-i18n="settings"></h2><button class="btn ghost icon-only" data-close data-i18n-aria="close"><svg aria-hidden="true"><use href="#i-close"/></svg></button></div><label class="setting-label" for="themeSelect" data-i18n="theme"></label><select id="themeSelect"><option value="light" data-i18n="light"></option><option value="dark" data-i18n="dark"></option><option value="kimbie">Kimbie Dark</option><option value="monokai">Monokai</option></select><label class="setting-toggle"><input type="checkbox" id="soundToggle"><span data-i18n="sound"></span></label><p class="try-note" data-i18n="soundHint"></p><h3 class="file-heading" data-i18n="editWorkspace"></h3><div class="file-tools"><button class="btn" id="undoBlocks" data-i18n="undo"></button><button class="btn" id="redoBlocks" data-i18n="redo"></button><button class="btn stop" id="clearBlocks" data-i18n="clearWorkspace"></button></div><p class="try-note" data-i18n="settingsHint"></p></dialog>
+  <dialog id="saveDialog"><div class="dialog-head"><h2 data-i18n="saveAs"></h2><button class="btn ghost icon-only" data-close data-i18n-aria="close"><svg aria-hidden="true"><use href="#i-close"/></svg></button></div><label class="setting-label" for="saveName" data-i18n="projectName"></label><input id="saveName" maxlength="60"><div class="file-tools"><button class="btn primary" id="confirmSave" data-i18n="save"></button></div></dialog>
+  <dialog id="confirmDialog"><div class="dialog-head"><h2 id="confirmTitle"></h2></div><p id="confirmText" class="description"></p><div class="file-tools"><button class="btn" id="cancelAction" data-i18n="cancel"></button><button class="btn primary" id="confirmAction" data-i18n="continueAction"></button></div></dialog>
+  <dialog id="xmlDialog"><div class="dialog-head"><h2 id="xmlTitle"></h2><button class="btn ghost icon-only" data-close data-i18n-aria="close"><svg aria-hidden="true"><use href="#i-close"/></svg></button></div><p class="description" id="xmlHint"></p><label class="setting-label" for="xmlText" data-i18n="xmlContent"></label><textarea id="xmlText" class="xml-transfer" spellcheck="false"></textarea><div class="file-tools"><button class="btn primary" id="xmlApply" data-i18n="importXml"></button><button class="btn" id="xmlPick" data-i18n="chooseXml"></button><button class="btn primary" id="xmlCopy" data-i18n="copyXml"></button><button class="btn" id="xmlDownload" data-i18n="downloadXml"></button></div></dialog>
+  <dialog id="helpDialog"><div class="dialog-head"><h2 data-i18n="helpTitle"></h2><button class="btn ghost icon-only" data-close data-i18n-aria="close"><svg aria-hidden="true"><use href="#i-close"/></svg></button></div><ol class="help-steps"><li data-i18n="help1"></li><li data-i18n="help2"></li><li data-i18n="help3"></li><li data-i18n="help4"></li></ol><p class="try-note" data-i18n="previewNote"></p></dialog>
+  <div id="toast" role="status" hidden></div>
+  <xml id="toolbox" style="display:none">
+    <category name="Bắt đầu" id="cat_start" colour="#8065ba" data-category-key="categoryStart"><block type="other_start"></block></category>
+    <category name="Di chuyển" id="cat_motion" colour="#239e8a" data-category-key="categoryMotion">
+      <block type="motors_go_forward"><value name="speed"><shadow type="math_number"><field name="NUM">50</field></shadow></value></block><block type="motors_go_backward"><value name="speed"><shadow type="math_number"><field name="NUM">50</field></shadow></value></block><block type="motors_turn_left"><value name="speed"><shadow type="math_number"><field name="NUM">50</field></shadow></value></block><block type="motors_turn_right"><value name="speed"><shadow type="math_number"><field name="NUM">50</field></shadow></value></block><block type="preview_stop"></block>
+    </category>
+    <category name="Điều khiển" id="cat_control" colour="#547ddd" data-category-key="categoryControl">
+      <block type="time_delay"><value name="ms"><shadow type="math_number"><field name="NUM">1</field></shadow></value></block><block type="controls_repeat_ext"><value name="TIMES"><shadow type="math_number"><field name="NUM">4</field></shadow></value></block><block type="controls_if"></block><block type="control_while"><value name="COND"><shadow type="logic_boolean"><field name="BOOL">TRUE</field></shadow></value></block><block type="control_stop_all"></block>
+    </category>
+    <category name="Tay gắp" id="cat_gripper" colour="#9860c8" data-category-key="categoryGripper">
+      <block type="arm_up"><value name="height"><shadow type="math_number"><field name="NUM">250</field></shadow></value></block>
+      <block type="arm_down"><value name="height"><shadow type="math_number"><field name="NUM">50</field></shadow></value></block>
+      <label text="Sắp có · Gắp / thả vật" data-label-key="lockedGripperLabel"></label>
+      <block type="gripper_grip" disabled="true"><value name="angle"><shadow type="math_number"><field name="NUM">30</field></shadow></value></block>
+      <block type="gripper_release" disabled="true"><value name="angle"><shadow type="math_number"><field name="NUM">-10</field></shadow></value></block>
+    </category>
+    <category name="Cảm biến" id="cat_sensors" colour="#b98b23" data-category-key="categorySensors"><block type="sensors_getdistance"></block></category>
+    <category name="Tính toán" id="cat_math" colour="#4c9d79" data-category-key="categoryMath"><block type="math_number"></block><block type="math_arithmetic"></block><block type="logic_compare"></block><block type="logic_boolean"></block><block type="logic_operation"></block><block type="math_abs"></block><block type="math_mod"><value name="B"><shadow type="math_number"><field name="NUM">2</field></shadow></value></block><block type="math_round2"><value name="DEC"><shadow type="math_number"><field name="NUM">2</field></shadow></value></block></category>
+    <category name="Văn bản" id="cat_text" colour="#7c82b7" data-category-key="categoryText"><block type="text"></block><block type="text_print"></block><block type="concattext"></block><block type="concattext2"></block></category>
+    <category name="Nâng cao" id="cat_advanced" colour="#8291a8" data-category-key="categoryAdvanced"><category name="Biến" colour="#dd8544" custom="VARIABLE" data-category-key="categoryVariables"></category><category name="Hàm" colour="#b16bd0" custom="PROCEDURE" data-category-key="categoryFunctions"></category><category name="Danh sách" colour="#9372bf" data-category-key="categoryLists"><block type="lists_create_with"><mutation items="0"></mutation></block><block type="lists_append"></block><block type="lists_length"></block></category></category>
+  </xml>
+  <script src="google-blockly-31ee4ea/blockly_compressed.js"></script>
+  <script src="google-blockly-31ee4ea/blocks_compressed.js"></script>
+  <script src="google-blockly-31ee4ea/python_compressed.js"></script>
+  <script src="google-blockly-31ee4ea/blocks/motors.js"></script>
+  <script src="google-blockly-31ee4ea/blocks/time.js"></script>
+  <script src="google-blockly-31ee4ea/blocks/other.js"></script>
+  <script src="google-blockly-31ee4ea/blocks/gripper.js"></script>
+  <script src="google-blockly-31ee4ea/generators/python/motors.js"></script>
+  <script src="google-blockly-31ee4ea/generators/python/time.js"></script>
+  <script src="google-blockly-31ee4ea/generators/python/gripper.js"></script>
+  <script src="google-blockly-31ee4ea/blocks/sensors.js"></script>
+  <script src="google-blockly-31ee4ea/blocks/camera.js"></script>
+  <script src="google-blockly-31ee4ea/generators/python/sensors.js"></script>
+  <script src="google-blockly-31ee4ea/generators/python/camera.js"></script>
+  <script src="google-blockly-31ee4ea/generators/python/other.js"></script>
+  <script src="LiemsStudio.compat.js?v=home0"></script>
+  <script src="LiemsStudio.blocks.js?v=home0"></script>
+  <script src="LiemsStudio.renderer.js?v=home0"></script>
+  <script src="LiemsStudio.cabibot.js?v=home0"></script>
+  <script src="LiemsStudio.locale.js?v=home0"></script>
+  <script src="LiemsStudio.protocol.js"></script>
+  <script src="LiemsStudio.samples.js"></script>
+  <script src="LiemsStudio.lessons.js?v=home0"></script>
+  <script src="LiemsStudio.execution.js?v=home0"></script>
+  <script src="LiemsStudio.audio.js?v=home0"></script>
+  <script src="LiemsStudio.js?v=home0"></script>
+</body>
+</html>

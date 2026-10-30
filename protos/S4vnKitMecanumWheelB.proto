@@ -1,0 +1,24 @@
+#VRML_SIM R2025a utf8
+# Robot tự lắp: bánh mecanum B (con lăn -45 độ), trục quay theo y (hình)
+# Built by scripts/webots-spawn-poc/kit/build_kit.py from the ClawBot V2 of demo_project/worlds/spawn_lab.wbt: do not edit.
+
+PROTO S4vnKitMecanumWheelB [
+]
+{
+  Group {
+    children [
+      Pose { rotation 1 0 0 1.5708 children [ Shape { appearance PBRAppearance { baseColor 0.7 0.72 0.76 roughness 0.3 metalness 0.8 } geometry Cylinder { height 0.04 radius 0.012 subdivision 16 } } ] }
+      Pose { translation 0 0.0175 0 rotation 1 0 0 1.5708 children [ Shape { appearance PBRAppearance { baseColor 0.7 0.72 0.76 roughness 0.3 metalness 0.8 } geometry Cylinder { height 0.005 radius 0.034 subdivision 24 } } ] }
+      Pose { translation 0 -0.0175 0 rotation 1 0 0 1.5708 children [ Shape { appearance PBRAppearance { baseColor 0.7 0.72 0.76 roughness 0.3 metalness 0.8 } geometry Cylinder { height 0.005 radius 0.034 subdivision 24 } } ] }
+      Pose { translation 0.0360 0.0000 0.0000 rotation -1.0000 0.0000 0.0000 2.3562 children [ Shape { appearance PBRAppearance { baseColor 0.12 0.12 0.13 roughness 0.9 metalness 0.0 } geometry Capsule { height 0.03 radius 0.0085 subdivision 8 } } ] }
+      Pose { translation 0.0276 0.0000 0.0231 rotation -0.8412 0.5407 0.0000 2.1432 children [ Shape { appearance PBRAppearance { baseColor 0.12 0.12 0.13 roughness 0.9 metalness 0.0 } geometry Capsule { height 0.03 radius 0.0085 subdivision 8 } } ] }
+      Pose { translation 0.0063 0.0000 0.0355 rotation -0.7125 0.7017 0.0000 1.6939 children [ Shape { appearance PBRAppearance { baseColor 0.12 0.12 0.13 roughness 0.9 metalness 0.0 } geometry Capsule { height 0.03 radius 0.0085 subdivision 8 } } ] }
+      Pose { translation -0.0180 0.0000 0.0312 rotation -0.7559 0.6547 0.0000 1.2094 children [ Shape { appearance PBRAppearance { baseColor 0.12 0.12 0.13 roughness 0.9 metalness 0.0 } geometry Capsule { height 0.03 radius 0.0085 subdivision 8 } } ] }
+      Pose { translation -0.0338 0.0000 0.0123 rotation -0.9462 0.3236 0.0000 0.8440 children [ Shape { appearance PBRAppearance { baseColor 0.12 0.12 0.13 roughness 0.9 metalness 0.0 } geometry Capsule { height 0.03 radius 0.0085 subdivision 8 } } ] }
+      Pose { translation -0.0338 0.0000 -0.0123 rotation -0.9462 -0.3236 0.0000 0.8440 children [ Shape { appearance PBRAppearance { baseColor 0.12 0.12 0.13 roughness 0.9 metalness 0.0 } geometry Capsule { height 0.03 radius 0.0085 subdivision 8 } } ] }
+      Pose { translation -0.0180 0.0000 -0.0312 rotation -0.7559 -0.6547 0.0000 1.2094 children [ Shape { appearance PBRAppearance { baseColor 0.12 0.12 0.13 roughness 0.9 metalness 0.0 } geometry Capsule { height 0.03 radius 0.0085 subdivision 8 } } ] }
+      Pose { translation 0.0063 0.0000 -0.0355 rotation -0.7125 -0.7017 0.0000 1.6939 children [ Shape { appearance PBRAppearance { baseColor 0.12 0.12 0.13 roughness 0.9 metalness 0.0 } geometry Capsule { height 0.03 radius 0.0085 subdivision 8 } } ] }
+      Pose { translation 0.0276 0.0000 -0.0231 rotation -0.8412 -0.5407 0.0000 2.1432 children [ Shape { appearance PBRAppearance { baseColor 0.12 0.12 0.13 roughness 0.9 metalness 0.0 } geometry Capsule { height 0.03 radius 0.0085 subdivision 8 } } ] }
+    ]
+  }
+}

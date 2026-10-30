@@ -1,0 +1,64 @@
+/* Existing LIEMS palette, expressed in OKLCH. Preview design tokens. */
+:root {
+  --color-paper:rgb(255,255,255); --color-input-ink:rgb(37,50,75);
+  --color-robot-body:rgb(239,232,251); --color-robot-wheel:rgb(115,134,154);
+  --color-goal-paper:rgb(218,241,228); --color-goal-line:rgb(86,172,143); --color-goal-ink:rgb(66,146,116);
+
+  --accent:rgb(114,87,181); --accent-deep:rgb(93,69,153); --accent-soft:rgb(242,238,251);
+  --blue:rgb(52,123,193); --green:rgb(35,158,138); --ink:rgb(37,50,75); --muted:rgb(116,128,150);
+  --surface:rgb(255,255,255); --surface-subtle:rgb(247,249,252); --canvas:rgb(250,251,254);
+  --page:rgb(237,241,247); --line:rgb(220,227,239); --shadow:0 4px 18px rgba(41,55,88,0.0314);
+  --grid:rgb(231,237,246); --radius:14px; --chip:rgb(238,242,247);
+
+  --font-display:"Segoe UI",Arial,sans-serif; --font-body:"Segoe UI",Arial,sans-serif; --font-outlier:Consolas,monospace;
+  --space-xs:4px; --space-sm:8px; --space-md:12px; --space-lg:16px; --space-xl:24px;
+  --ease-out:cubic-bezier(.16,1,.3,1); --ease-in:cubic-bezier(.7,0,.84,0); --ease-in-out:cubic-bezier(.65,0,.35,1); --dur-short:120ms;
+  --block-start:rgb(128,101,186);
+  --block-motion:rgb(29,129,113);
+  --block-control:rgb(76,112,199);
+  --block-gripper:rgb(145,91,191);
+  --block-sensor:rgb(146,109,28);
+  --block-math:rgb(62,127,98);
+  --block-text:rgb(107,112,158);
+  --block-advanced:rgb(130,145,168);
+  --block-variables:rgb(221,133,68);
+  --block-functions:rgb(177,107,208);
+  --block-lists:rgb(147,114,191);
+  --color-focus:var(--accent-deep);
+  --color-logo-rule:rgb(227,230,238);
+  --color-logo-shadow:rgba(35,44,68,0.0627);
+  --color-rule-hover:rgb(167,179,201);
+  --color-accent-shadow:rgba(114,87,181,0.1255);
+  --color-accent-ink-dark:rgb(26,22,48);
+  --color-stop:rgb(183,92,108);
+  --color-tab-shadow:rgba(41,55,88,0.0196);
+  --color-connection-idle:rgb(168,178,195);
+  --color-connection-ready:rgb(53,172,140);
+  --color-connection-glow:rgba(35,158,138,0.0824);
+  --color-tool-shadow:rgba(36,51,75,0.0392);
+  --color-accent-rule:rgba(114,87,181,0.1020);
+  --color-path:rgb(182,165,215);
+  --color-note-rule:rgb(197,180,228);
+  --color-avatar-rule:rgb(191,178,213);
+  --color-category-shadow:rgba(41,55,88,0.0235);
+  --color-category-hover-shadow:rgba(41,55,88,0.0471);
+  --color-highlight:rgba(255,255,255,0.4000);
+  --color-category-fallback:rgb(130,145,168);
+  --color-icon-highlight:rgba(255,255,255,0.3137);
+  --color-icon-shadow:rgba(37,50,75,0.1098);
+  --color-scrollbar:rgb(184,197,217);
+  --color-block-shadow:rgba(36,51,75,0.1412);
+  --color-block-outline:rgba(23,42,64,0.2706);
+  --color-input-outline:rgba(23,42,64,0.1490);
+  --color-dialog-shadow:rgba(21,36,56,0.2510);
+  --color-backdrop:rgba(22,33,59,0.4588);
+  --color-toast-rule:rgba(255,255,255,0.1255);
+  --color-toast-paper:rgb(44,51,77);
+  --color-toast-shadow:rgba(21,36,56,0.1451);
+}
+body[data-theme="dark"],body[data-theme="kimbie"],body[data-theme="monokai"] {
+ color-scheme:dark; --ink:rgb(226,232,246); --muted:rgb(164,176,197); --surface:rgb(32,42,61); --surface-subtle:rgb(37,49,71); --canvas:rgb(24,34,53); --page:rgb(20,29,44); --line:rgb(53,66,92); --shadow:0 4px 18px rgba(0,0,0,0.1333); --grid:rgb(39,51,75); --accent:rgb(178,154,231); --accent-deep:rgb(210,191,246); --accent-soft:rgb(56,47,80); --chip:rgb(44,56,80); 
+}
+
+body[data-theme="kimbie"] {--page:#17120d;--surface:#302417;--surface-subtle:#392c1d;--canvas:#221a0f;--grid:#3b3024;--line:#51412c;--ink:#e7d7c0;--muted:#c4ac8b;--accent:#d3af86;--accent-deep:#edd2a8;--accent-soft:#4c3926;}
+body[data-theme="monokai"] {--page:#1e1f1c;--surface:#2d2e28;--surface-subtle:#34352e;--canvas:#272822;--grid:#3d3e37;--line:#515249;--ink:#f8f8f2;--muted:#c0bfae;--accent:#a6cf72;--accent-deep:#c9e6a6;--accent-soft:#3a4a2f;}
