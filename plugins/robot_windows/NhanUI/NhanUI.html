@@ -1,0 +1,2257 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Twin Robot Window - NextGen Robotics</title>
+    <link rel="icon" type="image/png" href="https://cyberbotics.com/assets/images/webots.png">
+
+    <!-- Early global stubs for onclick handlers -->
+    <script>
+        window.switchTab = function(tabId, btn) {
+            if (window._switchTabReal) window._switchTabReal(tabId, btn);
+            else setTimeout(function(){ if (window._switchTabReal) window._switchTabReal(tabId, btn); }, 50);
+        };
+        window.toggleDevice = function() {};
+        window.enableAllDevices = function() {};
+        window.resetDevicePlot = function() {};
+        window.updateSpeed = function() {};
+        window.simControl = function() {};
+        window.sendCommand = function() {};
+        window.toggleSidebar = function() {
+            var sidebar = document.getElementById('sidebar');
+            if (sidebar) sidebar.classList.toggle('collapsed');
+        };
+        window.toggleCameraFeed = function() {};
+        window.saveSingleCameraSnapshot = function() {};
+        window.saveAllCameraSnapshots = function() {};
+        window.toggleCameraFullscreen = function(camName) {};
+    </script>
+
+    <style>
+        /* =========================================
+           ROOT VARIABLES & RESET
+           GIỐNG DigitalTwin (simulation.nextgenrobotics-tech.com/digitaltwin)
+           ========================================= */
+        :root {
+            /* DigitalTwin primary colors */
+            --color-blue-50: #eff6ff;
+            --color-blue-100: #dbeafe;
+            --color-blue-200: #bfdbfe;
+            --color-blue-300: #93c5fd;
+            --color-blue-500: #3b82f6;
+            --color-blue-600: #2563eb;
+            --color-blue-700: #1d4ed8;
+            --color-cyan-100: #cffafe;
+            --color-cyan-500: #06b6d4;
+            --color-cyan-700: #0e7490;
+            --color-green-500: #10b981;
+            --color-green-600: #059669;
+            --color-green-700: #047857;
+            --color-orange-500: #f97316;
+            --color-orange-600: #ea580c;
+            --color-orange-700: #c2410c;
+            --color-red-500: #ef4444;
+            --color-red-600: #dc2626;
+            --color-red-700: #b91c1c;
+            --color-cyan-600: #0d9488;    /* Teal color */
+            --color-cyan-700: #0f766e;    /* Darker teal */
+            --color-purple-500: #8b5cf6;
+            --color-purple-600: #7c3aed;
+            --color-purple-700: #6d28d9;
+            --color-gray-50: #f9fafb;
+            --color-gray-100: #f3f4f6;
+            --color-gray-200: #e5e7eb;
+            --color-gray-300: #d1d5db;
+            --color-gray-500: #6b7280;
+            --color-gray-600: #4b5563;
+            --color-gray-700: #374151;
+            --color-gray-800: #1f2937;
+            --color-white: #ffffff;
+            
+            /* Layout */
+            --menu-width: 110px;
+            --header-height: 60px;
+            --border-radius: 12px;
+            --border-radius-lg: 16px;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif; }
+
+        html, body {
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--color-blue-50) 0%, var(--color-cyan-100) 100%);
+            color: var(--color-gray-700);
+            font-size: 14px;
+        }
+
+        /* =========================================
+           HEADER - DigitalTwin style
+           ========================================= */
+        #header {
+            height: var(--header-height);
+            background: var(--color-white);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            border-bottom: 1px solid var(--color-gray-200);
+            box-shadow: var(--shadow);
+            z-index: 100;
+        }
+
+        #robotTitle {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--color-gray-800);
+        }
+
+        .sim-icon {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linejoin: round;
+        }
+
+        #simControls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sim-btn {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--color-gray-200);
+            border-radius: var(--border-radius);
+            background: var(--color-white);
+            color: var(--color-blue-600);
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .sim-btn:hover {
+            background: var(--color-blue-50);
+            border-color: var(--color-blue-300);
+            transform: translateY(-1px);
+        }
+
+        #timerDisplay {
+            color: var(--color-gray-700);
+            font-size: 14px;
+            font-weight: 500;
+            min-width: 80px;
+            background: var(--color-gray-50);
+            padding: 5px 12px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--color-gray-200);
+        }
+
+        #connectionStatus {
+            padding: 6px 14px;
+            border-radius: var(--border-radius);
+            font-size: 13px;
+            font-weight: 500;
+            border: 1px solid;
+        }
+        .connected { 
+            background: var(--color-blue-50); 
+            color: var(--color-blue-700);
+            border-color: var(--color-blue-200);
+        }
+        .disconnected { 
+            background: var(--color-gray-50); 
+            color: var(--color-gray-600);
+            border-color: var(--color-gray-300);
+        }
+
+/* =========================================
+            MAIN LAYOUT
+            ========================================= */
+        #mainContainer {
+            display: flex;
+            height: calc(100vh - var(--header-height));
+            background: var(--color-blue-50);
+        }
+
+        /* =========================================
+            CONTENT AREA
+            ========================================= */
+        #contentArea {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+        }
+
+        .tab-content { display: none; height: 100%; flex-direction: column; }
+        .tab-content.active { display: flex; gap: 20px; }
+
+        /* =========================================
+            PANEL CARDS - DigitalTwin style
+            giống thẻ "Digital Twin" container trên web
+            ========================================= */
+        .panel-card {
+            background: var(--color-white);
+            border: 1px solid var(--color-gray-200);
+            border-radius: var(--border-radius-lg);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            transition: all 0.2s ease;
+        }
+        .panel-card:hover {
+            box-shadow: var(--shadow-lg);
+        }
+
+        .panel-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-gray-700);
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--color-gray-200);
+        }
+        .panel-title span:first-child {
+            font-size: 16px;
+        }
+
+/* =========================================
+            SIDEBAR - DigitalTwin style
+            ========================================= */
+        #sidebar {
+            width: var(--menu-width);
+            flex-shrink: 0;
+            background: var(--color-white);
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--color-gray-200);
+            box-shadow: var(--shadow-sm);
+        }
+
+        #sidebar.collapsed { width: 50px; }
+        #sidebar.collapsed .menu-text,
+        #sidebar.collapsed .menu-section-title { display: none; }
+
+        #menuToggle {
+            padding: 10px 8px;
+            border-bottom: 1px solid var(--color-gray-200);
+        }
+        #menuToggle button {
+            background: none;
+            border: 1px solid var(--color-gray-300);
+            border-radius: var(--border-radius);
+            color: var(--color-gray-600);
+            font-size: 18px;
+            cursor: pointer;
+            width: 100%;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        #menuToggle button:hover {
+            background: var(--color-gray-100);
+            border-color: var(--color-gray-400);
+        }
+
+        #menuItems { 
+            flex: 1; 
+            overflow-y: auto; 
+            padding: 6px; 
+        }
+
+        .menu-section-title {
+            color: var(--color-gray-500);
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-align: center;
+            padding: 10px 4px 4px;
+            margin-top: 4px;
+            border-top: 1px solid var(--color-gray-200);
+        }
+
+        .menu-section-title:first-child {
+            border-top: none;
+            margin-top: 0;
+        }
+
+        .menu-btn {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px 4px;
+            border: 1px solid transparent;
+            border-radius: var(--border-radius);
+            background: transparent;
+            color: var(--color-gray-700);
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            line-height: 1.2;
+            word-break: break-word;
+        }
+        .menu-btn:hover { 
+            background: var(--color-blue-50); 
+            color: var(--color-blue-600);
+            border-color: var(--color-blue-200);
+        }
+        .menu-btn.active {
+            background: var(--color-blue-50);
+            color: var(--color-blue-700);
+            border-color: var(--color-blue-200);
+        }
+        .menu-btn .icon {
+            min-width: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .menu-btn .icon svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+/* =========================================
+            CONTENT AREA
+            ========================================= */
+        #contentArea {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+        }
+
+        .tab-content { display: none; height: 100%; flex-direction: column; }
+        .tab-content.active { display: flex; gap: 20px; }
+
+        /* =========================================
+            PANEL CARDS - DigitalTwin style
+            giống thẻ "Digital Twin" container trên web
+            ========================================= */
+        .panel-card {
+            background: var(--color-white);
+            border: 1px solid var(--color-gray-200);
+            border-radius: var(--border-radius-lg);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            transition: all 0.2s ease;
+        }
+        .panel-card:hover {
+            box-shadow: var(--shadow-lg);
+        }
+
+        .panel-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-gray-700);
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--color-gray-200);
+        }
+        .panel-title span:first-child {
+            font-size: 16px;
+        }
+
+        /* =========================================
+           HOME TAB - Camera on top (2/3 height), controls in a row below
+           ========================================= */
+        #homeTab.active {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            height: auto;
+        }
+
+        #homeCameraPanel {
+            /* 2/3 of the visible content frame (viewport - header - contentArea padding) */
+            height: calc((100vh - var(--header-height) - 48px) * 2 / 3);
+            min-height: 240px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #homeControls {
+            display: grid;
+            /* Lift | Movement */
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            align-items: stretch;
+        }
+        #homeControls > .panel-card { padding: 14px; min-width: 0; }
+        #homeControls .panel-title { margin-bottom: 10px; }
+        #homeControls .arm-controls { gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
+        #homeControls .arm-controls .arm-btn { flex: 1 1 70px; }
+        #homeControls .arm-btn { padding: 9px 4px; font-size: 12px; white-space: nowrap; }
+        #homeControls .arm-angle-row { flex-wrap: wrap; }
+        #homeControls .arm-angle-row label { min-width: 0; }
+        @media (max-width: 600px) {
+            #homeControls { grid-template-columns: minmax(0, 1fr); }
+        }
+
+        /* Programming tab - top row (Status, Quick Actions, Console), Python code below */
+        #programmingTab.active {
+            display: flex;
+            flex-direction: column;
+            height: auto;
+            min-height: 100%;
+            gap: 15px;
+        }
+
+        #programmingTop {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            align-items: stretch;
+        }
+        #programmingTop > .panel-card {
+            flex: 1 1 300px;
+            min-width: 280px;
+        }
+
+        /* Status Grid - DigitalTwin style */
+        .status-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .status-item {
+            background: var(--color-gray-50);
+            border: 1px solid var(--color-gray-200);
+            border-radius: var(--border-radius);
+            padding: 16px;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+        .status-item:hover {
+            background: var(--color-blue-50);
+            border-color: var(--color-blue-200);
+        }
+        .status-item .label { 
+            font-size: 12px; 
+            color: var(--color-gray-600); 
+            margin-bottom: 6px; 
+            text-transform: uppercase; 
+            font-weight: 500;
+        }
+        .status-item .value { 
+            font-size: 18px; 
+            font-weight: 600; 
+            color: var(--color-blue-700); 
+        }
+        .status-item.distance .value { color: var(--color-cyan-700); }
+        .status-item.state .value { color: var(--color-blue-700); }
+
+        /* Gripper Controls - DigitalTwin style buttons */
+        .gripper-controls { 
+            display: flex; 
+            gap: 12px; 
+            margin-bottom: 16px; 
+        }
+        .gripper-btn {
+            flex: 1;
+            padding: 14px;
+            border: 1px solid transparent;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+.gripper-btn.open { 
+              background: var(--color-blue-600); 
+              color: var(--color-white); 
+              border-color: var(--color-blue-700);
+          }
+        .gripper-btn.close { 
+              background: var(--color-gray-600); 
+              color: var(--color-white);
+              border-color: var(--color-gray-700);
+          }
+        .gripper-btn:hover { 
+            transform: translateY(-2px); 
+            box-shadow: var(--shadow-lg);
+            filter: brightness(1.1);
+        }
+        .gripper-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Speed Slider - DigitalTwin style */
+        .speed-container { margin-top: 16px; }
+        .speed-label { 
+            display: flex; 
+            justify-content: space-between; 
+            font-size: 13px; 
+            color: var(--color-gray-600); 
+            margin-bottom: 8px; 
+            font-weight: 500;
+        }
+        .speed-value { 
+            font-weight: 600; 
+            color: var(--color-blue-600); 
+        }
+        input[type="range"] { 
+            width: 100%; 
+            cursor: pointer; 
+            height: 6px;
+            border-radius: 3px;
+            background: var(--color-gray-200);
+            accent-color: var(--color-blue-600);
+        }
+
+        /* Arm Controls - DigitalTwin style */
+        .arm-controls { 
+            display: flex; 
+            gap: 12px; 
+            margin-bottom: 16px; 
+        }
+        .arm-btn {
+            flex: 1;
+            padding: 14px;
+            border: 1px solid transparent;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+.arm-btn.up { 
+              background: var(--color-blue-600); 
+              color: var(--color-white);
+              border-color: var(--color-blue-700);
+          }
+        .arm-btn.down { 
+              background: var(--color-cyan-600); 
+              color: var(--color-white);
+              border-color: var(--color-cyan-700);
+          }
+        .arm-btn:hover { 
+            transform: translateY(-2px); 
+            box-shadow: var(--shadow-lg);
+            filter: brightness(1.1);
+        }
+        .arm-btn:active {
+            transform: translateY(0);
+        }
+
+        .arm-angle-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #4a5568;
+        }
+        .arm-angle-row label { min-width: 90px; }
+        .arm-angle-row input[type="number"] {
+            width: 70px; padding: 4px 8px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 12px;
+        }
+
+        /* Preset Grid - DigitalTwin style */
+        .preset-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 12px; 
+        }
+        .preset-btn {
+            padding: 16px;
+            border: 1px solid transparent;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--color-white);
+            text-align: center;
+        }
+        .preset-btn:hover { 
+            transform: translateY(-2px); 
+            box-shadow: var(--shadow-lg);
+            filter: brightness(1.1);
+        }
+.preset-btn.home { 
+              background: var(--color-blue-600); 
+              border-color: var(--color-blue-700);
+          }
+        .preset-btn.demo1 { 
+              background: var(--color-cyan-600); 
+              border-color: var(--color-cyan-700);
+          }
+.preset-btn.demo2 { 
+                background: var(--color-gray-600); 
+                border-color: var(--color-gray-700);
+            }
+            .preset-btn.l298n-square { 
+                background: var(--color-blue-600); 
+                border-color: var(--color-blue-700);
+            }
+            .preset-btn.l298n-dance { 
+                background: var(--color-cyan-600); 
+                border-color: var(--color-cyan-700);
+            }
+
+        /* Code Editor */
+        #codeEditor {
+            flex: 1;
+            width: 100%;
+            min-height: 150px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            resize: none;
+            background: #1a202c;
+            color: #a0aec0;
+        }
+
+        .code-actions { display: flex; gap: 8px; margin-top: 8px; }
+        .code-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .code-btn.run { background: var(--color-blue-600); color: white; }
+        .code-btn.clear { background: var(--color-gray-600); color: white; }
+        .code-btn:hover { transform: translateY(-1px); }
+
+        /* Console Log */
+        #consoleLog {
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            overflow-y: auto;
+            max-height: 100px;
+            color: #4a5568;
+        }
+        .log-entry { padding: 2px 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .log-entry.success { color: #38a169; }
+        .log-entry.error { color: #e53e3e; }
+
+        /* =========================================
+           DEVICE TABS
+           ========================================= */
+        .devices-tab.active { 
+            display: flex; 
+            flex-direction: column;
+            height: 100%;
+        }
+        .devices-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            flex: 1;
+            overflow-y: auto;
+            align-content: flex-start;
+            min-height: 200px;
+        }
+
+        .device-card {
+            background: var(--color-white);
+            border: 1px solid var(--color-gray-200);
+            border-radius: var(--border-radius-lg);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            width: 350px;
+            min-height: 220px;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+        .device-card:hover {
+            box-shadow: var(--shadow-lg);
+        }
+        .device-card h2 {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--color-gray-700);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .device-card .value {
+            font-family: 'Courier New', monospace;
+            color: var(--color-blue-600);
+            font-weight: 600;
+            font-size: 15px;
+        }
+        .device-checkbox { cursor: pointer; }
+
+        .plot-container {
+            width: 100%;
+            height: 120px;
+            border: 1px solid var(--color-gray-200);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            position: relative;
+            background: var(--color-white);
+        }
+        .plot-canvas { width: 100%; height: 100%; }
+
+        .device-buttons-row {
+            position: absolute;
+            bottom: 8px;
+            left: 12px;
+            right: 12px;
+            display: flex;
+            gap: 8px;
+        }
+        .device-small-btn {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid var(--color-gray-300);
+            border-radius: var(--border-radius);
+            background: var(--color-white);
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--color-gray-700);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .device-small-btn:hover { 
+            background: var(--color-gray-100); 
+            border-color: var(--color-gray-400);
+        }
+
+        /* Tab Header */
+        .tab-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.5);
+        }
+        .tab-header h1 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #2d3748;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .tab-header-buttons { display: flex; gap: 8px; }
+        .header-btn {
+            padding: 8px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.9);
+            font-size: 12px;
+            font-weight: 600;
+            color: #4a5568;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .header-btn:hover { background: white; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+
+        /* =========================================
+           CAMERA TAB
+           ========================================= */
+        .camera-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 14px;
+            padding: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            flex: 1;
+            min-width: 320px;
+            max-width: 600px;
+            display: flex;
+            flex-direction: column;
+        }
+        .camera-card.fullscreen {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            max-width: none; min-width: 0; z-index: 1000; border-radius: 0;
+        }
+        .camera-card h2 {
+            font-size: 14px; font-weight: 700; color: #4a5568;
+            margin-bottom: 12px; display: flex; align-items: center; gap: 8px; flex-shrink: 0;
+        }
+        .camera-view {
+            background: #000; border-radius: 8px; overflow: hidden;
+            display: flex; justify-content: center; align-items: center;
+            flex: 1; min-height: 200px; position: relative;
+        }
+        .camera-view img { display: none; width: 100%; height: 100%; object-fit: contain; image-rendering: pixelated; }
+        .camera-view img.loaded { display: block; }
+        .camera-placeholder-inner {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            color: #666; font-size: 14px; gap: 10px; padding: 40px;
+        }
+        .camera-info {
+            margin-top: 12px; display: flex; flex-wrap: wrap; justify-content: space-between;
+            align-items: center; font-size: 12px; color: #718096;
+            padding: 8px 12px; background: rgba(0,0,0,0.05); border-radius: 6px; gap: 8px; flex-shrink: 0;
+        }
+        .camera-info-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .camera-snapshot-btn {
+            background: #4299e1; color: white; border: none; border-radius: 4px;
+            padding: 4px 8px; cursor: pointer; font-size: 14px; transition: background 0.2s;
+        }
+        .camera-snapshot-btn:hover { background: #3182ce; }
+        .camera-fullscreen-btn {
+            background: #805ad5; color: white; border: none; border-radius: 4px;
+            padding: 4px 8px; cursor: pointer; font-size: 14px; transition: background 0.2s;
+        }
+        .camera-fullscreen-btn:hover { background: #6b46c1; }
+
+        /* Camera Settings Panel */
+        .camera-settings-panel {
+            background: rgba(255,255,255,0.98); border-radius: 10px; padding: 12px;
+            margin-bottom: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .camera-settings-panel h3 { font-size: 13px; color: #4a5568; margin-bottom: 10px; display: flex; align-items: center; gap: 6px; }
+        .camera-settings-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; font-size: 12px; }
+        .camera-settings-row label { min-width: 100px; color: #4a5568; }
+        .camera-settings-row select, .camera-settings-row input { padding: 4px 8px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 12px; }
+        .camera-settings-row input[type="range"] { width: 120px; }
+        .camera-perf-badge { display: inline-block; padding: 2px 6px; border-radius: 10px; font-size: 10px; font-weight: 600; margin-left: 8px; }
+        .camera-perf-badge.low { background: #c6f6d5; color: #276749; }
+        .camera-perf-badge.medium { background: #fef3c7; color: #92400e; }
+        .camera-perf-badge.high { background: #fed7d7; color: #c53030; }
+
+        /* =========================================
+           SETTINGS TAB
+           ========================================= */
+        .settings-section {
+            background: rgba(255,255,255,0.95); border-radius: 14px; padding: 20px;
+            margin-bottom: 15px; max-width: 500px;
+        }
+        .settings-section h2 { font-size: 14px; font-weight: 700; color: #2d3748; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #e2e8f0; }
+        .settings-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-size: 13px; color: #4a5568; }
+        .settings-row label { min-width: 150px; }
+        .settings-row input[type="number"] { width: 80px; padding: 6px 10px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 13px; }
+        .settings-row input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; }
+
+        /* Branding */
+        #branding { text-align: center; padding: 8px; color: rgba(255,255,255,0.6); font-size: 10px; }
+        .brand-name { font-size: 16px; font-weight: 800; letter-spacing: 3px; }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div id="header">
+        <div id="robotTitle">
+            <span id="robotNameDisplay">Digital Twin</span>
+        </div>
+        <div id="simControls">
+            <button class="sim-btn" onclick="simControl('RESET')" title="Reset"><svg class="sim-icon" viewBox="0 0 24 24"><path d="M6 5v14M19 5L9 12l10 7z"/></svg></button>
+            <button class="sim-btn" id="btnPlay" onclick="simControl('TOGGLE')" title="Play/Pause"><svg class="sim-icon" viewBox="0 0 24 24"><path d="M7 5l12 7-12 7z"/></svg></button>
+            <span id="timerDisplay">0.00s</span>
+        </div>
+        <span id="connectionStatus" class="disconnected">Disconnected</span>
+    </div>
+
+    <!-- MAIN CONTAINER -->
+    <div id="mainContainer">
+        <!-- SIDEBAR -->
+        <div id="sidebar">
+            <div id="menuToggle">
+                <button onclick="window.toggleSidebar()">&#9776;</button>
+            </div>
+            <div id="menuItems">
+                <div class="menu-section-title">Control</div>
+                <button class="menu-btn active" data-tab="homeTab" onclick="window.switchTab('homeTab', this)">
+                    <span class="icon"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg></span>
+                    <span class="menu-text">Home</span>
+                </button>
+                <button class="menu-btn" data-tab="programmingTab" onclick="window.switchTab('programmingTab', this)">
+                    <span class="icon"><svg viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/></svg></span>
+                    <span class="menu-text">Programming</span>
+                </button>
+
+                <div class="menu-section-title">Devices</div>
+                <button class="menu-btn" data-tab="distanceSensorTab" onclick="window.switchTab('distanceSensorTab', this)">
+                    <span class="icon"><svg viewBox="0 0 24 24"><path d="M3 20h18"/><path d="M4 16l5-6 4 3 7-8"/></svg></span>
+                    <span class="menu-text">DistanceSensor</span>
+                </button>
+                <button class="menu-btn" data-tab="imuTab" onclick="window.switchTab('imuTab', this)">
+                    <span class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 4v16M4 12h16"/></svg></span>
+                    <span class="menu-text">IMU Sensors</span>
+                </button>
+                <button class="menu-btn" data-tab="positionSensorTab" onclick="window.switchTab('positionSensorTab', this)">
+                    <span class="icon"><svg viewBox="0 0 24 24"><path d="M4 18a8 8 0 1 1 16 0"/><path d="M12 18l4-6"/></svg></span>
+                    <span class="menu-text">PositionSensor</span>
+                </button>
+                <button class="menu-btn" data-tab="motorTab" onclick="window.switchTab('motorTab', this)">
+                    <span class="icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg></span>
+                    <span class="menu-text">Motors</span>
+                </button>
+                <button class="menu-btn" data-tab="cameraTab" onclick="window.switchTab('cameraTab', this)">
+                    <span class="icon"><svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span>
+                    <span class="menu-text">Camera</span>
+                </button>
+
+                <div class="menu-section-title">System</div>
+                <button class="menu-btn" data-tab="settingsTab" onclick="window.switchTab('settingsTab', this)">
+                    <span class="icon"><svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="9" cy="6" r="2"/><circle cx="15" cy="12" r="2"/><circle cx="7" cy="18" r="2"/></svg></span>
+                    <span class="menu-text">Settings</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- CONTENT AREA -->
+        <div id="contentArea">
+            <!-- HOME TAB -->
+            <div id="homeTab" class="tab-content active">
+                <!-- Top: Camera Feed (2/3 of frame height) -->
+                <div class="panel-card" id="homeCameraPanel">
+                    <div class="panel-title">Camera Feed</div>
+                    <div id="homeCameraView" style="flex:1;min-height:0;background:#000;border-radius:8px;display:flex;justify-content:center;align-items:center;position:relative;overflow:hidden;">
+                        <img id="homeCameraFeed" style="width:100%;height:100%;object-fit:contain;display:none;">
+                        <div id="homeCameraPlaceholder" style="color:#666;text-align:center;padding:20px;font-size:14px;">Waiting for camera...</div>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:12px;color:#718096;">
+                        <span id="homeCameraResolution">Resolution: --</span>
+                        <span id="homeCameraFPS">FPS: --</span>
+                    </div>
+                </div>
+
+                <!-- Bottom: Lift + Movement in one row -->
+                <div id="homeControls">
+                    <div class="panel-card">
+                        <div class="panel-title">Tay Robot (Lift) <span id="armHwBadge" style="font-size:10px;background:#f59e0b;color:#000;padding:1px 6px;border-radius:8px;margin-left:6px;display:none;">Sim only</span></div>
+                        <div class="arm-controls">
+                            <button class="arm-btn up" onmousedown="sendCommand('CMD:ARM_UP')" onmouseup="sendCommand('CMD:LIFT_STOP')" onmouseleave="sendCommand('CMD:LIFT_STOP')">&#9650; N&#226;ng tay</button>
+                            <button class="arm-btn down" onmousedown="sendCommand('CMD:ARM_DOWN')" onmouseup="sendCommand('CMD:LIFT_STOP')" onmouseleave="sendCommand('CMD:LIFT_STOP')">&#9660; H&#7841; tay</button>
+                        </div>
+                        <div class="arm-controls">
+                            <button class="arm-btn up" onclick="sendCommand('CMD:LIFT_TO:250')">▲ Lên max</button>
+                            <button class="arm-btn down" onclick="sendCommand('CMD:LIFT_TO:-50')">▼ Xuống max</button>
+                            <button class="arm-btn up" onclick="sendCommand('CMD:HOME')">Home</button>
+                        </div>
+                        <div class="arm-angle-row">
+                            <label>V&#7883; tr&#237; (mm):</label>
+                            <input type="number" id="armAngleInput" value="0" min="-50" max="250" step="10">
+                            <button class="arm-btn up" style="flex:none;padding:6px 12px;" onclick="sendCommand('CMD:LIFT_TO:' + document.getElementById('armAngleInput').value)">Go</button>
+                        </div>
+                        <div id="liftPositionDisplay" style="text-align:center;font-size:13px;color:#4a5568;margin-top:4px;">V&#7883; tr&#237;: 0 mm</div>
+                    </div>
+
+                    <div class="panel-card">
+                        <div class="panel-title">Movement</div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+                            <div></div>
+                            <button class="arm-btn up" onclick="sendCommand('CMD:FORWARD')">Forward</button>
+                            <div></div>
+                            <button class="arm-btn up" onclick="sendCommand('CMD:LEFT')">Left</button>
+                            <button class="arm-btn down" onclick="sendCommand('CMD:STOP')">Stop</button>
+                            <button class="arm-btn up" onclick="sendCommand('CMD:RIGHT')">Right</button>
+                            <div></div>
+                            <button class="arm-btn down" onclick="sendCommand('CMD:BACKWARD')">Back</button>
+                            <div></div>
+                        </div>
+                        <div class="speed-container">
+                            <div class="speed-label">
+                                <span>Speed</span>
+                                <span class="speed-value" id="speedValue">50%</span>
+                            </div>
+                            <input type="range" id="speedSlider" min="1" max="100" value="50"
+                                   oninput="updateSpeed(this.value)">
+                        </div>
+                    </div>
+                </div>
+
+                <div style="text-align:center;padding:8px;color:var(--color-gray-600);font-size:12px;border-top:1px solid var(--color-gray-200);">
+                    Powered by <strong>NextGen Robotics</strong> v3.0
+                </div>
+            </div>
+
+            <!-- PROGRAMMING TAB -->
+            <div id="programmingTab" class="tab-content">
+                <!-- Top: Status + Quick Actions -->
+                <div id="programmingTop">
+                    <div class="panel-card">
+                        <div class="panel-title">Robot Status</div>
+                        <div class="status-grid">
+                            <div class="status-item distance">
+                                <div class="label">Distance Sensor</div>
+                                <div class="value" id="distanceValue">--</div>
+                            </div>
+                            <div class="status-item state">
+                                <div class="label">Current State</div>
+                                <div class="value" id="stateValue">IDLE</div>
+                            </div>
+                            <div class="status-item">
+                                <div class="label">Sim Time</div>
+                                <div class="value" id="simTimeValue">0.00s</div>
+                            </div>
+                            <div class="status-item">
+                                <div class="label">Mode</div>
+                                <div class="value" id="modeValue">READY</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-card">
+                        <div class="panel-title">Quick Actions</div>
+                        <div class="preset-grid">
+                            <button class="preset-btn home" onclick="sendCommand('CMD:HOME')">Home</button>
+                            <button class="preset-btn" onclick="runPreset('grasp')">Grasp</button>
+                            <button class="preset-btn demo1" onclick="runPreset('demo1')">Demo 1</button>
+                            <button class="preset-btn demo2" onclick="runPreset('demo2')">Demo 2</button>
+                            <button class="preset-btn l298n-square" onclick="runPreset('l298n_square')">L298N Square</button>
+                            <button class="preset-btn l298n-dance" onclick="runPreset('l298n_dance')">L298N Dance</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Middle: Code Editor -->
+                <div class="panel-card" style="flex:1;display:flex;flex-direction:column;min-height:360px;">
+                    <div class="panel-title">Python Code</div>
+                    <textarea id="codeEditor" placeholder="# Python code here
+# Available functions:
+# - robot.go_forward(speed)
+# - robot.go_backward(speed)
+# - robot.turn_left(speed)
+# - robot.turn_right(speed)
+# - robot.arm_up(angle) / robot.arm_down(angle)
+# - robot.open_gripper(angle)
+# - robot.close_gripper(angle)
+# - delay(seconds)
+# - getDistance()
+# - stop_all()
+"></textarea>
+                    <div class="code-actions">
+                        <button class="code-btn run" onclick="runCode()">Run Code</button>
+                        <button class="code-btn clear" onclick="clearCode()">Clear</button>
+                    </div>
+                </div>
+                <!-- Bottom: Console Log -->
+                <div class="panel-card" style="display:flex;flex-direction:column;">
+                    <div class="panel-title">Console Log</div>
+                    <div id="consoleLog" style="flex:1;overflow-y:auto;min-height:120px;max-height:220px;">
+                        <div class="log-entry">Waiting for connection...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- DISTANCE SENSOR TAB -->
+            <div id="distanceSensorTab" class="tab-content devices-tab">
+                <div class="tab-header" style="width: 100%;">
+                    <h1>Distance Sensors</h1>
+                    <div class="tab-header-buttons">
+                        <button class="header-btn" onclick="enableAllDevices('distanceSensor', false)">Disable all</button>
+                        <button class="header-btn" onclick="enableAllDevices('distanceSensor', true)">Enable all</button>
+                    </div>
+                </div>
+                <div id="distanceSensorDevices" class="devices-container"></div>
+            </div>
+
+            <!-- IMU SENSORS TAB (Accelerometer, Gyro, Inertial Unit) -->
+            <div id="imuTab" class="tab-content devices-tab">
+                <div class="tab-header" style="width: 100%;">
+                    <h1>IMU Sensors</h1>
+                    <div class="tab-header-buttons">
+                        <button class="header-btn" onclick="enableAllDevices('imu', false)">Disable all</button>
+                        <button class="header-btn" onclick="enableAllDevices('imu', true)">Enable all</button>
+                    </div>
+                </div>
+                <div id="imuDevices" class="devices-container"></div>
+            </div>
+
+            <!-- POSITION SENSOR TAB -->
+            <div id="positionSensorTab" class="tab-content devices-tab">
+                <div class="tab-header" style="width: 100%;">
+                    <h1>Position Sensors</h1>
+                    <div class="tab-header-buttons">
+                        <button class="header-btn" onclick="enableAllDevices('positionSensor', false)">Disable all</button>
+                        <button class="header-btn" onclick="enableAllDevices('positionSensor', true)">Enable all</button>
+                    </div>
+                </div>
+                <div id="positionSensorDevices" class="devices-container"></div>
+            </div>
+
+            <!-- MOTOR TAB -->
+            <div id="motorTab" class="tab-content devices-tab">
+                <div class="tab-header" style="width: 100%;">
+                    <h1>Motors</h1>
+                    <div class="tab-header-buttons">
+                        <button class="header-btn" onclick="enableAllDevices('motor', false)">Disable all</button>
+                        <button class="header-btn" onclick="enableAllDevices('motor', true)">Enable all</button>
+                    </div>
+                </div>
+                <div id="motorDevices" class="devices-container"></div>
+            </div>
+
+            <!-- CAMERA TAB -->
+            <div id="cameraTab" class="tab-content">
+                <div id="cameraContainer" style="display:flex;flex-wrap:wrap;gap:15px;justify-content:center;flex:none;">
+                    <div id="cameraPlaceholderCard" class="camera-card">
+                        <h2>Detecting cameras...</h2>
+                        <div class="camera-view">
+                            <div class="camera-placeholder-inner">
+                                <span>Waiting for camera data...</span>
+                            </div>
+                        </div>
+                        <div class="camera-info"><span>No cameras detected yet</span></div>
+                    </div>
+                </div>
+
+                <div class="tab-header" style="width: 100%;">
+                    <h1>Camera Controls</h1>
+                    <div class="tab-header-buttons">
+                        <button class="header-btn" id="cameraToggleBtn" onclick="toggleCameraFeed()">Pause</button>
+                        <button class="header-btn" onclick="saveAllCameraSnapshots()">Snapshot All</button>
+                    </div>
+                </div>
+
+                <div class="camera-settings-panel">
+                    <h3>Camera Settings <span id="cameraPerfBadge" class="camera-perf-badge medium">Medium CPU</span></h3>
+                    <div class="camera-settings-row">
+                        <label>Target FPS:</label>
+                        <select id="cameraFpsSelect" onchange="changeCameraFps(this.value)">
+                            <option value="5">5 FPS</option>
+                            <option value="10">10 FPS</option>
+                            <option value="15">15 FPS</option>
+                            <option value="20" selected>20 FPS</option>
+                        </select>
+                    </div>
+                    <div class="camera-settings-row">
+                        <label>JPEG Quality:</label>
+                        <input type="range" id="cameraQualitySlider" min="20" max="95" value="60" oninput="changeCameraQuality(this.value)">
+                        <span id="cameraQualityValue">60%</span>
+                    </div>
+                    <div class="camera-settings-row">
+                        <label>Frame Skip:</label>
+                        <select id="cameraFrameSkipSelect" onchange="changeCameraFrameSkip(this.value)">
+                            <option value="0">None</option>
+                            <option value="1" selected>Skip 1</option>
+                            <option value="2">Skip 2</option>
+                            <option value="3">Skip 3</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SETTINGS TAB -->
+            <div id="settingsTab" class="tab-content">
+                <!-- Sim-to-Real Section -->
+                <div class="settings-section" style="border: 2px solid #4299e1; max-width: 550px;">
+                    <h2 style="color: #4299e1;">Sim-to-Real Bridge</h2>
+                    <div class="settings-row">
+                        <label>Sim-to-Real:</label>
+                        <button id="sim2realToggleBtn" class="header-btn" onclick="toggleSim2Real()" style="background:#e53e3e;color:white;min-width:80px;">OFF</button>
+                        <span id="sim2realStatusDot" style="width:12px;height:12px;border-radius:50%;background:#e53e3e;display:inline-block;"></span>
+                        <span id="sim2realStatusText" style="font-size:12px;color:#718096;">Disabled</span>
+                    </div>
+                    <div class="settings-row">
+                        <label>Bridge Server:</label>
+                        <span id="bridgeConnStatus" style="font-size:12px;color:#718096;">--</span>
+                    </div>
+                    <div class="settings-row">
+                        <label>Hardware (ESP32):</label>
+                        <span id="hwConnStatus" style="font-size:12px;color:#718096;">--</span>
+                    </div>
+                    <div class="settings-row">
+                        <label>Commands sent:</label>
+                        <span id="sim2realCmdCount" style="font-size:12px;font-weight:700;color:#2d3748;">0</span>
+                    </div>
+                    <div class="settings-row">
+                        <label>Last command:</label>
+                        <span id="sim2realLastCmd" style="font-size:12px;font-family:'Courier New',monospace;color:#4299e1;">--</span>
+                    </div>
+                    <div style="margin-top:10px;padding:10px;background:rgba(66,153,225,0.1);border-radius:8px;font-size:11px;color:#4a5568;">
+                        <strong>Setup:</strong><br>
+                        1. <code>pip install websockets</code><br>
+                        2. Run <code>python sim2real/bridge_server.py</code><br>
+                        3. Flash ESP32 with <code>sim2real/esp32_firmware/</code><br>
+                        4. Toggle Sim-to-Real ON above
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h2>General Settings</h2>
+                    <div class="settings-row">
+                        <label>Refresh rate (ms):</label>
+                        <input type="number" id="refreshRateInput" value="32" min="16" max="1000">
+                    </div>
+                    <div class="settings-row">
+                        <input type="checkbox" id="recordBackgroundCheckbox">
+                        <label>Record data when plot is hidden</label>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <h2>Device Control</h2>
+                    <div class="settings-row">
+                        <button class="header-btn" onclick="enableAllDevices(null, false)">Disable all devices</button>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <h2>About</h2>
+                    <div class="settings-row"><span>Digital Twin - NextGen Robotics Control Interface</span></div>
+                    <div class="settings-row"><span>Sim-to-Real bridge for ESP32-S3 hardware control</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script type="module">
+        import RobotWindow from 'https://cyberbotics.com/wwi/R2025a/RobotWindow.js';
+
+        // ==========================================
+        // GLOBAL STATE
+        // ==========================================
+        window.robotWindow = null;
+        window.isPlaying = false;
+        window.isConnected = false;
+        window.currentTab = 'homeTab';
+        window.deviceWidgets = {
+            distanceSensor: {},
+            positionSensor: {},
+            motor: {},
+            imu: {}
+        };
+
+        // Digital Twin joint names (master joints only for monitoring)
+        // These are just defaults - NhanUI will auto-create widgets for any joint names received from controller
+        const JOINT_NAMES = [
+            'front_left_wheel_joint', 'front_right_wheel_joint',
+            'rear_left_wheel_joint', 'rear_right_wheel_joint',
+            'arm1_joint', 'gripper_2l_joint',
+            // ClawBot_V2 joints
+            'clawbot_wheel_front_left_joint', 'clawbot_wheel_front_right_joint',
+            'clawbot_wheel_back_left_joint', 'clawbot_wheel_back_right_joint',
+            'clawbot_trucdung_joint'
+        ];
+
+        // Motor names for the motor tab
+        const MOTOR_NAMES = [
+            'front_left_wheel_joint', 'front_right_wheel_joint',
+            'rear_left_wheel_joint', 'rear_right_wheel_joint',
+            'arm1_joint', 'arm2_joint', 'gripper1_joint',
+            'gripper_2l_joint', 'gripper_2r_joint',
+            // ClawBot_V2 motors
+            'clawbot_wheel_front_left_joint', 'clawbot_wheel_front_right_joint',
+            'clawbot_wheel_back_left_joint', 'clawbot_wheel_back_right_joint',
+            'clawbot_trucdung_joint'
+        ];
+
+        // IMU sensor names
+        const IMU_SENSORS = [
+            { key: 'accel_x', name: 'Accelerometer X', unit: 'm/s²', minY: -20, maxY: 20, color: '#e74c3c' },
+            { key: 'accel_y', name: 'Accelerometer Y', unit: 'm/s²', minY: -20, maxY: 20, color: '#27ae60' },
+            { key: 'accel_z', name: 'Accelerometer Z', unit: 'm/s²', minY: -20, maxY: 20, color: '#3498db' },
+            { key: 'gyro_x', name: 'Gyroscope X', unit: 'rad/s', minY: -10, maxY: 10, color: '#9b59b6' },
+            { key: 'gyro_y', name: 'Gyroscope Y', unit: 'rad/s', minY: -10, maxY: 10, color: '#f39c12' },
+            { key: 'gyro_z', name: 'Gyroscope Z', unit: 'rad/s', minY: -10, maxY: 10, color: '#1abc9c' },
+            { key: 'roll', name: 'Roll (InertialUnit)', unit: 'rad', minY: -3.14, maxY: 3.14, color: '#e74c3c' },
+            { key: 'pitch', name: 'Pitch (InertialUnit)', unit: 'rad', minY: -3.14, maxY: 3.14, color: '#27ae60' },
+            { key: 'yaw', name: 'Yaw (InertialUnit)', unit: 'rad', minY: -3.14, maxY: 3.14, color: '#3498db' }
+        ];
+
+        // ==========================================
+        // TIMEPLOT CLASS
+        // ==========================================
+        class TimePlot {
+            constructor(canvas, options = {}) {
+                this.canvas = canvas;
+                this.ctx = canvas.getContext('2d');
+                this.data = [];
+                this.maxPoints = options.maxPoints || 100;
+                this.minY = options.minY !== undefined ? options.minY : -6.28;
+                this.maxY = options.maxY !== undefined ? options.maxY : 6.28;
+                this.lineColor = options.lineColor || '#3182ce';
+                this.gridColor = options.gridColor || '#e2e8f0';
+                this.enabled = true;
+                this.initialized = false;
+            }
+
+            addPoint(value) {
+                if (!this.enabled) return;
+                if (!this.initialized) { this.resize(); this.initialized = true; }
+                this.data.push(value);
+                if (this.data.length > this.maxPoints) this.data.shift();
+                this.draw();
+            }
+
+            draw() {
+                const w = this.canvas.width;
+                const h = this.canvas.height;
+                if (w === 0 || h === 0) return;
+
+                this.ctx.clearRect(0, 0, w, h);
+                this.ctx.fillStyle = 'white';
+                this.ctx.fillRect(0, 0, w, h);
+
+                // Grid
+                this.ctx.strokeStyle = this.gridColor;
+                this.ctx.lineWidth = 0.5;
+                for (let i = 0; i <= 4; i++) {
+                    const y = (h / 4) * i;
+                    this.ctx.beginPath(); this.ctx.moveTo(0, y); this.ctx.lineTo(w, y); this.ctx.stroke();
+                }
+
+                // Zero line
+                const zeroY = h - ((0 - this.minY) / (this.maxY - this.minY)) * h;
+                this.ctx.strokeStyle = '#cbd5e1';
+                this.ctx.lineWidth = 1;
+                this.ctx.setLineDash([5, 5]);
+                this.ctx.beginPath(); this.ctx.moveTo(0, zeroY); this.ctx.lineTo(w, zeroY); this.ctx.stroke();
+                this.ctx.setLineDash([]);
+
+                // Data line
+                if (this.data.length > 1) {
+                    this.ctx.strokeStyle = this.lineColor;
+                    this.ctx.lineWidth = 2;
+                    this.ctx.beginPath();
+                    for (let i = 0; i < this.data.length; i++) {
+                        const x = (w / this.maxPoints) * i;
+                        const normalizedY = (this.data[i] - this.minY) / (this.maxY - this.minY);
+                        const y = h - normalizedY * h;
+                        if (i === 0) this.ctx.moveTo(x, y);
+                        else this.ctx.lineTo(x, y);
+                    }
+                    this.ctx.stroke();
+                }
+
+                // Current point dot
+                if (this.data.length > 0) {
+                    const lastValue = this.data[this.data.length - 1];
+                    const x = (w / this.maxPoints) * (this.data.length - 1);
+                    const normalizedY = (lastValue - this.minY) / (this.maxY - this.minY);
+                    const y = h - normalizedY * h;
+                    this.ctx.fillStyle = this.lineColor;
+                    this.ctx.beginPath(); this.ctx.arc(x, y, 4, 0, Math.PI * 2); this.ctx.fill();
+                }
+            }
+
+            resize() {
+                const container = this.canvas.parentElement;
+                if (container) {
+                    const rect = container.getBoundingClientRect();
+                    // Use default size if container is hidden (display:none gives 0x0)
+                    const w = rect.width > 0 ? rect.width : 300;
+                    const h = rect.height > 0 ? rect.height : 100;
+                    this.canvas.width = w;
+                    this.canvas.height = h;
+                    this.draw();
+                }
+            }
+
+            clear() { this.data = []; this.draw(); }
+        }
+
+        // ==========================================
+        // DEVICE WIDGET CLASS
+        // ==========================================
+        class DeviceWidget {
+            constructor(type, key, displayName, container, options = {}) {
+                this.type = type;
+                this.key = key;
+                this.displayName = displayName;
+                this.enabled = true;
+                this.value = 0;
+                this.plot = null;
+                this.resizeObserver = null;
+
+                this.element = document.createElement('div');
+                this.element.className = 'device-card';
+                this.element.innerHTML = `
+                    <h2>
+                        <input type="checkbox" class="device-checkbox" checked
+                               onchange="toggleDevice('${type}', '${key}', this.checked)">
+                        ${displayName}: <span class="value">0.000</span>
+                    </h2>
+                    <div class="plot-container" style="width:100%;height:120px;min-height:120px;">
+                        <canvas class="plot-canvas" width="300" height="100"></canvas>
+                    </div>
+                    <div class="device-buttons-row">
+                        <button class="device-small-btn" onclick="resetDevicePlot('${type}', '${key}')">Reset Plot</button>
+                    </div>
+                `;
+                container.appendChild(this.element);
+
+                const canvas = this.element.querySelector('.plot-canvas');
+                // Set initial canvas size explicitly
+                canvas.width = 300;
+                canvas.height = 100;
+                
+                this.plot = new TimePlot(canvas, {
+                    minY: options.minY !== undefined ? options.minY : -6.28,
+                    maxY: options.maxY !== undefined ? options.maxY : 6.28,
+                    lineColor: options.lineColor || '#3182ce'
+                });
+                // Draw initial empty plot
+                this.plot.draw();
+
+                const self = this;
+                const plotContainer = this.element.querySelector('.plot-container');
+                if (window.ResizeObserver && plotContainer) {
+                    this.resizeObserver = new ResizeObserver(entries => {
+                        for (let entry of entries) {
+                            const { width, height } = entry.contentRect;
+                            if (width > 10 && height > 10) self.resize();
+                        }
+                    });
+                    this.resizeObserver.observe(plotContainer);
+                }
+                this.tryResize();
+            }
+
+            tryResize() {
+                const self = this;
+                [50, 100, 200, 400, 800, 1500].forEach(delay => { setTimeout(() => self.resize(), delay); });
+            }
+
+            update(value) {
+                this.value = value;
+                if (this.enabled && !isNaN(value)) {
+                    this.element.querySelector('.value').textContent = value.toFixed(3);
+                    this.plot.addPoint(value);
+                }
+            }
+
+            enable(enabled) {
+                this.enabled = enabled;
+                this.element.querySelector('.device-checkbox').checked = enabled;
+                this.plot.enabled = enabled;
+            }
+
+            resize() {
+                if (this.plot) {
+                    const container = this.element.querySelector('.plot-container');
+                    if (container) {
+                        const rect = container.getBoundingClientRect();
+                        if (rect.width > 10 && rect.height > 10) {
+                            this.plot.canvas.width = rect.width;
+                            this.plot.canvas.height = rect.height;
+                            this.plot.draw();
+                        }
+                    }
+                }
+            }
+
+            resetPlot() { if (this.plot) this.plot.clear(); }
+        }
+
+        // ==========================================
+        // INITIALIZATION
+        // ==========================================
+        function initNhanUI() {
+            const robotName = 'Digital Twin';
+            const robotNameEl = document.getElementById('robotNameDisplay');
+            if (robotNameEl) robotNameEl.textContent = robotName;
+
+            window.robotWindow = new RobotWindow();
+            window.robotWindow.receive = receive;
+            window.robotWindow.setTitle(robotName + ' - NhanUI Control');
+
+            createDeviceWidgets();
+            if (Object.keys(window.deviceWidgets.positionSensor).length === 0) {
+                setTimeout(createDeviceWidgets, 200);
+                setTimeout(createDeviceWidgets, 500);
+                setTimeout(createDeviceWidgets, 1000);
+            }
+
+            window.addEventListener('resize', resizeAllPlots);
+            addLog('NhanUI v2.0 initialized', 'success');
+
+            // ==========================================
+            // POSTMESSAGE LISTENER (for Sim2RealPanel integration)
+            // Allows parent window (frontend) to send commands to controller
+            // ==========================================
+            window.addEventListener('message', function(event) {
+                // Accept messages from any origin for now (TODO: restrict in production)
+                console.log('[NhanUI] Received postMessage:', event.data, 'from:', event.origin);
+                
+                if (!event.data) return;
+                
+                let cmd = null;
+                
+                // Handle string commands directly
+                if (typeof event.data === 'string') {
+                    cmd = event.data;
+                }
+                // Handle object format { type: 'sim2real_command', command: 'CMD:FORWARD' }
+                else if (typeof event.data === 'object') {
+                    if (event.data.type === 'sim2real_command' && event.data.command) {
+                        cmd = event.data.command;
+                    } else if (event.data.type === 'webots_command' && event.data.command) {
+                        cmd = event.data.command;
+                    } else if (event.data.cmd) {
+                        cmd = event.data.cmd;
+                    }
+                }
+                
+                if (cmd) {
+                    console.log('[NhanUI] Forwarding command to controller:', cmd);
+                    if (window.robotWindow) {
+                        window.robotWindow.send(cmd);
+                        addLog('External CMD: ' + cmd);
+                        
+                        // Send acknowledgment back to parent
+                        if (event.source) {
+                            event.source.postMessage({ 
+                                type: 'sim2real_ack', 
+                                command: cmd, 
+                                success: true 
+                            }, event.origin || '*');
+                        }
+                    } else {
+                        console.warn('[NhanUI] robotWindow not ready, cannot send:', cmd);
+                    }
+                }
+            });
+            console.log('[NhanUI] postMessage listener registered');
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initNhanUI);
+        } else {
+            initNhanUI();
+        }
+
+        function createDeviceWidgets() {
+            console.log('[NhanUI] createDeviceWidgets called');
+            
+            // Distance sensor - always create if container exists
+            const dsContainer = document.getElementById('distanceSensorDevices');
+            console.log('[NhanUI] dsContainer:', dsContainer);
+            if (dsContainer && !window.deviceWidgets.distanceSensor['distance_sensor']) {
+                console.log('[NhanUI] Creating distance sensor widget');
+                window.deviceWidgets.distanceSensor['distance_sensor'] = new DeviceWidget(
+                    'distanceSensor', 'distance_sensor', 'Distance Sensor', dsContainer,
+                    { minY: 0, maxY: 1000, lineColor: '#e74c3c' }
+                );
+            }
+
+            // IMU Sensors (Accelerometer, Gyro, Inertial Unit)
+            const imuContainer = document.getElementById('imuDevices');
+            console.log('[NhanUI] imuContainer:', imuContainer);
+            if (imuContainer && Object.keys(window.deviceWidgets.imu).length === 0) {
+                console.log('[NhanUI] Creating IMU sensor widgets');
+                IMU_SENSORS.forEach(sensor => {
+                    window.deviceWidgets.imu[sensor.key] = new DeviceWidget(
+                        'imu', sensor.key, sensor.name, imuContainer,
+                        { minY: sensor.minY, maxY: sensor.maxY, lineColor: sensor.color }
+                    );
+                });
+                console.log('[NhanUI] IMU widgets created:', Object.keys(window.deviceWidgets.imu).length);
+            }
+
+            // Position sensors and Motors are now auto-created when receiving status data
+            // This allows dynamic support for any robot (DienBien, ClawBot_V2, etc.)
+            console.log('[NhanUI] Position sensors & Motors will be auto-created from status data');
+
+            // Force resize after creation
+            setTimeout(resizeAllPlots, 100);
+            setTimeout(resizeAllPlots, 500);
+            setTimeout(resizeAllPlots, 1000);
+            setTimeout(resizeAllPlots, 2000);
+        }
+
+        function resizeAllPlots() {
+            Object.values(window.deviceWidgets).forEach(typeWidgets => {
+                Object.values(typeWidgets).forEach(widget => { if (widget && widget.resize) widget.resize(); });
+            });
+        }
+
+        function resizeTabWidgets(tabId) {
+            let typeToResize = null;
+            if (tabId === 'distanceSensorTab') typeToResize = 'distanceSensor';
+            else if (tabId === 'imuTab') typeToResize = 'imu';
+            else if (tabId === 'positionSensorTab') typeToResize = 'positionSensor';
+            else if (tabId === 'motorTab') typeToResize = 'motor';
+            if (typeToResize && window.deviceWidgets[typeToResize]) {
+                Object.values(window.deviceWidgets[typeToResize]).forEach(widget => { if (widget && widget.resize) widget.resize(); });
+            }
+        }
+
+        // ==========================================
+        // TAB SWITCHING
+        // ==========================================
+        function switchTabReal(tabId, btn) {
+            console.log('[NhanUI] Switching to tab:', tabId);
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.menu-btn').forEach(b => b.classList.remove('active'));
+            const tabEl = document.getElementById(tabId);
+            if (tabEl) tabEl.classList.add('active');
+            if (btn) btn.classList.add('active');
+            window.currentTab = tabId;
+            
+            // Ensure widgets are created when switching to device tabs
+            if (tabId === 'distanceSensorTab' || tabId === 'imuTab' || tabId === 'positionSensorTab' || tabId === 'motorTab') {
+                createDeviceWidgets();
+            }
+            
+            [50, 100, 200, 400, 800, 1500].forEach(delay => {
+                setTimeout(() => { resizeTabWidgets(tabId); resizeAllPlots(); }, delay);
+            });
+        }
+        window._switchTabReal = switchTabReal;
+        window.switchTab = switchTabReal;
+
+        function toggleSidebarReal() {
+            var sidebar = document.getElementById('sidebar');
+            if (sidebar) sidebar.classList.toggle('collapsed');
+            setTimeout(resizeAllPlots, 300);
+        }
+        window._toggleSidebarReal = toggleSidebarReal;
+        window.toggleSidebar = toggleSidebarReal;
+
+        // ==========================================
+        // DEVICE CONTROL
+        // ==========================================
+        window.toggleDevice = function(type, name, enabled) {
+            if (window.deviceWidgets[type] && window.deviceWidgets[type][name])
+                window.deviceWidgets[type][name].enable(enabled);
+        };
+
+        window.enableAllDevices = function(type, enabled) {
+            if (type) {
+                Object.values(window.deviceWidgets[type]).forEach(w => w.enable(enabled));
+            } else {
+                Object.values(window.deviceWidgets).forEach(tw => Object.values(tw).forEach(w => w.enable(enabled)));
+            }
+        };
+
+        window.resetDevicePlot = function(type, name) {
+            if (window.deviceWidgets[type] && window.deviceWidgets[type][name])
+                window.deviceWidgets[type][name].resetPlot();
+        };
+
+        // ==========================================
+        // WWI COMMUNICATION
+        // ==========================================
+        let statusCount = 0;
+        function receive(message, robot) {
+            if (message === 'STATUS:READY') {
+                window.isConnected = true;
+                updateConnectionStatus(true);
+                addLog('Connected to robot controller', 'success');
+                return;
+            }
+
+            if (message.startsWith('STATUS:')) {
+                try {
+                    const status = JSON.parse(message.substring(7));
+                    updateStatus(status);
+                    if (statusCount < 3) { console.log('Received status:', status); statusCount++; }
+                } catch (e) { console.error('Failed to parse status:', e); }
+                return;
+            }
+
+            if (message.startsWith('CAMERAS:')) {
+                try { setupCameras(JSON.parse(message.substring(8))); }
+                catch (e) { console.error('Failed to parse cameras info:', e); }
+                return;
+            }
+
+            if (message.startsWith('CAMERA:')) {
+                const rest = message.substring(7);
+                const colonIndex = rest.indexOf(':');
+                if (colonIndex > 0) {
+                    updateCameraFeed(rest.substring(0, colonIndex), rest.substring(colonIndex + 1));
+                } else {
+                    updateCameraFeed('camera', rest);
+                }
+                return;
+            }
+
+            // Backwards compatibility with simple TIME: messages
+            if (message.startsWith('TIME:')) {
+                const t = parseFloat(message.substring(5));
+                if (!isNaN(t)) {
+                    document.getElementById('simTimeValue').textContent = t.toFixed(2) + 's';
+                    document.getElementById('timerDisplay').textContent = t.toFixed(2) + 's';
+                }
+                return;
+            }
+
+            if (message.startsWith('ERROR:')) {
+                addLog('Error: ' + message.substring(6), 'error');
+                return;
+            }
+
+            // Sim-to-Real status
+            if (message.startsWith('SIM2REAL:')) {
+                try {
+                    const s2r = JSON.parse(message.substring(9));
+                    updateSim2RealUI(s2r);
+                } catch (e) {}
+                return;
+            }
+        }
+
+        // ==========================================
+        // SIM-TO-REAL UI
+        // ==========================================
+        window.sim2realEnabled = false;
+
+        window.toggleSim2Real = function() {
+            window.sim2realEnabled = !window.sim2realEnabled;
+            sendCommand(window.sim2realEnabled ? 'SIM2REAL:ON' : 'SIM2REAL:OFF');
+            const btn = document.getElementById('sim2realToggleBtn');
+            if (window.sim2realEnabled) {
+                btn.textContent = 'ON';
+                btn.style.background = '#48bb78';
+                addLog('Sim-to-Real enabled', 'success');
+            } else {
+                btn.textContent = 'OFF';
+                btn.style.background = '#e53e3e';
+                addLog('Sim-to-Real disabled');
+            }
+            // Show/hide "Sim only" badges on arm/gripper (L298N has no servos)
+            var armBadge = document.getElementById('armHwBadge');
+            var gripBadge = document.getElementById('gripperHwBadge');
+            if (armBadge) armBadge.style.display = window.sim2realEnabled ? 'inline' : 'none';
+            if (gripBadge) gripBadge.style.display = window.sim2realEnabled ? 'inline' : 'none';
+            // Poll status
+            setTimeout(() => sendCommand('SIM2REAL:STATUS'), 500);
+        };
+
+        function updateSim2RealUI(status) {
+            const dot = document.getElementById('sim2realStatusDot');
+            const text = document.getElementById('sim2realStatusText');
+            const bridgeEl = document.getElementById('bridgeConnStatus');
+            const hwEl = document.getElementById('hwConnStatus');
+            const cmdEl = document.getElementById('sim2realCmdCount');
+            const lastEl = document.getElementById('sim2realLastCmd');
+
+            if (status.enabled) {
+                if (status.hardware_connected) {
+                    dot.style.background = '#48bb78';
+                    text.textContent = 'Connected to hardware';
+                } else if (status.bridge_connected) {
+                    dot.style.background = '#ed8936';
+                    text.textContent = 'Bridge OK, waiting for ESP32...';
+                } else {
+                    dot.style.background = '#e53e3e';
+                    text.textContent = 'Bridge not connected';
+                }
+            } else {
+                dot.style.background = '#a0aec0';
+                text.textContent = 'Disabled';
+            }
+
+            bridgeEl.textContent = status.bridge_connected ? 'Connected' : 'Not connected';
+            bridgeEl.style.color = status.bridge_connected ? '#48bb78' : '#e53e3e';
+            hwEl.textContent = status.hardware_connected ? 'Connected' : 'Not connected';
+            hwEl.style.color = status.hardware_connected ? '#48bb78' : '#e53e3e';
+            if (status.commands_sent !== undefined) cmdEl.textContent = status.commands_sent;
+            if (status.last_command) lastEl.textContent = status.last_command;
+        }
+
+        // Poll sim2real status periodically
+        setInterval(() => {
+            if (window.sim2realEnabled && window.isConnected) {
+                sendCommand('SIM2REAL:STATUS');
+            }
+        }, 3000);
+
+        window.sendCommand = function(cmd) {
+            if (window.robotWindow) {
+                window.robotWindow.send(cmd);
+                addLog('Sent: ' + cmd);
+            }
+        };
+
+        // ==========================================
+        // STATUS UPDATE
+        // ==========================================
+        function updateStatus(status) {
+            if (!window.isConnected) { window.isConnected = true; updateConnectionStatus(true); }
+
+            if (status.distance !== undefined) {
+                const distVal = status.distance < 99999 ? status.distance.toFixed(1) + ' mm' : '--';
+                document.getElementById('distanceValue').textContent = distVal;
+                if (window.deviceWidgets.distanceSensor['distance_sensor'])
+                    window.deviceWidgets.distanceSensor['distance_sensor'].update(status.distance);
+            }
+
+            if (status.state)
+                document.getElementById('stateValue').textContent = status.state;
+
+            if (status.time !== undefined) {
+                document.getElementById('simTimeValue').textContent = status.time.toFixed(2) + 's';
+                document.getElementById('timerDisplay').textContent = status.time.toFixed(2) + 's';
+            }
+
+            // Update lift position display
+            if (status.lift_mm !== undefined) {
+                var liftEl = document.getElementById('liftPositionDisplay');
+                if (liftEl) liftEl.textContent = 'V\u1ECB tr\u00ED: ' + status.lift_mm + ' mm';
+            }
+
+            // Update joint position sensors - auto-create widgets for new joints
+            if (status.joints) {
+                const psContainer = document.getElementById('positionSensorDevices');
+                for (const [joint, value] of Object.entries(status.joints)) {
+                    // Auto-create widget if not exists
+                    if (!window.deviceWidgets.positionSensor[joint] && psContainer) {
+                        const displayName = joint.replace(/^clawbot_/, '').replace(/_joint$/, '').replace(/_/g, ' ');
+                        const isWheel = joint.includes('wheel');
+                        window.deviceWidgets.positionSensor[joint] = new DeviceWidget(
+                            'positionSensor', joint, displayName, psContainer,
+                            { minY: isWheel ? -100 : -3.14, maxY: isWheel ? 100 : 3.14, lineColor: '#3182ce' }
+                        );
+                        console.log('[NhanUI] Auto-created position sensor widget:', joint);
+                    }
+                    if (window.deviceWidgets.positionSensor[joint])
+                        window.deviceWidgets.positionSensor[joint].update(value);
+                }
+            }
+
+            // Update motor targets - auto-create widgets for new motors
+            if (status.motors) {
+                const motorContainer = document.getElementById('motorDevices');
+                for (const [motor, value] of Object.entries(status.motors)) {
+                    // Auto-create widget if not exists
+                    if (!window.deviceWidgets.motor[motor] && motorContainer) {
+                        const displayName = motor.replace(/^clawbot_/, '').replace(/_joint$/, '').replace(/_/g, ' ');
+                        const isWheel = motor.includes('wheel');
+                        const isGripper = motor.includes('gripper');
+                        const isTrucdung = motor.includes('trucdung');
+                        let color = '#38a169';
+                        if (isWheel) color = '#4299e1';
+                        if (isGripper) color = '#805ad5';
+                        if (isTrucdung) color = '#ed8936';
+                        window.deviceWidgets.motor[motor] = new DeviceWidget(
+                            'motor', motor, displayName, motorContainer,
+                            { minY: isWheel ? -10 : (isGripper ? -1 : -3.14), maxY: isWheel ? 10 : (isGripper ? 1 : 3.14), lineColor: color }
+                        );
+                        console.log('[NhanUI] Auto-created motor widget:', motor);
+                    }
+                    if (window.deviceWidgets.motor[motor])
+                        window.deviceWidgets.motor[motor].update(value);
+                }
+            } else if (status.joints) {
+                for (const [joint, value] of Object.entries(status.joints)) {
+                    if (window.deviceWidgets.motor[joint])
+                        window.deviceWidgets.motor[joint].update(value);
+                }
+            }
+
+            // Update IMU sensors (Accelerometer, Gyro, Inertial Unit)
+            if (status.imu) {
+                const imu = status.imu;
+                
+                // Accelerometer
+                if (imu.accelerometer) {
+                    if (window.deviceWidgets.imu['accel_x'])
+                        window.deviceWidgets.imu['accel_x'].update(imu.accelerometer.x);
+                    if (window.deviceWidgets.imu['accel_y'])
+                        window.deviceWidgets.imu['accel_y'].update(imu.accelerometer.y);
+                    if (window.deviceWidgets.imu['accel_z'])
+                        window.deviceWidgets.imu['accel_z'].update(imu.accelerometer.z);
+                }
+                
+                // Gyroscope
+                if (imu.gyro) {
+                    if (window.deviceWidgets.imu['gyro_x'])
+                        window.deviceWidgets.imu['gyro_x'].update(imu.gyro.x);
+                    if (window.deviceWidgets.imu['gyro_y'])
+                        window.deviceWidgets.imu['gyro_y'].update(imu.gyro.y);
+                    if (window.deviceWidgets.imu['gyro_z'])
+                        window.deviceWidgets.imu['gyro_z'].update(imu.gyro.z);
+                }
+                
+                // Inertial Unit (Roll/Pitch/Yaw)
+                if (imu.inertial) {
+                    if (window.deviceWidgets.imu['roll'])
+                        window.deviceWidgets.imu['roll'].update(imu.inertial.roll);
+                    if (window.deviceWidgets.imu['pitch'])
+                        window.deviceWidgets.imu['pitch'].update(imu.inertial.pitch);
+                    if (window.deviceWidgets.imu['yaw'])
+                        window.deviceWidgets.imu['yaw'].update(imu.inertial.yaw);
+                }
+            }
+        }
+
+        function updateConnectionStatus(connected) {
+            const el = document.getElementById('connectionStatus');
+            el.textContent = connected ? 'Connected' : 'Disconnected';
+            el.className = connected ? 'connected' : 'disconnected';
+        }
+
+        // ==========================================
+        // SIMULATION CONTROL
+        // ==========================================
+        const PLAY_ICON = '<svg class="sim-icon" viewBox="0 0 24 24"><path d="M7 5l12 7-12 7z"/></svg>';
+        const PAUSE_ICON = '<svg class="sim-icon" viewBox="0 0 24 24"><path d="M7 5h3v14H7zM14 5h3v14h-3z"/></svg>';
+
+        window.simControl = function(action) {
+            if (action === 'TOGGLE') {
+                if (window.isPlaying) {
+                    sendCommand('CMD:PAUSE');
+                    window.isPlaying = false;
+                    document.getElementById('btnPlay').innerHTML = PLAY_ICON;
+                    document.getElementById('modeValue').textContent = 'PAUSED';
+                } else {
+                    sendCommand('CMD:PLAY');
+                    window.isPlaying = true;
+                    document.getElementById('btnPlay').innerHTML = PAUSE_ICON;
+                    document.getElementById('modeValue').textContent = 'RUNNING';
+                }
+            } else if (action === 'RESET') {
+                sendCommand('CMD:RESET');
+                window.isPlaying = true;
+                document.getElementById('btnPlay').innerHTML = PAUSE_ICON;
+                document.getElementById('modeValue').textContent = 'READY';
+                document.getElementById('timerDisplay').textContent = '0.00s';
+                addLog('Reset robot', 'success');
+            }
+        };
+
+        window.updateSpeed = function(value) {
+            document.getElementById('speedValue').textContent = value + '%';
+            sendCommand('SPEED:' + value);
+        };
+
+        // ==========================================
+        // CODE EXECUTION & PRESETS
+        // ==========================================
+        window.runCode = function() {
+            const code = document.getElementById('codeEditor').value.trim();
+            if (!code) { addLog('No code to run', 'error'); return; }
+            sendCommand('CODE:' + code);
+            addLog('Code sent to robot');
+        };
+
+        window.clearCode = function() { document.getElementById('codeEditor').value = ''; };
+
+        window.runPreset = function(preset) {
+            const presets = {
+                'grasp': `robot.open_gripper(-10)
+delay(0.5)
+robot.close_gripper(30)
+delay(1)
+robot.open_gripper(-10)`,
+
+                'demo1': `# Demo 1: Di chuyen theo hinh vuong
+# Move in a square pattern
+for i in range(4):
+    robot.go_forward(50)
+    delay(2)
+    robot.turn_right(50)
+    delay(0.85)
+    while_tick()
+robot.go_forward(0)
+delay(0.5)`,
+
+                'demo2': `# Demo 2: Tien toi, gap vat, di chuyen va tha
+# Move forward, grasp object, move and release
+robot.open_gripper(-10)
+delay(0.5)
+robot.arm_down(45)
+delay(1)
+robot.go_forward(50)
+delay(2)
+robot.go_forward(0)
+delay(0.5)
+robot.close_gripper(30)
+delay(1)
+robot.arm_up(0)
+delay(1)
+robot.go_forward(50)
+delay(3)
+robot.go_forward(0)
+delay(0.5)
+robot.arm_down(45)
+delay(1)
+robot.open_gripper(-10)
+delay(1)
+robot.arm_up(0)
+delay(0.5)
+robot.go_backward(50)
+delay(2)
+robot.go_backward(0)`
+            };
+
+            // L298N-only presets (movement only, no arm/gripper)
+            presets['l298n_square'] = `# L298N: Di chuyen hinh vuong
+# Square pattern - works with L298N (motors only)
+for i in range(4):
+    robot.go_forward(60)
+    delay(2)
+    robot.turn_right(60)
+    delay(0.7)
+    while_tick()
+robot.go_forward(0)
+delay(0.5)`;
+
+            presets['l298n_dance'] = `# L298N: Robot dance
+# Zigzag dance pattern - works with L298N
+robot.go_forward(70)
+delay(1)
+robot.turn_left(50)
+delay(0.5)
+robot.go_forward(70)
+delay(1)
+robot.turn_right(50)
+delay(0.5)
+robot.go_backward(60)
+delay(1)
+robot.turn_left(80)
+delay(1)
+robot.turn_right(80)
+delay(1)
+robot.go_forward(0)
+delay(0.3)`;
+
+
+            if (presets[preset]) {
+                document.getElementById('codeEditor').value = presets[preset];
+                addLog('Loaded preset: ' + preset);
+            }
+        };
+
+        // ==========================================
+        // LOGGING
+        // ==========================================
+        function addLog(message, type = '') {
+            const log = document.getElementById('consoleLog');
+            const entry = document.createElement('div');
+            entry.className = 'log-entry ' + type;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
+            while (log.children.length > 50) log.removeChild(log.firstChild);
+        }
+
+        // ==========================================
+        // CAMERA FUNCTIONS
+        // ==========================================
+        window.cameraEnabled = true;
+        window.cameraData = {};
+        window.knownCameras = {};
+        window.cameraSettings = {
+            resolution: '320x240', targetFps: 20, quality: 60, frameSkip: 1, frameCounter: 0
+        };
+
+        function sendCameraSettings() {
+            const settings = window.cameraSettings;
+            const [width, height] = settings.resolution.split('x').map(Number);
+            const msg = `CAMERA_SETTINGS:${JSON.stringify({ width, height, fps: settings.targetFps, quality: settings.quality, frameSkip: settings.frameSkip })}`;
+            if (window.robotWindow) { window.robotWindow.send(msg); addLog(`Camera settings updated`, 'success'); }
+            updatePerfBadge();
+        }
+
+        function updatePerfBadge() {
+            const badge = document.getElementById('cameraPerfBadge');
+            if (!badge) return;
+            const settings = window.cameraSettings;
+            const [width] = settings.resolution.split('x').map(Number);
+            const loadScore = (width / 160) * (settings.targetFps / 10) * (settings.quality / 60) / (settings.frameSkip + 1);
+            if (loadScore <= 1) { badge.className = 'camera-perf-badge low'; badge.textContent = 'Low CPU'; }
+            else if (loadScore <= 2.5) { badge.className = 'camera-perf-badge medium'; badge.textContent = 'Medium CPU'; }
+            else { badge.className = 'camera-perf-badge high'; badge.textContent = 'High CPU'; }
+        }
+
+        window.changeCameraFps = function(v) { window.cameraSettings.targetFps = parseInt(v); sendCameraSettings(); };
+        window.changeCameraQuality = function(v) {
+            window.cameraSettings.quality = parseInt(v);
+            document.getElementById('cameraQualityValue').textContent = v + '%';
+            sendCameraSettings();
+        };
+        window.changeCameraFrameSkip = function(v) { window.cameraSettings.frameSkip = parseInt(v); sendCameraSettings(); };
+
+        window.toggleCameraFullscreen = function(cameraName) {
+            const card = document.getElementById(`cameraCard_${cameraName}`);
+            if (!card) return;
+            if (card.classList.contains('fullscreen')) { card.classList.remove('fullscreen'); document.body.style.overflow = ''; }
+            else { card.classList.add('fullscreen'); document.body.style.overflow = 'hidden'; }
+        };
+
+        function setupCameras(camerasInfo) {
+            window.knownCameras = camerasInfo;
+            const container = document.getElementById('cameraContainer');
+            if (!container) return;
+            const placeholder = document.getElementById('cameraPlaceholderCard');
+            if (placeholder) placeholder.remove();
+            const cameraNames = Object.keys(camerasInfo);
+            if (cameraNames.length === 0) {
+                container.innerHTML = `<div class="camera-card"><h2>No cameras found</h2><div class="camera-view"><div class="camera-placeholder-inner"><span>No camera devices detected</span></div></div></div>`;
+                return;
+            }
+            container.innerHTML = '';
+            cameraNames.forEach(camName => {
+                const card = createCameraCard(camName, camerasInfo[camName]);
+                container.appendChild(card);
+                window.cameraData[camName] = { frameCount: 0, lastTime: Date.now(), firstFrame: true };
+            });
+            addLog(`Detected ${cameraNames.length} camera(s): ${cameraNames.join(', ')}`, 'success');
+            setTimeout(sendCameraSettings, 500);
+        }
+
+        function createCameraCard(cameraName, cameraInfo) {
+            const card = document.createElement('div');
+            card.className = 'camera-card';
+            card.id = `cameraCard_${cameraName}`;
+            const displayName = cameraName.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+            const resolution = cameraInfo ? `${cameraInfo.width}x${cameraInfo.height}` : '---';
+            card.innerHTML = `
+                <h2>${displayName}</h2>
+                <div class="camera-view">
+                    <img id="cameraFeed_${cameraName}" alt="${displayName}">
+                    <div id="cameraPlaceholder_${cameraName}" class="camera-placeholder-inner">
+                        <span>Waiting for data...</span>
+                    </div>
+                </div>
+                <div class="camera-info">
+                    <div class="camera-info-row">
+                        <span id="cameraResolution_${cameraName}">Resolution: ${resolution}</span>
+                        <span id="cameraFPS_${cameraName}">FPS: --</span>
+                    </div>
+                    <div class="camera-info-row">
+                        <button class="camera-snapshot-btn" onclick="saveSingleCameraSnapshot('${cameraName}')">Snapshot</button>
+                        <button class="camera-fullscreen-btn" onclick="toggleCameraFullscreen('${cameraName}')">Fullscreen</button>
+                    </div>
+                </div>
+            `;
+            return card;
+        }
+
+        function updateCameraFeed(cameraName, base64Data) {
+            if (!window.cameraEnabled) return;
+            window.cameraSettings.frameCounter++;
+            if (window.cameraSettings.frameSkip > 0 && window.cameraSettings.frameCounter % (window.cameraSettings.frameSkip + 1) !== 0) return;
+
+            updateHomeCameraFeed(cameraName, base64Data);
+
+            if (!window.cameraData[cameraName]) {
+                const container = document.getElementById('cameraContainer');
+                const placeholderCard = document.getElementById('cameraPlaceholderCard');
+                if (placeholderCard) placeholderCard.remove();
+                if (!document.getElementById(`cameraCard_${cameraName}`)) {
+                    container.appendChild(createCameraCard(cameraName, null));
+                }
+                window.cameraData[cameraName] = { frameCount: 0, lastTime: Date.now(), firstFrame: true };
+            }
+
+            const img = document.getElementById(`cameraFeed_${cameraName}`);
+            const placeholder = document.getElementById(`cameraPlaceholder_${cameraName}`);
+            if (img && base64Data) {
+                img.src = 'data:image/jpeg;base64,' + base64Data;
+                img.classList.add('loaded');
+                if (placeholder) placeholder.style.display = 'none';
+                const camData = window.cameraData[cameraName];
+                if (camData.firstFrame) {
+                    camData.firstFrame = false;
+                    addLog(`Camera '${cameraName}' feed started`, 'success');
+                    img.onload = function() {
+                        const resEl = document.getElementById(`cameraResolution_${cameraName}`);
+                        if (resEl) resEl.textContent = `Resolution: ${img.naturalWidth}x${img.naturalHeight}`;
+                    };
+                }
+                camData.frameCount++;
+                const now = Date.now();
+                if (now - camData.lastTime >= 1000) {
+                    const fpsEl = document.getElementById(`cameraFPS_${cameraName}`);
+                    if (fpsEl) fpsEl.textContent = 'FPS: ' + camData.frameCount;
+                    camData.frameCount = 0;
+                    camData.lastTime = now;
+                }
+            }
+        }
+
+        window.homeCameraData = { frameCount: 0, lastTime: Date.now(), firstFrame: true };
+        function updateHomeCameraFeed(cameraName, base64Data) {
+            const cameraNames = Object.keys(window.cameraData || {});
+            if (cameraNames.length > 0 && cameraNames[0] !== cameraName && cameraNames.includes(cameraName)) return;
+            const img = document.getElementById('homeCameraFeed');
+            const placeholder = document.getElementById('homeCameraPlaceholder');
+            const fpsEl = document.getElementById('homeCameraFPS');
+            if (img && base64Data) {
+                img.src = 'data:image/jpeg;base64,' + base64Data;
+                img.style.display = 'block';
+                if (placeholder) placeholder.style.display = 'none';
+                if (window.homeCameraData.firstFrame) {
+                    window.homeCameraData.firstFrame = false;
+                    img.onload = function() {
+                        const resEl = document.getElementById('homeCameraResolution');
+                        if (resEl) resEl.textContent = `Resolution: ${img.naturalWidth}x${img.naturalHeight}`;
+                    };
+                }
+                window.homeCameraData.frameCount++;
+                const now = Date.now();
+                if (now - window.homeCameraData.lastTime >= 1000) {
+                    if (fpsEl) fpsEl.textContent = 'FPS: ' + window.homeCameraData.frameCount;
+                    window.homeCameraData.frameCount = 0;
+                    window.homeCameraData.lastTime = now;
+                }
+            }
+        }
+
+        window.toggleCameraFeed = function() {
+            window.cameraEnabled = !window.cameraEnabled;
+            const btn = document.getElementById('cameraToggleBtn');
+            if (btn) btn.textContent = window.cameraEnabled ? 'Pause' : 'Resume';
+            addLog('All cameras ' + (window.cameraEnabled ? 'resumed' : 'paused'));
+        };
+
+        window.saveSingleCameraSnapshot = function(cameraName) {
+            const img = document.getElementById(`cameraFeed_${cameraName}`);
+            if (img && img.src && img.src.startsWith('data:image')) {
+                const link = document.createElement('a');
+                link.download = `${cameraName}_snapshot_${Date.now()}.jpg`;
+                link.href = img.src;
+                link.click();
+                addLog(`Snapshot saved: ${cameraName}`, 'success');
+            } else { addLog(`No image from ${cameraName}`, 'error'); }
+        };
+
+        window.saveAllCameraSnapshots = function() {
+            const cameraNames = Object.keys(window.cameraData);
+            if (cameraNames.length === 0) { addLog('No cameras available', 'error'); return; }
+            let saved = 0;
+            cameraNames.forEach(camName => {
+                const img = document.getElementById(`cameraFeed_${camName}`);
+                if (img && img.src && img.src.startsWith('data:image')) {
+                    const link = document.createElement('a');
+                    link.download = `${camName}_snapshot_${Date.now()}.jpg`;
+                    link.href = img.src;
+                    link.click();
+                    saved++;
+                }
+            });
+            addLog(saved > 0 ? `Saved ${saved} snapshot(s)` : 'No camera images available', saved > 0 ? 'success' : 'error');
+        };
+
+        setTimeout(updatePerfBadge, 100);
+    </script>
+</body>
+</html>
