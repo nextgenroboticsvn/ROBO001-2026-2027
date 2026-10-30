@@ -17,7 +17,7 @@ Mỗi nhánh chứa trọn một dự án Webots (thư mục `worlds/`, `control
 | [`Lesson2_Debugging_DapAn`](../../tree/Lesson2_Debugging_DapAn) | Bài 2 – đáp án bài tìm và sửa lỗi |
 | [`Mo_Phong_Nang_Cao`](../../tree/Mo_Phong_Nang_Cao) | Mô phỏng nâng cao |
 
-Nhánh `main` chỉ chứa tài liệu này.
+Nhánh `main` (mặc định) chứa mô phỏng **Bài 2**, giống nhánh `Lesson2`, kèm tài liệu này.
 
 ## Cách sử dụng
 
