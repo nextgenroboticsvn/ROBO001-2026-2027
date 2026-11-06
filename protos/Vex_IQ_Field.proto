@@ -1,0 +1,119 @@
+#VRML_SIM R2023b utf8
+# Vex IQ Field
+
+
+PROTO Vex_IQ_Field [
+  field SFVec3f translation 0 0 0
+  field SFRotation rotation 0 0 1 0
+  field MFNode children [
+    DEF Bounding_GND Group {
+      children [
+        DEF Wall1 Solid {
+          translation 0 -0.937 0.02554
+          name "wallsolid1"
+          boundingObject Box {
+            size 2.51222 0.02421 0.07608
+          }
+        }
+        DEF Wall3 Solid {
+          translation -1.24294 0 0.02554
+          name "wallsolid3"
+          boundingObject Box {
+            size 0.02412 1.8542 0.07608
+          }
+        }
+        DEF Wall2 Solid {
+          translation 0 0.9414 0.02554
+          name "wallsolid2"
+          boundingObject Box {
+            size 2.51222 0.02421 0.07608
+          }
+        }
+        DEF Wall4 Solid {
+          translation 1.24512 0 0.02554
+          name "wallsolid4"
+          boundingObject Box {
+            size 0.02412 1.8542 0.07608
+          }
+        }
+        DEF Base Solid {
+          translation 0 0 -0.02
+          boundingObject Box {
+            size 2.4638 1.8542 0.04
+          }
+        }
+      ]
+    }
+    DEF Ground_Shape Shape {
+      appearance PBRAppearance {
+        baseColor 0.9 0.9 0.9
+        metalness 0
+      }
+      geometry Mesh {
+        url [
+          "../worlds/3D_Models/Field_IQ/Vex_IQ_Field_Ground.STL"
+        ]
+      }
+      castShadows FALSE
+    }
+    DEF Lines_Shape Shape {
+      appearance PBRAppearance {
+        baseColor 0.1 0.1 0.1
+        metalness 0
+      }
+      geometry Mesh {
+        url [
+          "../worlds/3D_Models/Field_IQ/Vex_IQ_Field_Lines.STL"
+        ]
+      }
+      castShadows FALSE
+    }
+    DEF Wall_Shape Shape {
+      appearance PBRAppearance {
+        baseColor 0.4 0.4 0.4
+        metalness 0
+      }
+      geometry Mesh {
+        url [
+          "../worlds/3D_Models/Field_IQ/Vex_IQ_Field_Wall.STL"
+        ]
+      }
+      castShadows FALSE
+    }
+  ]
+  field SFString name "solid"
+  field SFString model ""
+  field SFString description ""
+  field SFString contactMaterial "default"
+  field MFNode immersionProperties [ ]
+  field SFNode boundingObject NULL
+  field SFNode physics NULL
+  field SFBool locked FALSE
+  field SFFloat radarCrossSection 0
+  field MFColor recognitionColors [ ]
+  field SFFloat translationStep 0.01
+  field SFFloat rotationStep 0.261799387
+  field SFVec3f linearVelocity 0 0 0
+  field SFVec3f angularVelocity 0 0 0
+]
+{
+  Solid {
+    translation IS translation
+    rotation IS rotation
+    children IS children
+    name IS name
+    model IS model
+    description IS description
+    contactMaterial IS contactMaterial
+    immersionProperties IS immersionProperties
+    boundingObject IS boundingObject
+    physics IS physics
+    locked IS locked
+    radarCrossSection IS radarCrossSection
+    recognitionColors IS recognitionColors
+    translationStep IS translationStep
+    rotationStep IS rotationStep
+    linearVelocity IS linearVelocity
+    angularVelocity IS angularVelocity
+  }
+}

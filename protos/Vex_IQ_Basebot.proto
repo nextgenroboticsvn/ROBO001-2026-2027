@@ -1,0 +1,468 @@
+#VRML_SIM R2023b utf8
+# Vex IQ Basebot
+
+
+PROTO Vex_IQ_Basebot [
+  field SFVec3f translation 0 0 0
+  field SFRotation rotation 0 0 1 0
+  field MFNode children [
+    Accelerometer {
+      translation 0.075 0 0.1
+    }
+    InertialUnit {
+      translation 0.075 0 0.1
+    }
+    Gyro {
+      translation 0.075 0 0.1
+    }
+    DistanceSensor {
+      translation 0.191 0 0.032
+      children [
+        Pose {
+          translation -0.191 0 -0.032
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor 0.4 0.4 0.4
+                metalness 0
+              }
+              geometry Mesh {
+                url [
+                  "../worlds/3D_Models/Robot/Distance_Sensor.STL"
+                ]
+              }
+              castShadows FALSE
+            }
+          ]
+        }
+      ]
+      boundingObject Pose {
+        translation -0.0125 0 0
+        children [
+          Box {
+            size 0.025 0.025 0.025
+          }
+        ]
+      }
+      physics Physics {
+        density -1
+        mass 0.03
+      }
+      lookupTable [
+        0 0 0
+        2 2000 0
+      ]
+      numberOfRays 3
+      aperture 0.02
+    }
+    TouchSensor {
+      translation -0.026999999461728708 -6.1377569693377154e-12 0.03199952958182684
+      rotation -0.06468393043926911 0.9978920015590731 -0.005248082254943526 1.8235689419398925e-15
+      children [
+        Pose {
+          translation 0.027 0 -0.032
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor 0.4 0.4 0.4
+                metalness 0
+              }
+              geometry Mesh {
+                url [
+                  "../worlds/3D_Models/Robot/Bumper.STL"
+                ]
+              }
+              castShadows FALSE
+            }
+          ]
+        }
+      ]
+      boundingObject Pose {
+        translation 0.0133 0 0
+        children [
+          Box {
+            size 0.025 0.05 0.025
+          }
+        ]
+      }
+      physics Physics {
+        density -1
+        mass 0.03
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 2.24789127326169e-06
+        axis 0 1 0
+        anchor 0.0188 0 0.032
+      }
+      device [
+        PositionSensor {
+          name "Wheel_BL"
+        }
+      ]
+      endPoint DEF Wheel_Back_Left Solid {
+        translation -7.193247370321232e-08 0 4.226043587296502e-08
+        rotation 0 1 0 2.247853871957549e-06
+        children [
+          Pose {
+            children [
+              Shape {
+                appearance PBRAppearance {
+                  baseColor 0.6 0.6 0.6
+                  metalness 0
+                }
+                geometry Mesh {
+                  url [
+                    "../worlds/3D_Models/Robot/Back_Left_Wheel_Omni_Lock.STL"
+                  ]
+                }
+                castShadows FALSE
+              }
+              Shape {
+                appearance PBRAppearance {
+                  baseColor 0.2 0.2 0.2
+                  metalness 0
+                }
+                geometry Mesh {
+                  url [
+                    "../worlds/3D_Models/Robot/Back_Left_Wheel_Omni.STL"
+                  ]
+                }
+                castShadows FALSE
+              }
+            ]
+          }
+        ]
+        name "solid(3)"
+        boundingObject Pose {
+          translation 0.0188 0.077 0.032
+          rotation 1 0 0 1.57
+          children [
+            Cylinder {
+              height 0.02
+              radius 0.032
+            }
+          ]
+        }
+        physics Physics {
+          density -1
+          mass 0.0001
+        }
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 2.1372325068474497e-06
+        axis 0 1 0
+        anchor 0.0188 0 0.032
+      }
+      device [
+        PositionSensor {
+          name "Wheel_BR"
+        }
+      ]
+      endPoint DEF Wheel_Back_Right Solid {
+        translation -6.839139728154198e-08 0 4.0180045124404984e-08
+        rotation 0 1 0 2.1372649841604055e-06
+        children [
+          Pose {
+            children [
+              Shape {
+                appearance PBRAppearance {
+                  baseColor 0.2 0.2 0.2
+                  metalness 0
+                }
+                geometry Mesh {
+                  url [
+                    "../worlds/3D_Models/Robot/Back_Right_Wheel_Omni.STL"
+                  ]
+                }
+                castShadows FALSE
+              }
+              Shape {
+                appearance PBRAppearance {
+                  baseColor 0.6 0.6 0.6
+                  metalness 0
+                }
+                geometry Mesh {
+                  url [
+                    "../worlds/3D_Models/Robot/Back_Right_Wheel_Omni_Lock.STL"
+                  ]
+                }
+                castShadows FALSE
+              }
+            ]
+          }
+        ]
+        name "solid(4)"
+        boundingObject Pose {
+          translation 0.0188 -0.077 0.032
+          rotation 1 0 0 1.57
+          children [
+            Cylinder {
+              height 0.02
+              radius 0.032
+            }
+          ]
+        }
+        physics Physics {
+          density -1
+          mass 0.0001
+        }
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position -1.5102675465783477e-07
+        axis 0 1 0
+        anchor 0.1204 0 0.032
+      }
+      device [
+        PositionSensor {
+          name "Pos_Sensor_FL"
+        }
+        RotationalMotor {
+          name "Wheel_FL"
+        }
+      ]
+      endPoint DEF Wheel_Front_Left Solid {
+        translation 4.832861166814695e-09 0 -1.8183619984735166e-08
+        rotation 0 -1 0 1.5196262340524156e-07
+        children [
+          Pose {
+            children [
+              Shape {
+                appearance PBRAppearance {
+                  baseColor 0.6 0.6 0.6
+                  metalness 0
+                }
+                geometry Mesh {
+                  url [
+                    "../worlds/3D_Models/Robot/Front_Left_Wheel_Lock.STL"
+                  ]
+                }
+                castShadows FALSE
+              }
+              Shape {
+                appearance PBRAppearance {
+                  baseColor 0.2 0.2 0.2
+                  metalness 0
+                }
+                geometry Mesh {
+                  url [
+                    "../worlds/3D_Models/Robot/Front_Left_Wheel.STL"
+                  ]
+                }
+                castShadows FALSE
+              }
+            ]
+          }
+        ]
+        name "solid_Wheel_FL"
+        boundingObject Pose {
+          translation 0.1204 0.074 0.032
+          rotation 1 0 0 1.57
+          children [
+            Cylinder {
+              height 0.02
+              radius 0.032
+            }
+          ]
+        }
+        physics Physics {
+          density -1
+          mass 0.04
+        }
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position -1.5099150463271371e-07
+        axis 0 1 0
+        anchor 0.1204 0 0.032
+      }
+      device [
+        PositionSensor {
+          name "Pos_Sensor_FR"
+        }
+        RotationalMotor {
+          name "Wheel_FR"
+        }
+      ]
+      endPoint DEF Wheel_Front_Right Solid {
+        translation 4.831733166343888e-09 0 -1.817937587966778e-08
+        rotation 0 -1 0 1.5196262340524156e-07
+        children [
+          Pose {
+            children [
+              Shape {
+                appearance PBRAppearance {
+                  baseColor 0.6 0.6 0.6
+                  metalness 0
+                }
+                geometry Mesh {
+                  url [
+                    "../worlds/3D_Models/Robot/Front_Right_Wheel_Lock.STL"
+                  ]
+                }
+                castShadows FALSE
+              }
+              Shape {
+                appearance PBRAppearance {
+                  baseColor 0.2 0.2 0.2
+                  metalness 0
+                }
+                geometry Mesh {
+                  url [
+                    "../worlds/3D_Models/Robot/Front_Right_Wheel.STL"
+                  ]
+                }
+                castShadows FALSE
+              }
+            ]
+          }
+        ]
+        name "solid_Wheel_FR"
+        boundingObject Pose {
+          translation 0.1204 -0.074 0.032
+          rotation 1 0 0 1.57
+          children [
+            Cylinder {
+              height 0.02
+              radius 0.032
+            }
+          ]
+        }
+        physics Physics {
+          density -1
+          mass 0.04
+        }
+      }
+    }
+    DEF Body_Solid Solid {
+      children [
+        DEF Body Shape {
+          appearance PBRAppearance {
+            baseColor 0.5 0.5 0.55
+            metalness 0
+          }
+          geometry Mesh {
+            url [
+              "../worlds/3D_Models/Robot/Body.STL"
+            ]
+          }
+          castShadows FALSE
+        }
+        DEF Support_Bodyx4 Shape {
+          appearance PBRAppearance {
+            baseColor 0.8 0.8 0.8
+            metalness 0
+          }
+          geometry Mesh {
+            url [
+              "../worlds/3D_Models/Robot/Support_Brain.STL"
+            ]
+          }
+          castShadows FALSE
+        }
+        DEF IQ_Brain Shape {
+          appearance PBRAppearance {
+            baseColor 0.3 0.3 0.3
+            metalness 0
+          }
+          geometry Mesh {
+            url [
+              "../worlds/3D_Models/Robot/Brain.STL"
+            ]
+          }
+          castShadows FALSE
+        }
+      ]
+      name "solid_body"
+    }
+    DEF Virtual_mass Solid {
+      translation 0.03 0 0
+      name "solid_Wheel_FR(3)"
+      boundingObject Pose {
+        translation 0 0 0.08
+        children [
+          Box {
+            size 0.04 0.04 0.04
+          }
+        ]
+      }
+      physics Physics {
+        density -1
+        mass 0.1
+      }
+    }
+  ]
+  field SFString name "robot"
+  field SFString model ""
+  field SFString description ""
+  field SFString contactMaterial "default"
+  field MFNode immersionProperties [ ]
+  field SFNode boundingObject Pose {
+    translation 0.099 0 0.06
+    children [
+      Box {
+        size 0.187 0.12 0.1
+      }
+    ]
+  }
+  field SFNode physics Physics {
+    density -1
+    mass 0.6
+  }
+  field SFBool locked FALSE
+  field SFFloat translationStep 0.01
+  field SFFloat rotationStep 0.261799387
+  field SFFloat radarCrossSection 0
+  field MFColor recognitionColors [ ]
+  field SFString controller "<generic>"
+  field MFString controllerArgs [ ]
+  field SFString customData ""
+  field SFBool supervisor FALSE
+  field SFBool synchronization TRUE
+  field MFFloat battery [ ]
+  field SFFloat cpuConsumption 10
+  field SFBool selfCollision FALSE
+  field SFString window "<generic>"
+  field SFString remoteControl "<none>"
+  field SFVec3f linearVelocity 0 0 0
+  field SFVec3f angularVelocity 0 0 0
+  field SFString data ""
+]
+{
+  Robot {
+    translation IS translation
+    rotation IS rotation
+    children IS children
+    name IS name
+    model IS model
+    description IS description
+    contactMaterial IS contactMaterial
+    immersionProperties IS immersionProperties
+    boundingObject IS boundingObject
+    physics IS physics
+    locked IS locked
+    translationStep IS translationStep
+    rotationStep IS rotationStep
+    radarCrossSection IS radarCrossSection
+    recognitionColors IS recognitionColors
+    controller IS controller
+    controllerArgs IS controllerArgs
+    customData IS customData
+    supervisor IS supervisor
+    synchronization IS synchronization
+    battery IS battery
+    cpuConsumption IS cpuConsumption
+    selfCollision IS selfCollision
+    window IS window
+    remoteControl IS remoteControl
+    linearVelocity IS linearVelocity
+    angularVelocity IS angularVelocity
+    data IS data
+  }
+}

@@ -1,0 +1,33 @@
+#VRML_SIM R2023b utf8
+# A rectangle zone on the Vex IQ field with a center
+
+
+PROTO Field_IQ_Rectangle_Zone_With_Center [
+  field SFVec3f translation 0 0 0
+  field SFRotation rotation 0 0 1 0
+  field MFNode children   
+  [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0 0
+        metalness 0.1
+      }
+      geometry Mesh {
+        url [
+          "../worlds/3D_Models/Objects/ColorLinesCenter.STL"
+        ]
+      }
+    }
+  ]
+  field SFFloat translationStep 0.01
+  field SFFloat rotationStep 0.261799387
+]
+{
+  Pose {
+    translation IS translation
+    rotation IS rotation
+    children IS children
+    translationStep IS translationStep
+    rotationStep IS rotationStep
+  }
+}
