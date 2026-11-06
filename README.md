@@ -19,6 +19,7 @@ Mỗi nhánh chứa trọn một dự án Webots (thư mục `worlds/`, `control
 | [`Lesson5`](../../tree/Lesson5) | Mô phỏng Bài 5 – cảm biến |
 | [`Lesson6`](../../tree/Lesson6) | Mô phỏng Bài 6 – cảm biến |
 | [`Mo_Phong_Nang_Cao`](../../tree/Mo_Phong_Nang_Cao) | Mô phỏng nâng cao |
+| [`KhuNongNghiepCNC`](../../tree/KhuNongNghiepCNC) | Khu Nông nghiệp Công nghệ cao TP.HCM (mô hình thu nhỏ) – ClawBot chạy qua cổng, dừng trước xe buýt bằng cảm biến khoảng cách |
 
 ### Môi trường mô phỏng khác
 
