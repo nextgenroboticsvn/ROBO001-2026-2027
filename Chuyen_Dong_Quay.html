@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide 14: Tốc Độ Góc, Tốc Độ Dài & Chuyển Động Bánh Xe Robot (v = ω·R)</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Top Header -->
+    <header class="top-header">
+      <div class="header-left">
+        <div class="logo-wrap">
+          <img id="ayorLogoImg" class="logo-img" src="assets/ayor_logo.png" alt="AYOR 2026">
+          <div class="title-wrap">
+            <h1>CHUYỂN ĐỘNG HỌC ROBOT <span class="badge-tag badge-cyan">SLIDE 14</span></h1>
+            <div class="sub-title">
+              <span>Tốc Độ Góc, Tốc Độ Dài & Động Học Bánh Xe Robot Lăn Không Trượt</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="system-status">
+          <span class="status-dot"></span>
+          <span>WHEEL & ROTATION: SYNCED</span>
+        </div>
+        <button id="btnFullscreen" class="btn-utility" title="Toàn màn hình trình chiếu">⛶ Toàn màn hình</button>
+        <div class="mascot-avatar-wrap" title="Trợ lý ảo AYOR 2026">
+          <div class="mascot-bubble">Động cơ quay góc φ làm bánh xe lăn quãng đường d = φ·R!</div>
+          <img id="mascotBearImg" class="mascot-img" src="assets/mascot_bear.png" alt="Mascot Astronaut Bear">
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Grid -->
+    <main class="sim-grid">
+      <!-- Left: Simulation Canvas & Graphs -->
+      <section class="sim-stage-card">
+        <div class="card-header-bar">
+          <div class="card-title">
+            <span>Động Học Bánh Xe VEX IQ: Tốc Độ Góc &rarr; Tốc Độ Dài & Quỹ Đạo Cycloid</span>
+            <span class="formula-tag">v = &omega; &middot; R &nbsp;|&nbsp; d = &phi; &middot; R &nbsp;|&nbsp; d_{1v} = 2&pi;R</span>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button id="toggleCycloidBtn" class="btn-canvas-tool">〰 Quỹ đạo Cycloid: BẬT</button>
+            <button id="toggleVelocityFieldBtn" class="btn-canvas-tool">↗ 3 Vector Vận Tốc: BẬT</button>
+            <button id="toggleRotorDiscBtn" class="btn-canvas-tool">🔄 Đĩa Encoder Động Cơ: BẬT</button>
+          </div>
+        </div>
+
+        <!-- Canvas Area -->
+        <div class="canvas-viewport-wrap" id="canvasContainer" style="height: 410px;">
+          <canvas id="simCanvas" class="sim-canvas"></canvas>
+          <div class="canvas-overlay-hud">
+            <div class="hud-pill"><span>TỐC ĐỘ DÀI v:</span> <b id="hudVel" style="color:var(--cyan-accent);">18.8 cm/s</b></div>
+            <div class="hud-pill"><span>TỐC ĐỘ GÓC &omega;:</span> <b id="hudOmega">3.14 rad/s (30 RPM)</b></div>
+            <div class="hud-pill"><span>QUÃNG ĐƯỜNG d:</span> <b id="hudDist">0.0 cm (0.00 chu vi)</b></div>
+          </div>
+          <div class="canvas-overlay-controls">
+            <span style="font-size:0.75rem; color:#cbd5e1; align-self:center;">💡 Điểm đỏ trên vành bánh xe vẽ đường cong Cycloid chạm đất mỗi chu kỳ 2&pi;R!</span>
+          </div>
+        </div>
+
+        <!-- Playback Controls -->
+        <div class="playback-bar">
+          <div class="playback-buttons">
+            <button id="btnPlayPause" class="btn-control btn-primary-play">▶ BẮT ĐẦU LĂN</button>
+            <button id="btnStep" class="btn-control">⏭ Bước (+0.1s)</button>
+            <button id="btnRoll1Lap" class="btn-control">🔄 Quay đúng 1 vòng (360&deg;)</button>
+            <button id="btnReset" class="btn-control">↺ Đặt lại (d=0)</button>
+          </div>
+
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span style="font-size:0.8rem; color:var(--text-secondary);">Tốc độ mô phỏng:</span>
+            <div class="speed-selector">
+              <button class="speed-btn" data-speed="0.5">0.5x</button>
+              <button class="speed-btn active" data-speed="1.0">1.0x</button>
+              <button class="speed-btn" data-speed="2.0">2.0x</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Realtime Dual Graphs -->
+        <div class="graphs-row">
+          <div class="graph-card">
+            <div class="graph-header">
+              <span style="color:#00f2fe;">📈 QUÃNG ĐƯỜNG TỊNH TIẾN d(t) = &phi;&middot;R = v&middot;t</span>
+              <span>Độ dốc = Vận tốc tịnh tiến v</span>
+            </div>
+            <canvas id="graphDistCanvas" class="graph-canvas"></canvas>
+          </div>
+          <div class="graph-card">
+            <div class="graph-header">
+              <span style="color:#c084fc;">📊 SO SÁNH TỐC ĐỘ THEO KÍCH THƯỚC BÁNH XE (v = &omega;&middot;R)</span>
+              <span>Cùng &omega;: Bánh R lớn &rarr; Robot chạy nhanh hơn</span>
+            </div>
+            <canvas id="graphCompareCanvas" class="graph-canvas"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right: Telemetry & Interactive Controls -->
+      <aside class="sim-side-deck">
+        <!-- Control Panel -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <span class="panel-title">⚙️ THIẾT LẬP BÁNH XE & ĐỘNG CƠ</span>
+            <span class="badge-tag">WHEEL & MOTOR</span>
+          </div>
+
+          <!-- Radius Slider -->
+          <div class="control-group">
+            <div class="control-label-row">
+              <span class="param-name">Bán kính bánh xe (R):</span>
+              <span class="param-val-badge" id="valRadiusBadge">6.0 cm (VEX IQ)</span>
+            </div>
+            <div class="slider-container">
+              <input type="range" id="sliderRadius" class="custom-slider" min="2" max="12" step="0.5" value="6">
+            </div>
+            <div class="preset-pills-row">
+              <button class="btn-preset" data-radius="4">R = 4 cm (Nhỏ)</button>
+              <button class="btn-preset" data-radius="6">R = 6 cm (Chuẩn VEX IQ)</button>
+              <button class="btn-preset" data-radius="8">R = 8 cm (Lớn)</button>
+              <button class="btn-preset" data-radius="10">R = 10 cm (Rất lớn)</button>
+            </div>
+          </div>
+
+          <!-- Omega / Speed control mode -->
+          <div class="control-group">
+            <div class="control-label-row">
+              <span class="param-name">Điều khiển theo:</span>
+              <div style="display:flex; gap:6px;">
+                <button id="modeOmegaBtn" class="btn-preset" style="background:var(--primary-purple); color:#fff;">Tốc độ góc &omega;</button>
+                <button id="modeVelBtn" class="btn-preset">Tốc độ dài v</button>
+              </div>
+            </div>
+
+            <div id="omegaControlSection">
+              <div class="control-label-row" style="margin-top:6px;">
+                <span class="param-name">Tốc độ góc (&omega;):</span>
+                <span class="param-val-badge" id="valOmegaBadge">+3.14 rad/s (30 RPM)</span>
+              </div>
+              <div class="slider-container">
+                <input type="range" id="sliderOmega" class="custom-slider" min="0.5" max="12.56" step="0.314" value="3.14">
+              </div>
+              <div class="preset-pills-row">
+                <button class="btn-preset" data-omega="1.57">&pi;/2 rad/s (15 RPM)</button>
+                <button class="btn-preset" data-omega="3.14">&pi; rad/s (30 RPM)</button>
+                <button class="btn-preset" data-omega="6.28">2&pi; rad/s (1 vòng/s)</button>
+                <button class="btn-preset" data-omega="10.47">100 RPM</button>
+              </div>
+            </div>
+
+            <div id="velControlSection" style="display:none;">
+              <div class="control-label-row" style="margin-top:6px;">
+                <span class="param-name">Tốc độ dài mong muốn (v):</span>
+                <span class="param-val-badge" id="valVelBadge">18.8 cm/s</span>
+              </div>
+              <div class="slider-container">
+                <input type="range" id="sliderVel" class="custom-slider" min="5" max="70" step="1" value="18.8">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Telemetry Data Grid -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <span class="panel-title">📡 BẢNG THÔNG SỐ ĐO BÁNH XE & ĐỘNG CƠ</span>
+            <span class="badge-tag">TELEMETRY</span>
+          </div>
+          <div class="telemetry-grid">
+            <div class="telemetry-cell highlight">
+              <span class="tel-label">Tốc độ dài tịnh tiến (v)</span>
+              <div class="tel-value"><span id="telVel">18.8</span><span class="tel-unit">cm/s</span></div>
+            </div>
+            <div class="telemetry-cell highlight">
+              <span class="tel-label">Quãng đường đã lăn (d)</span>
+              <div class="tel-value"><span id="telDist">0.0</span><span class="tel-unit">cm</span></div>
+            </div>
+            <div class="telemetry-cell">
+              <span class="tel-label">Chu vi bánh xe (C = 2&pi;R)</span>
+              <div class="tel-value"><span id="telCircum">37.7</span><span class="tel-unit">cm</span></div>
+            </div>
+            <div class="telemetry-cell">
+              <span class="tel-label">Số vòng bánh xe quay (N)</span>
+              <div class="tel-value"><span id="telLaps">0.00</span><span class="tel-unit">vòng</span></div>
+            </div>
+            <div class="telemetry-cell">
+              <span class="tel-label">Góc quay bánh xe (&phi;)</span>
+              <div class="tel-value"><span id="telPhi">0.00</span><span class="tel-unit">rad</span></div>
+            </div>
+            <div class="telemetry-cell">
+              <span class="tel-label">Chu kỳ quay 1 vòng (T)</span>
+              <div class="tel-value"><span id="telPeriod">2.00</span><span class="tel-unit">s</span></div>
+            </div>
+          </div>
+
+          <!-- Step-by-step Math calculation box -->
+          <div class="calc-breakdown-box">
+            <div class="step-title">📐 CÔNG THỨC & BƯỚC TÍNH CHI TIẾT:</div>
+            <div class="math-formula-row">
+              <span>Mối liên hệ:</span>
+              <span>v = &omega; &times; R</span>
+            </div>
+            <div id="mathSubstRow">
+              v = <span class="val-plugged" id="calcOmega">3.14</span> rad/s &times; <span class="val-plugged" id="calcR">6.0</span> cm = <span class="val-res" id="calcV">18.8 cm/s</span>
+            </div>
+            <div style="font-size:0.75rem; color:var(--text-secondary); margin-top:3px;">
+              Quãng đường 1 vòng quay: <b>d = 2&pi;R = 2 &times; 3.14 &times; 6.0 = 37.7 cm</b>
+            </div>
+          </div>
+        </div>
+
+        <!-- VEX IQ Error Analysis Module (Slide 14) -->
+        <div class="panel-card" style="border-color: rgba(217, 119, 6, 0.4);">
+          <div class="panel-header">
+            <span class="panel-title" style="color:#d97706;">🔍 PHÂN TÍCH SAI SỐ ĐỘNG CƠ VEX IQ</span>
+            <span class="badge-tag" style="background:rgba(217,119,6,0.12); border-color:#d97706; color:#d97706;">SLIDE 14</span>
+          </div>
+
+          <div style="font-size:0.8rem; line-height:1.4; color:var(--text-secondary);">
+            Khi lập trình động cơ VEX IQ, góc quay có thể bị lệch <b>&Delta;&theta; = 4&deg; (&asymp; 0.07 rad)</b>:
+          </div>
+
+          <div style="display:flex; gap:8px; margin-top:4px;">
+            <button id="errModeWheelBtn" class="btn-preset" style="background:#d97706; color:#fff; font-weight:700;">1. Bánh xe (R = 6 cm)</button>
+            <button id="errModeArmBtn" class="btn-preset">2. Cánh tay Clawbot (L = 30 cm)</button>
+          </div>
+
+          <div id="errorCalcResultBox" class="calc-breakdown-box" style="border-color:#d97706; background:rgba(255,251,235,0.95);">
+            <div style="color:#b45309; font-weight:700;">&Delta;d = &Delta;&theta; &times; R = 0.07 rad &times; 6 cm = <span style="font-size:1.05rem; color:#d97706;">0.42 cm</span></div>
+            <div style="font-size:0.74rem; color:var(--text-secondary); margin-top:2px;">
+              Bánh xe bị lệch <b>0.42 cm</b> so với mục tiêu. (Rất nhỏ, robot vẫn dễ bù trừ).
+            </div>
+          </div>
+        </div>
+
+        <!-- 9-Question Interactive Quiz Deck -->
+        <div class="challenge-card">
+          <div class="quiz-header-row">
+            <span class="challenge-badge">🎯 ÔN TẬP 9 CÂU HỎI TRẮC NGHIỆM</span>
+            <span class="quiz-progress-badge" id="quizProgressBadge">Câu 1 / 9</span>
+          </div>
+
+          <div class="quiz-nav-dots" id="quizNavDots"></div>
+
+          <div class="challenge-question" id="quizQuestionText">
+            Đang tải câu hỏi...
+          </div>
+
+          <div class="quiz-options-list" id="quizOptionsContainer"></div>
+
+          <div class="quiz-feedback" id="quizFeedback"></div>
+
+          <div class="quiz-bottom-controls">
+            <button id="btnPrevQuestion" class="btn-utility" style="padding:4px 10px; font-size:0.76rem;">&larr; Câu trước</button>
+            <span id="quizScoreText" style="font-size:0.76rem; font-weight:700; color:var(--text-secondary);">Điểm: 0/9</span>
+            <button id="btnNextQuestion" class="btn-utility" style="padding:4px 10px; font-size:0.76rem;">Câu tiếp &rarr;</button>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <!-- Bottom Telemetry Log -->
+    <footer class="bottom-telemetry-panel">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-heading); text-transform: uppercase;">
+          📋 NHẬT KÝ ĐỘNG HỌC BÁNH XE ROBOT (WHEEL ROLLING & MOTOR TELEMETRY)
+        </span>
+        <button id="btnClearLog" class="btn-utility" style="padding: 2px 8px; font-size: 0.72rem;">Xóa nhật ký</button>
+      </div>
+      <div class="log-table-wrap">
+        <table class="telemetry-table">
+          <thead>
+            <tr>
+              <th>Thời Điểm</th>
+              <th>Thời Gian t (s)</th>
+              <th>Bán Kính R (cm)</th>
+              <th>Tốc Độ Góc &omega; (rad/s)</th>
+              <th>Tốc Độ Dài v (cm/s)</th>
+              <th>Quãng Đường d (cm)</th>
+              <th>Số Vòng N</th>
+              <th>Góc Quay &phi; (rad)</th>
+            </tr>
+          </thead>
+          <tbody id="telemetryLogBody">
+            <tr>
+              <td>[Khởi động]</td>
+              <td>0.00</td>
+              <td>6.0</td>
+              <td>3.14</td>
+              <td>18.8</td>
+              <td>0.0</td>
+              <td>0.00</td>
+              <td>0.00</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </footer>
+  </div>
+
+  <script src="assets/images_data.js"></script>
+  <script>
+    if (window.AYOR_LOGO) document.getElementById('ayorLogoImg').src = window.AYOR_LOGO;
+    if (window.MASCOT_BEAR) document.getElementById('mascotBearImg').src = window.MASCOT_BEAR;
+
+    // Simulation State
+    const state = {
+      running: false,
+      time: 0,
+      r: 6.0, // cm
+      omega: 3.14159, // rad/s
+      v: 18.85, // cm/s
+      d: 0, // cm
+      phi: 0, // rad
+      showCycloid: true,
+      showVelocityField: true,
+      showRotorDisc: true,
+      controlMode: 'omega',
+      speedMultiplier: 1.0,
+      lastTimestamp: null,
+      history: []
+    };
+
+    // Canvas
+    const canvas = document.getElementById('simCanvas');
+    const ctx = canvas.getContext('2d');
+    const graphDistCanvas = document.getElementById('graphDistCanvas');
+    const ctxDist = graphDistCanvas.getContext('2d');
+    const graphCompareCanvas = document.getElementById('graphCompareCanvas');
+    const ctxCompare = graphCompareCanvas.getContext('2d');
+
+    const sliderRadius = document.getElementById('sliderRadius');
+    const sliderOmega = document.getElementById('sliderOmega');
+    const sliderVel = document.getElementById('sliderVel');
+
+    const valRadiusBadge = document.getElementById('valRadiusBadge');
+    const valOmegaBadge = document.getElementById('valOmegaBadge');
+    const valVelBadge = document.getElementById('valVelBadge');
+
+    const hudVel = document.getElementById('hudVel');
+    const hudOmega = document.getElementById('hudOmega');
+    const hudDist = document.getElementById('hudDist');
+
+    const telVel = document.getElementById('telVel');
+    const telDist = document.getElementById('telDist');
+    const telCircum = document.getElementById('telCircum');
+    const telLaps = document.getElementById('telLaps');
+    const telPhi = document.getElementById('telPhi');
+    const telPeriod = document.getElementById('telPeriod');
+
+    const calcOmega = document.getElementById('calcOmega');
+    const calcR = document.getElementById('calcR');
+    const calcV = document.getElementById('calcV');
+
+    const btnPlayPause = document.getElementById('btnPlayPause');
+    const btnStep = document.getElementById('btnStep');
+    const btnRoll1Lap = document.getElementById('btnRoll1Lap');
+    const btnReset = document.getElementById('btnReset');
+    const toggleCycloidBtn = document.getElementById('toggleCycloidBtn');
+    const toggleVelocityFieldBtn = document.getElementById('toggleVelocityFieldBtn');
+    const toggleRotorDiscBtn = document.getElementById('toggleRotorDiscBtn');
+    const logBody = document.getElementById('telemetryLogBody');
+
+    const modeOmegaBtn = document.getElementById('modeOmegaBtn');
+    const modeVelBtn = document.getElementById('modeVelBtn');
+    const omegaControlSection = document.getElementById('omegaControlSection');
+    const velControlSection = document.getElementById('velControlSection');
+
+    function resizeCanvases() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      canvas.width = rect.width * window.devicePixelRatio;
+      canvas.height = rect.height * window.devicePixelRatio;
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+      const rDist = graphDistCanvas.getBoundingClientRect();
+      graphDistCanvas.width = rDist.width * window.devicePixelRatio;
+      graphDistCanvas.height = rDist.height * window.devicePixelRatio;
+      ctxDist.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+      const rComp = graphCompareCanvas.getBoundingClientRect();
+      graphCompareCanvas.width = rComp.width * window.devicePixelRatio;
+      graphCompareCanvas.height = rComp.height * window.devicePixelRatio;
+      ctxCompare.scale(window.devicePixelRatio, window.devicePixelRatio);
+    }
+    window.addEventListener('resize', resizeCanvases);
+
+    function updateUI() {
+      state.v = state.omega * state.r;
+      const circum = 2 * Math.PI * state.r;
+      const laps = state.d / circum;
+      const rpm = (state.omega * 60 / (2 * Math.PI)).toFixed(0);
+
+      valRadiusBadge.textContent = `${state.r.toFixed(1)} cm ${state.r === 6 ? '(VEX IQ)' : ''}`;
+      valOmegaBadge.textContent = `${state.omega.toFixed(2)} rad/s (${rpm} RPM)`;
+      valVelBadge.textContent = `${state.v.toFixed(1)} cm/s`;
+
+      hudVel.textContent = `${state.v.toFixed(1)} cm/s`;
+      hudOmega.textContent = `${state.omega.toFixed(2)} rad/s (${rpm} RPM)`;
+      hudDist.textContent = `${state.d.toFixed(1)} cm (${laps.toFixed(2)} chu vi)`;
+
+      telVel.textContent = state.v.toFixed(1);
+      telDist.textContent = state.d.toFixed(1);
+      telCircum.textContent = circum.toFixed(1);
+      telLaps.textContent = laps.toFixed(2);
+      telPhi.textContent = state.phi.toFixed(2);
+      telPeriod.textContent = (Math.abs(state.omega) > 0.01 ? (2 * Math.PI / Math.abs(state.omega)).toFixed(2) : '∞');
+
+      calcOmega.textContent = state.omega.toFixed(2);
+      calcR.textContent = state.r.toFixed(1);
+      calcV.textContent = `${state.v.toFixed(1)} cm/s`;
+    }
+
+    sliderRadius.addEventListener('input', (e) => {
+      state.r = parseFloat(e.target.value);
+      updateUI();
+    });
+
+    sliderOmega.addEventListener('input', (e) => {
+      state.omega = parseFloat(e.target.value);
+      updateUI();
+    });
+
+    sliderVel.addEventListener('input', (e) => {
+      state.v = parseFloat(e.target.value);
+      state.omega = state.v / state.r;
+      sliderOmega.value = state.omega;
+      updateUI();
+    });
+
+    document.querySelectorAll('.btn-preset[data-radius]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.r = parseFloat(btn.dataset.radius);
+        sliderRadius.value = state.r;
+        updateUI();
+      });
+    });
+
+    document.querySelectorAll('.btn-preset[data-omega]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.omega = parseFloat(btn.dataset.omega);
+        sliderOmega.value = state.omega;
+        updateUI();
+      });
+    });
+
+    modeOmegaBtn.addEventListener('click', () => {
+      state.controlMode = 'omega';
+      modeOmegaBtn.style.background = 'var(--primary-purple)';
+      modeOmegaBtn.style.color = '#fff';
+      modeVelBtn.style.background = 'rgba(255,255,255,0.8)';
+      modeVelBtn.style.color = 'var(--text-secondary)';
+      omegaControlSection.style.display = 'block';
+      velControlSection.style.display = 'none';
+    });
+
+    modeVelBtn.addEventListener('click', () => {
+      state.controlMode = 'vel';
+      modeVelBtn.style.background = 'var(--primary-purple)';
+      modeVelBtn.style.color = '#fff';
+      modeOmegaBtn.style.background = 'rgba(255,255,255,0.8)';
+      modeOmegaBtn.style.color = 'var(--text-secondary)';
+      omegaControlSection.style.display = 'none';
+      velControlSection.style.display = 'block';
+    });
+
+    document.querySelectorAll('.speed-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.speedMultiplier = parseFloat(btn.dataset.speed);
+      });
+    });
+
+    btnPlayPause.addEventListener('click', () => {
+      state.running = !state.running;
+      btnPlayPause.textContent = state.running ? '⏸ TẠM DỪNG' : '▶ BẮT ĐẦU LĂN';
+      btnPlayPause.classList.toggle('btn-primary-play', !state.running);
+      state.lastTimestamp = performance.now();
+      if (state.running) addLogEntry('Bánh xe bắt đầu lăn không trượt');
+    });
+
+    btnStep.addEventListener('click', () => {
+      state.running = false;
+      btnPlayPause.textContent = '▶ BẮT ĐẦU LĂN';
+      btnPlayPause.classList.add('btn-primary-play');
+      stepSimulation(0.1);
+      addLogEntry('Bước lăn +0.1s');
+    });
+
+    btnRoll1Lap.addEventListener('click', () => {
+      state.running = false;
+      const circum = 2 * Math.PI * state.r;
+      state.d += circum;
+      state.phi += 2 * Math.PI;
+      state.time += (2 * Math.PI) / state.omega;
+      addLogEntry(`Bánh xe quay đúng 1 vòng: tiến d = 2πR = ${circum.toFixed(1)} cm`);
+      updateUI();
+    });
+
+    btnReset.addEventListener('click', () => {
+      state.running = false;
+      state.time = 0;
+      state.d = 0;
+      state.phi = 0;
+      state.history = [{ t: 0, d: 0, v: state.v }];
+      btnPlayPause.textContent = '▶ BẮT ĐẦU LĂN';
+      btnPlayPause.classList.add('btn-primary-play');
+      updateUI();
+      addLogEntry('Đã đặt lại về d=0');
+    });
+
+    toggleCycloidBtn.addEventListener('click', () => {
+      state.showCycloid = !state.showCycloid;
+      toggleCycloidBtn.textContent = state.showCycloid ? '〰 Quỹ đạo Cycloid: BẬT' : '〰 Quỹ đạo Cycloid: TẮT';
+    });
+
+    toggleVelocityFieldBtn.addEventListener('click', () => {
+      state.showVelocityField = !state.showVelocityField;
+      toggleVelocityFieldBtn.textContent = state.showVelocityField ? '↗ 3 Vector Vận Tốc: BẬT' : '↗ 3 Vector Vận Tốc: TẮT';
+    });
+
+    toggleRotorDiscBtn.addEventListener('click', () => {
+      state.showRotorDisc = !state.showRotorDisc;
+      toggleRotorDiscBtn.textContent = state.showRotorDisc ? '🔄 Đĩa Encoder Động Cơ: BẬT' : '🔄 Đĩa Encoder Động Cơ: TẮT';
+    });
+
+    document.getElementById('btnClearLog').addEventListener('click', () => {
+      logBody.innerHTML = '';
+      addLogEntry('Nhật ký đã được làm mới');
+    });
+
+    document.getElementById('btnFullscreen').addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    });
+
+    // Error analysis selector
+    const errModeWheelBtn = document.getElementById('errModeWheelBtn');
+    const errModeArmBtn = document.getElementById('errModeArmBtn');
+    const errorCalcResultBox = document.getElementById('errorCalcResultBox');
+
+    errModeWheelBtn.addEventListener('click', () => {
+      errModeWheelBtn.style.background = '#d97706';
+      errModeWheelBtn.style.color = '#fff';
+      errModeWheelBtn.style.fontWeight = '700';
+      errModeArmBtn.style.background = 'rgba(255,255,255,0.8)';
+      errModeArmBtn.style.color = 'var(--text-secondary)';
+      errModeArmBtn.style.fontWeight = 'normal';
+
+      errorCalcResultBox.innerHTML = `
+        <div style="color:#b45309; font-weight:700;">&Delta;d = &Delta;&theta; &times; R = 0.07 rad &times; 6 cm = <span style="font-size:1.05rem; color:#d97706;">0.42 cm</span></div>
+        <div style="font-size:0.74rem; color:var(--text-secondary); margin-top:2px;">
+          Bánh xe bị lệch <b>0.42 cm</b> so với mục tiêu. (Rất nhỏ, robot vẫn dễ bù trừ).
+        </div>
+      `;
+    });
+
+    errModeArmBtn.addEventListener('click', () => {
+      errModeArmBtn.style.background = '#d97706';
+      errModeArmBtn.style.color = '#fff';
+      errModeArmBtn.style.fontWeight = '700';
+      errModeWheelBtn.style.background = 'rgba(255,255,255,0.8)';
+      errModeWheelBtn.style.color = 'var(--text-secondary)';
+      errModeWheelBtn.style.fontWeight = 'normal';
+
+      errorCalcResultBox.innerHTML = `
+        <div style="color:#b45309; font-weight:700;">&Delta;d = &Delta;&theta; &times; L = 0.07 rad &times; 30 cm = <span style="font-size:1.05rem; color:#dc2626;">2.10 cm!</span></div>
+        <div style="font-size:0.74rem; color:var(--text-secondary); margin-top:2px;">
+          Đầu kẹp Clawbot bị lệch tới <b>2.1 cm</b> (lớn gấp 5 lần!). Robot có thể gắp trượt vật thể thi đấu!
+        </div>
+      `;
+    });
+
+    function addLogEntry(statusText) {
+      const now = new Date().toLocaleTimeString();
+      const laps = (state.d / (2 * Math.PI * state.r)).toFixed(2);
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${now}</td>
+        <td>${state.time.toFixed(2)}</td>
+        <td>${state.r.toFixed(1)}</td>
+        <td>${state.omega.toFixed(2)}</td>
+        <td>${state.v.toFixed(1)}</td>
+        <td>${state.d.toFixed(1)}</td>
+        <td>${laps}</td>
+        <td>${state.phi.toFixed(2)} (${statusText})</td>
+      `;
+      logBody.insertBefore(tr, logBody.firstChild);
+      if (logBody.children.length > 8) logBody.removeChild(logBody.lastChild);
+    }
+
+    function stepSimulation(dt) {
+      state.time += dt;
+      const deltaPhi = state.omega * dt;
+      state.phi += deltaPhi;
+      state.d += deltaPhi * state.r;
+
+      state.history.push({ t: state.time, d: state.d, v: state.v });
+      if (state.history.length > 500) state.history.shift();
+
+      updateUI();
+    }
+
+    // Main Draw Function
+    function draw() {
+      const width = canvas.width / window.devicePixelRatio;
+      const height = canvas.height / window.devicePixelRatio;
+      ctx.clearRect(0, 0, width, height);
+
+      // Light Beige Paper Background
+      ctx.fillStyle = '#f8f6f0';
+      ctx.fillRect(0, 0, width, height);
+
+      const groundY = height * 0.78;
+      const scale = 5.0; // px per cm
+
+      // 1. Solid Black Grid Lines (Giấy kẻ ô li nét liền đen)
+      ctx.strokeStyle = 'rgba(0, 0, 0, 0.12)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([]);
+      for (let x = 0; x < width; x += 40) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+        ctx.stroke();
+      }
+      for (let y = 0; y < height; y += 40) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+        ctx.stroke();
+      }
+
+      // 2. Synchronized Motor Rotor Disc (Upper Left corner)
+      if (state.showRotorDisc) {
+        const discX = 90;
+        const discY = 95;
+        const discR = 48;
+
+        // Background card for disc
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.94)';
+        ctx.strokeStyle = 'rgba(124, 58, 237, 0.35)';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.roundRect(14, 18, 160, 160, 10);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#0284c7';
+        ctx.font = 'bold 10px Consolas, monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText('ĐỘNG CƠ (MOTOR ROTOR)', discX, 36);
+
+        // Disc circle
+        ctx.fillStyle = '#efebe4';
+        ctx.beginPath();
+        ctx.arc(discX, discY, discR, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#7c3aed';
+        ctx.lineWidth = 2.5;
+        ctx.stroke();
+
+        // Angle ticks on motor disc
+        for (let i = 0; i < 8; i++) {
+          const a = (i * Math.PI) / 4;
+          ctx.strokeStyle = 'rgba(0, 0, 0, 0.35)';
+          ctx.beginPath();
+          ctx.moveTo(discX + (discR - 5) * Math.cos(a), discY + (discR - 5) * Math.sin(a));
+          ctx.lineTo(discX + discR * Math.cos(a), discY + discR * Math.sin(a));
+          ctx.stroke();
+        }
+
+        // Swept angle sector on disc
+        const curAngle = (state.phi % (2 * Math.PI));
+        ctx.fillStyle = 'rgba(2, 132, 199, 0.22)';
+        ctx.beginPath();
+        ctx.moveTo(discX, discY);
+        ctx.arc(discX, discY, discR, 0, curAngle, false);
+        ctx.closePath();
+        ctx.fill();
+
+        // Rotor pointer line
+        ctx.strokeStyle = '#0284c7';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.moveTo(discX, discY);
+        ctx.lineTo(discX + discR * Math.cos(curAngle), discY + discR * Math.sin(curAngle));
+        ctx.stroke();
+
+        // Hub
+        ctx.fillStyle = '#e11d48';
+        ctx.beginPath();
+        ctx.arc(discX, discY, 5, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#1e1338';
+        ctx.font = 'bold 10px Consolas, monospace';
+        ctx.fillText(`φ = ${state.phi.toFixed(2)} rad`, discX, discY + discR + 18);
+      }
+
+      // 3. Ground & Ruler
+      ctx.fillStyle = '#eae4d8';
+      ctx.fillRect(0, groundY, width, height - groundY);
+      ctx.strokeStyle = '#4c1d95';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(0, groundY);
+      ctx.lineTo(width, groundY);
+      ctx.stroke();
+
+      // Start position of wheel roll
+      const startX = 220;
+      const wheelR_px = state.r * scale;
+      const currentWheelScreenX = startX + (state.d * scale) % (width - 320);
+      const currentWheelCenterY = groundY - wheelR_px;
+
+      // Circumference markings on ground
+      const circum = 2 * Math.PI * state.r;
+      const circum_px = circum * scale;
+
+      ctx.font = '10px Consolas, monospace';
+      ctx.textAlign = 'center';
+
+      for (let lap = 0; lap <= 4; lap++) {
+        const markX = startX + lap * circum_px;
+        if (markX >= 0 && markX <= width) {
+          ctx.strokeStyle = lap === 0 ? '#0284c7' : 'rgba(225, 29, 72, 0.85)';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.moveTo(markX, groundY);
+          ctx.lineTo(markX, groundY + 16);
+          ctx.stroke();
+
+          ctx.fillStyle = lap === 0 ? '#0284c7' : '#be123c';
+          ctx.fillText(`${lap} vòng (${(lap * circum).toFixed(1)} cm)`, markX, groundY + 28);
+        }
+      }
+
+      // 4. Cycloid Curve Calculation & Rendering
+      if (state.showCycloid) {
+        ctx.strokeStyle = '#7c3aed';
+        ctx.lineWidth = 2.8;
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+
+        const maxDrawPhi = Math.min(state.phi, 4 * Math.PI);
+        const steps = 150;
+        for (let i = 0; i <= steps; i++) {
+          const p = (i / steps) * maxDrawPhi;
+          const cx = startX + state.r * (p - Math.sin(p)) * scale;
+          const cy = groundY - state.r * (1 - Math.cos(p)) * scale;
+          if (cx <= width) {
+            if (i === 0) ctx.moveTo(cx, cy);
+            else ctx.lineTo(cx, cy);
+          }
+        }
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
+      // 5. Draw Main Wheel (Robot VEX IQ Wheel)
+      drawWheel(currentWheelScreenX, currentWheelCenterY, wheelR_px, state.phi, '#7c3aed', '#0284c7');
+
+      // 6. Draw 3 Velocity Field Vectors (Bottom v=0, Center v=w*R, Top v=2*w*R)
+      if (state.showVelocityField && state.v > 0.5) {
+        const vLen = Math.min(75, (state.v / 50) * 55);
+
+        // A. Bottom Contact Point: v = 0
+        const botX = currentWheelScreenX;
+        const botY = groundY;
+        ctx.fillStyle = '#d97706';
+        ctx.beginPath();
+        ctx.arc(botX, botY, 5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#b45309';
+        ctx.font = 'bold 10px Consolas, monospace';
+        ctx.fillText('v_đáy = 0', botX - 35, botY - 8);
+
+        // B. Center: v = omega * R
+        const midX = currentWheelScreenX;
+        const midY = currentWheelCenterY;
+        drawArrow(midX, midY, midX + vLen, midY, '#0284c7', `v_tâm = ${state.v.toFixed(1)} cm/s`);
+
+        // C. Top Rim: v = 2 * omega * R
+        const topX = currentWheelScreenX;
+        const topY = currentWheelCenterY - wheelR_px;
+        drawArrow(topX, topY, topX + 2 * vLen, topY, '#e11d48', `v_đỉnh = ${(2 * state.v).toFixed(1)} cm/s (2v)`);
+      }
+    }
+
+    function drawWheel(x, y, r_px, rotation, rimColor, hubColor) {
+      // Outer tire (Dark Rubber)
+      ctx.fillStyle = '#334155';
+      ctx.beginPath();
+      ctx.arc(x, y, r_px, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.strokeStyle = rimColor;
+      ctx.lineWidth = 4;
+      ctx.stroke();
+
+      for (let i = 0; i < 12; i++) {
+        const th = rotation + (i * Math.PI * 2) / 12;
+        ctx.strokeStyle = '#1e293b';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(x + (r_px - 6) * Math.cos(th), y + (r_px - 6) * Math.sin(th));
+        ctx.lineTo(x + r_px * Math.cos(th), y + r_px * Math.sin(th));
+        ctx.stroke();
+      }
+
+      for (let i = 0; i < 4; i++) {
+        const spAngle = rotation + (i * Math.PI) / 2;
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.6)';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x + (r_px - 6) * Math.cos(spAngle), y + (r_px - 6) * Math.sin(spAngle));
+        ctx.stroke();
+      }
+
+      ctx.fillStyle = hubColor;
+      ctx.beginPath();
+      ctx.arc(x, y, 9, 0, Math.PI * 2);
+      ctx.fill();
+
+      const markerAngle = (Math.PI / 2) + rotation;
+      const markerX = x + r_px * Math.cos(markerAngle);
+      const markerY = y + r_px * Math.sin(markerAngle);
+
+      ctx.fillStyle = '#e11d48';
+      ctx.beginPath();
+      ctx.arc(markerX, markerY, 7, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#fff';
+      ctx.beginPath();
+      ctx.arc(markerX, markerY, 3, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function drawArrow(x1, y1, x2, y2, color, label) {
+      ctx.strokeStyle = color;
+      ctx.fillStyle = color;
+      ctx.lineWidth = 2.5;
+
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.stroke();
+
+      const head = 8;
+      ctx.beginPath();
+      ctx.moveTo(x2, y2);
+      ctx.lineTo(x2 - head, y2 - head * 0.6);
+      ctx.lineTo(x2 - head, y2 + head * 0.6);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.fillStyle = '#1e1338';
+      ctx.font = 'bold 11px Consolas, monospace';
+      ctx.fillText(label, x2 + 8, y2 + 4);
+    }
+
+    // Graphs
+    function drawGraphs() {
+      // 1. Graph Dist(t)
+      const w1 = graphDistCanvas.width / window.devicePixelRatio;
+      const h1 = graphDistCanvas.height / window.devicePixelRatio;
+      ctxDist.clearRect(0, 0, w1, h1);
+
+      ctxDist.fillStyle = '#f8f6f0';
+      ctxDist.fillRect(0, 0, w1, h1);
+
+      ctxDist.strokeStyle = 'rgba(0, 0, 0, 0.15)';
+      ctxDist.lineWidth = 1;
+      const padL = 35;
+      const padB = 25;
+      ctxDist.beginPath();
+      ctxDist.moveTo(padL, 10);
+      ctxDist.lineTo(padL, h1 - padB);
+      ctxDist.lineTo(w1 - 10, h1 - padB);
+      ctxDist.stroke();
+
+      ctxDist.fillStyle = '#475569';
+      ctxDist.font = '9px Consolas, monospace';
+      ctxDist.fillText('d(cm)', 5, 14);
+      ctxDist.fillText('t(s)', w1 - 25, h1 - 8);
+
+      if (state.history.length > 1) {
+        const maxT = Math.max(10, state.time);
+        const maxD = Math.max(150, state.d * 1.2);
+
+        ctxDist.strokeStyle = '#0284c7';
+        ctxDist.lineWidth = 2.5;
+        ctxDist.beginPath();
+
+        state.history.forEach((pt, idx) => {
+          const gx = padL + (pt.t / maxT) * (w1 - padL - 15);
+          const gy = (h1 - padB) - (pt.d / maxD) * (h1 - padB - 20);
+          if (idx === 0) ctxDist.moveTo(gx, gy);
+          else ctxDist.lineTo(gx, gy);
+        });
+        ctxDist.stroke();
+      }
+
+      // 2. Graph v vs R (Bar comparison)
+      const w2 = graphCompareCanvas.width / window.devicePixelRatio;
+      const h2 = graphCompareCanvas.height / window.devicePixelRatio;
+      ctxCompare.clearRect(0, 0, w2, h2);
+
+      ctxCompare.fillStyle = '#f8f6f0';
+      ctxCompare.fillRect(0, 0, w2, h2);
+
+      const radii = [4, 6, 8, 10];
+      const barW = 32;
+      const startBarX = 40;
+      const zeroY = h2 - 25;
+
+      ctxCompare.fillStyle = '#475569';
+      ctxCompare.font = '9px Consolas, monospace';
+      ctxCompare.fillText('Vận tốc v (cm/s) tương ứng với các bán kính bánh xe R:', 10, 16);
+
+      radii.forEach((rad, i) => {
+        const speed = state.omega * rad;
+        const barH = (speed / 70) * (h2 - 50);
+        const bx = startBarX + i * (barW + 28);
+        const by = zeroY - barH;
+
+        const isCurrent = Math.abs(rad - state.r) < 0.5;
+        ctxCompare.fillStyle = isCurrent ? '#0284c7' : 'rgba(124, 58, 237, 0.25)';
+        ctxCompare.fillRect(bx, by, barW, barH);
+
+        ctxCompare.fillStyle = isCurrent ? '#0284c7' : '#4b5563';
+        ctxCompare.font = isCurrent ? 'bold 10px Consolas, monospace' : '9px Consolas, monospace';
+        ctxCompare.textAlign = 'center';
+        ctxCompare.fillText(`${speed.toFixed(1)}`, bx + barW / 2, by - 6);
+        ctxCompare.fillText(`R=${rad}`, bx + barW / 2, zeroY + 14);
+      });
+    }
+
+    function animate(timestamp) {
+      if (!state.lastTimestamp) state.lastTimestamp = timestamp;
+      const rawDt = (timestamp - state.lastTimestamp) / 1000;
+      state.lastTimestamp = timestamp;
+
+      if (state.running) {
+        const dt = Math.min(rawDt, 0.1) * state.speedMultiplier;
+        stepSimulation(dt);
+      }
+
+      draw();
+      drawGraphs();
+      requestAnimationFrame(animate);
+    }
+
+    // ==========================================
+    // 9-QUESTION QUIZ SYSTEM FOR SLIDE 14
+    // ==========================================
+    const quizData = [
+      {
+        q: "1. Mối liên hệ cốt lõi giữa tốc độ dài v của robot và tốc độ góc ω của bánh xe bán kính R khi lăn không trượt là:",
+        options: [
+          { text: "A. v = ω · R", correct: true, explain: "Chính xác! Vận tốc dài tịnh tiến bằng tốc độ góc nhân với bán kính bánh xe." },
+          { text: "B. v = ω / R", correct: false, explain: "Chưa đúng." },
+          { text: "C. v = ω + R", correct: false, explain: "Chưa đúng." },
+          { text: "D. ω = v · R", correct: false, explain: "Chưa đúng, đúng phải là ω = v / R." }
+        ]
+      },
+      {
+        q: "2. Động cơ VEX IQ quay với tốc độ góc ω = 4π rad/s. Tần số quay f (số vòng quay mỗi giây) là:",
+        options: [
+          { text: "A. f = ω / (2π) = 4π / (2π) = 2.0 vòng/s (120 RPM)", correct: true, explain: "Chính xác! Một vòng là 2π rad, vậy 4π rad/s tương đương 2 vòng/giây!" },
+          { text: "B. f = 4.0 vòng/s", correct: false, explain: "Chưa đúng." },
+          { text: "C. f = 8π vòng/s", correct: false, explain: "Chưa đúng." },
+          { text: "D. f = 0.5 vòng/s", correct: false, explain: "Chưa đúng." }
+        ],
+        applyState: { omega: 12.56 }
+      },
+      {
+        q: "3. Khi bánh xe bán kính R = 6.0 cm quay hết đúng 1 vòng (360° = 2π rad), quãng đường d robot tiến lên là:",
+        options: [
+          { text: "A. d = 2π·R = 2 × 3.14 × 6 = 37.7 cm (bằng đúng chu vi)", correct: true, explain: "Rất chuẩn! Một vòng lăn của bánh xe trải đều trên mặt sàn đúng bằng chu vi 2πR." },
+          { text: "B. d = 12.0 cm", correct: false, explain: "Chưa đúng, đó là đường kính 2R." },
+          { text: "C. d = 18.84 cm", correct: false, explain: "Chưa đúng, đó là nửa chu vi πR." },
+          { text: "D. d = 6.0 cm", correct: false, explain: "Chưa đúng." }
+        ],
+        applyState: { r: 6 }
+      },
+      {
+        q: "4. Khi bánh xe lăn không trượt trên mặt đất, chất điểm trên vành bánh xe vẽ nên một quỹ đạo đường cong kinh điển tên là gì?",
+        options: [
+          { text: "A. Đường cong Cycloid (Xicloit)", correct: true, explain: "Chính xác! Đường Cycloid chạm đất tuần hoàn theo đúng mỗi chu kỳ chu vi 2πR." },
+          { text: "B. Đường Parabol", correct: false, explain: "Chưa đúng." },
+          { text: "C. Đường Elip", correct: false, explain: "Chưa đúng." },
+          { text: "D. Đường Sin", correct: false, explain: "Chưa đúng." }
+        ]
+      },
+      {
+        q: "5. Trong chuyển động lăn không trượt, điểm tiếp xúc tức thời giữa đáy bánh xe và mặt đường có vận tốc bằng bao nhiêu?",
+        options: [
+          { text: "A. v_đáy = 0 (Tâm quay tức thời)", correct: true, explain: "Chính xác 100%! Điểm đáy đứng yên tức thời không bị trượt trên mặt sàn." },
+          { text: "B. v_đáy = v_tâm", correct: false, explain: "Chưa đúng." },
+          { text: "C. v_đáy = 2·v_tâm", correct: false, explain: "Chưa đúng, đó là điểm đỉnh cao nhất của bánh xe." },
+          { text: "D. v_đáy = ∞", correct: false, explain: "Chưa đúng." }
+        ]
+      },
+      {
+        q: "6. Hai robot VEX IQ quay cùng tốc độ góc ω = 10 rad/s. Robot 1 dùng bánh nhỏ R₁ = 4 cm, Robot 2 dùng bánh lớn R₂ = 8 cm. Tốc độ di chuyển của Robot 2 so với Robot 1 là:",
+        options: [
+          { text: "A. Nhanh gấp đôi (v₂ = 80 cm/s so với v₁ = 40 cm/s)", correct: true, explain: "Chính xác! Vì v = ω·R, bán kính tăng gấp đôi thì vận tốc dài tăng gấp đôi!" },
+          { text: "B. Bằng nhau", correct: false, explain: "Chưa đúng." },
+          { text: "C. Chậm bằng một nửa", correct: false, explain: "Chưa đúng." },
+          { text: "D. Nhanh gấp 4 lần", correct: false, explain: "Chưa đúng." }
+        ]
+      },
+      {
+        q: "7. (Bài tập Slide 14) Khi lập trình động cơ VEX IQ, bánh xe bị lệch 4° (0.07 rad). Biết bán kính bánh xe R = 6 cm, robot sẽ cách vị trí mong muốn bao nhiêu cm?",
+        options: [
+          { text: "A. 0.42 cm (vì d = 0.07 × 6 = 0.42 cm)", correct: true, explain: "Chính xác tuyệt đối! Đây chính là Đáp án A trong slide bài giảng của thầy!" },
+          { text: "B. 4.2 cm", correct: false, explain: "Chưa đúng." },
+          { text: "C. 2.4 cm", correct: false, explain: "Chưa đúng." },
+          { text: "D. 0.24 cm", correct: false, explain: "Chưa đúng." }
+        ]
+      },
+      {
+        q: "8. (Bài tập Slide 14) Cũng góc lệch 0.07 rad đó nhưng gắn liền với cánh tay robot Clawbot có chiều dài L = 30 cm (không qua bánh răng), độ lệch ở đầu gắp là:",
+        options: [
+          { text: "A. d = 0.07 × 30 = 2.1 cm (Lớn gấp 5 lần sai số bánh xe!)", correct: true, explain: "Chính xác! Vì cánh tay đòn dài 30 cm khuếch đại sai số lên 2.1 cm, làm robot dễ gắp trượt vật thể!" },
+          { text: "B. 0.42 cm", correct: false, explain: "Chưa đúng, đó là sai số bánh xe R = 6 cm." },
+          { text: "C. 21.0 cm", correct: false, explain: "Chưa đúng." },
+          { text: "D. 1.2 cm", correct: false, explain: "Chưa đúng." }
+        ]
+      },
+      {
+        q: "9. Để robot di chuyển với vận tốc dài v = 30 cm/s với bánh xe chuẩn VEX IQ R = 6.0 cm, em cần điều khiển động cơ quay với tốc độ góc ω bằng:",
+        options: [
+          { text: "A. ω = v / R = 30 / 6 = 5.0 rad/s (≈ 47.7 RPM)", correct: true, explain: "Xuất sắc! Muốn đạt vận tốc dài mong muốn, ta chỉ việc lấy v chia cho bán kính bánh xe R." },
+          { text: "B. ω = 180 rad/s", correct: false, explain: "Chưa đúng." },
+          { text: "C. ω = 36 rad/s", correct: false, explain: "Chưa đúng." },
+          { text: "D. ω = 0.2 rad/s", correct: false, explain: "Chưa đúng." }
+        ],
+        applyState: { r: 6, omega: 5.0 }
+      }
+    ];
+
+    let currentQIdx = 0;
+    let quizScores = new Array(quizData.length).fill(null);
+
+    const quizProgressBadge = document.getElementById('quizProgressBadge');
+    const quizNavDots = document.getElementById('quizNavDots');
+    const quizQuestionText = document.getElementById('quizQuestionText');
+    const quizOptionsContainer = document.getElementById('quizOptionsContainer');
+    const quizFeedback = document.getElementById('quizFeedback');
+    const quizScoreText = document.getElementById('quizScoreText');
+    const btnPrevQuestion = document.getElementById('btnPrevQuestion');
+    const btnNextQuestion = document.getElementById('btnNextQuestion');
+
+    function initQuiz() {
+      quizNavDots.innerHTML = '';
+      quizData.forEach((_, i) => {
+        const dot = document.createElement('div');
+        dot.className = 'quiz-dot' + (i === 0 ? ' active' : '');
+        dot.addEventListener('click', () => loadQuestion(i));
+        quizNavDots.appendChild(dot);
+      });
+      loadQuestion(0);
+    }
+
+    function loadQuestion(idx) {
+      currentQIdx = idx;
+      quizProgressBadge.textContent = `Câu ${idx + 1} / ${quizData.length}`;
+
+      document.querySelectorAll('.quiz-dot').forEach((dot, i) => {
+        dot.className = 'quiz-dot';
+        if (i === currentQIdx) dot.classList.add('active');
+        if (quizScores[i] === true) dot.classList.add('correct');
+        else if (quizScores[i] === false) dot.classList.add('incorrect');
+      });
+
+      const q = quizData[idx];
+      quizQuestionText.innerHTML = `<b>${q.q}</b>`;
+      quizOptionsContainer.innerHTML = '';
+      quizFeedback.className = 'quiz-feedback';
+      quizFeedback.innerHTML = '';
+
+      q.options.forEach((opt) => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-opt-btn';
+        btn.textContent = opt.text;
+        btn.addEventListener('click', () => selectAnswer(btn, opt, q));
+        quizOptionsContainer.appendChild(btn);
+      });
+
+      updateScoreDisplay();
+    }
+
+    function selectAnswer(selectedBtn, opt, q) {
+      const isCorrect = opt.correct;
+      quizScores[currentQIdx] = isCorrect;
+
+      document.querySelectorAll('.quiz-opt-btn').forEach(b => b.disabled = true);
+
+      if (isCorrect) {
+        selectedBtn.classList.add('correct');
+        quizFeedback.className = 'quiz-feedback show success';
+        quizFeedback.innerHTML = `🎉 <b>Chính xác!</b> ${opt.explain}`;
+        if (q.applyState) {
+          if (q.applyState.r !== undefined) {
+            state.r = q.applyState.r;
+            sliderRadius.value = state.r;
+          }
+          if (q.applyState.omega !== undefined) {
+            state.omega = q.applyState.omega;
+            sliderOmega.value = state.omega;
+          }
+          updateUI();
+          addLogEntry(`Áp dụng câu ${currentQIdx + 1}`);
+        }
+      } else {
+        selectedBtn.classList.add('incorrect');
+        quizFeedback.className = 'quiz-feedback show error';
+        quizFeedback.innerHTML = `❌ <b>Chưa chính xác!</b> ${opt.explain}`;
+      }
+
+      const dot = quizNavDots.children[currentQIdx];
+      dot.className = 'quiz-dot active ' + (isCorrect ? 'correct' : 'incorrect');
+
+      updateScoreDisplay();
+    }
+
+    function updateScoreDisplay() {
+      const correct = quizScores.filter(s => s === true).length;
+      quizScoreText.textContent = `Điểm: ${correct}/${quizData.length}`;
+    }
+
+    btnPrevQuestion.addEventListener('click', () => {
+      if (currentQIdx > 0) loadQuestion(currentQIdx - 1);
+    });
+
+    btnNextQuestion.addEventListener('click', () => {
+      if (currentQIdx < quizData.length - 1) loadQuestion(currentQIdx + 1);
+    });
+
+    // Init
+    state.history.push({ t: 0, d: 0, v: state.v });
+    resizeCanvases();
+    updateUI();
+    initQuiz();
+    requestAnimationFrame(animate);
+  </script>
+</body>
+</html>

@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide 12: Hệ Tọa Độ Oxy & Mối Quan Hệ Bán Kính R với Ox, Oy Trên Đường Tròn</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Top Header -->
+    <header class="top-header">
+      <div class="header-left">
+        <div class="logo-wrap">
+          <img id="ayorLogoImg" class="logo-img" src="assets/ayor_logo.png" alt="AYOR 2026">
+          <div class="title-wrap">
+            <h1>CHUYỂN ĐỘNG HỌC ROBOT <span class="badge-tag badge-cyan">SLIDE 12</span></h1>
+            <div class="sub-title">
+              <span>Hệ Tọa Độ Oxy & Mối Quan Hệ Bán Kính R với Ox, Oy Trên Đường Tròn</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="system-status">
+          <span class="status-dot"></span>
+          <span>COORDINATE SYSTEM: 2D Oxy</span>
+        </div>
+        <button id="btnFullscreen" class="btn-utility" title="Toàn màn hình trình chiếu">⛶ Toàn màn hình</button>
+        <div class="mascot-avatar-wrap" title="Trợ lý ảo AYOR 2026">
+          <div class="mascot-bubble">Kéo chấm tròn trên đường tròn để thấy hình chiếu x và y thay đổi nhé!</div>
+          <img id="mascotBearImg" class="mascot-img" src="assets/mascot_bear.png" alt="Mascot Astronaut Bear">
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Grid -->
+    <main class="sim-grid">
+      <!-- Left: Simulation Canvas & Graphs -->
+      <section class="sim-stage-card">
+        <div class="card-header-bar">
+          <div class="card-title">
+            <span>Mặt Phẳng Tọa Độ 2D Oxy & Đường Tròn Lượng Giác Bán Kính R</span>
+            <span class="formula-tag">x = R&middot;cos&theta; &nbsp;|&nbsp; y = R&middot;sin&theta; &nbsp;|&nbsp; x&sup2; + y&sup2; = R&sup2;</span>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button id="toggleTriangleBtn" class="btn-canvas-tool">📐 Tam giác vuông: BẬT</button>
+            <button id="toggleProjectionsBtn" class="btn-canvas-tool">📏 Hình chiếu Ox, Oy: BẬT</button>
+            <button id="toggleAngleUnitsBtn" class="btn-canvas-tool">🔄 Đơn vị: Độ (&deg;)</button>
+          </div>
+        </div>
+
+        <!-- Canvas Area -->
+        <div class="canvas-viewport-wrap" id="canvasContainer" style="height: 400px;">
+          <canvas id="simCanvas" class="sim-canvas"></canvas>
+          <div class="canvas-overlay-hud">
+            <div class="hud-pill"><span>TỌA ĐỘ M:</span> <b id="hudCoords" style="color:var(--cyan-accent);">(8.0, 6.0) cm</b></div>
+            <div class="hud-pill"><span>BÁN KÍNH R:</span> <b id="hudR">10.0 cm</b></div>
+            <div class="hud-pill"><span>GÓC QUAY &theta;:</span> <b id="hudTheta">36.9&deg; (0.64 rad)</b></div>
+          </div>
+          <div class="canvas-overlay-controls">
+            <span style="font-size:0.75rem; color:#cbd5e1; align-self:center;">💡 Nhấp & kéo trực tiếp điểm M trên đường tròn!</span>
+          </div>
+        </div>
+
+        <!-- Playback Controls (Auto-rotation toggle) -->
+        <div class="playback-bar">
+          <div class="playback-buttons">
+            <button id="btnAutoSpin" class="btn-control btn-primary-play">▶ TỰ ĐỘNG QUAY (&omega; = 1 rad/s)</button>
+            <button id="btnStepAngle" class="btn-control">⏭ Tăng góc (+15&deg;)</button>
+            <button id="btnResetAngle" class="btn-control">↺ Về gốc (&theta; = 0&deg;)</button>
+          </div>
+
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span style="font-size:0.8rem; color:var(--text-secondary);">Góc đặc biệt:</span>
+            <div class="preset-pills-row" style="margin:0;">
+              <button class="btn-preset" data-angle="0">0&deg;</button>
+              <button class="btn-preset" data-angle="30">30&deg;</button>
+              <button class="btn-preset" data-angle="45">45&deg;</button>
+              <button class="btn-preset" data-angle="60">60&deg;</button>
+              <button class="btn-preset" data-angle="90">90&deg;</button>
+              <button class="btn-preset" data-angle="180">180&deg;</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Realtime Dual Graphs: x(t) and y(t) projections -->
+        <div class="graphs-row">
+          <div class="graph-card">
+            <div class="graph-header">
+              <span style="color:#00f2fe;">📈 HÌNH CHIẾU TRÊN TRỤC Ox: x(t) = R&middot;cos(&theta;)</span>
+              <span>Dao động điều hòa Ox</span>
+            </div>
+            <canvas id="graphXCanvas" class="graph-canvas"></canvas>
+          </div>
+          <div class="graph-card">
+            <div class="graph-header">
+              <span style="color:#f43f5e;">📊 HÌNH CHIẾU TRÊN TRỤC Oy: y(t) = R&middot;sin(&theta;)</span>
+              <span>Dao động điều hòa Oy</span>
+            </div>
+            <canvas id="graphYCanvas" class="graph-canvas"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right: Telemetry & Interactive Controls -->
+      <aside class="sim-side-deck">
+        <!-- Control Panel -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <span class="panel-title">⚙️ ĐIỀU CHỈNH BÁN KÍNH & GÓC</span>
+            <span class="badge-tag">CIRCLE CONTROL</span>
+          </div>
+
+          <!-- Radius Slider -->
+          <div class="control-group">
+            <div class="control-label-row">
+              <span class="param-name">Bán kính đường tròn (R):</span>
+              <span class="param-val-badge" id="valRadiusBadge">10.0 cm</span>
+            </div>
+            <div class="slider-container">
+              <input type="range" id="sliderRadius" class="custom-slider" min="3" max="15" step="0.5" value="10">
+            </div>
+            <div class="preset-pills-row">
+              <button class="btn-preset" data-radius="5">R = 5 cm</button>
+              <button class="btn-preset" data-radius="8">R = 8 cm</button>
+              <button class="btn-preset" data-radius="10">R = 10 cm</button>
+              <button class="btn-preset" data-radius="12">R = 12 cm</button>
+            </div>
+          </div>
+
+          <!-- Angle Slider -->
+          <div class="control-group">
+            <div class="control-label-row">
+              <span class="param-name">Góc quay (&theta;):</span>
+              <span class="param-val-badge" id="valAngleBadge">45.0&deg;</span>
+            </div>
+            <div class="slider-container">
+              <input type="range" id="sliderAngle" class="custom-slider" min="0" max="360" step="1" value="45">
+            </div>
+          </div>
+        </div>
+
+        <!-- Telemetry Data Grid -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <span class="panel-title">📡 BẢNG TỌA ĐỘ VÀ LƯỢNG GIÁC THỰC</span>
+            <span class="badge-tag">TELEMETRY</span>
+          </div>
+          <div class="telemetry-grid">
+            <div class="telemetry-cell highlight">
+              <span class="tel-label">Tọa độ x (trên Ox)</span>
+              <div class="tel-value"><span id="telX">7.07</span><span class="tel-unit">cm</span></div>
+            </div>
+            <div class="telemetry-cell highlight">
+              <span class="tel-label">Tọa độ y (trên Oy)</span>
+              <div class="tel-value"><span id="telY">7.07</span><span class="tel-unit">cm</span></div>
+            </div>
+            <div class="telemetry-cell">
+              <span class="tel-label">Bán kính R = &radic;(x&sup2;+y&sup2;)</span>
+              <div class="tel-value"><span id="telR">10.0</span><span class="tel-unit">cm</span></div>
+            </div>
+            <div class="telemetry-cell">
+              <span class="tel-label">Góc &theta; (Radian)</span>
+              <div class="tel-value"><span id="telRad">0.79</span><span class="tel-unit">rad</span></div>
+            </div>
+            <div class="telemetry-cell">
+              <span class="tel-label">Hàm cos(&theta;)</span>
+              <div class="tel-value"><span id="telCos">0.707</span></div>
+            </div>
+            <div class="telemetry-cell">
+              <span class="tel-label">Hàm sin(&theta;)</span>
+              <div class="tel-value"><span id="telSin">0.707</span></div>
+            </div>
+          </div>
+
+          <!-- Step-by-step Math calculation box -->
+          <div class="calc-breakdown-box">
+            <div class="step-title">📐 CÔNG THỨC & BƯỚC TÍNH CHI TIẾT:</div>
+            <div class="math-formula-row">
+              <span>x = R &times; cos(&theta;) = </span>
+              <span id="mathSubstX" class="val-plugged">10 &times; 0.707 = 7.07 cm</span>
+            </div>
+            <div class="math-formula-row">
+              <span>y = R &times; sin(&theta;) = </span>
+              <span id="mathSubstY" class="val-plugged">10 &times; 0.707 = 7.07 cm</span>
+            </div>
+            <div style="font-size:0.75rem; color:var(--text-secondary); margin-top:3px;">
+              Kiểm chứng Pythagoras: <b id="mathPythagoras" class="val-res">x&sup2; + y&sup2; = 100.0 = R&sup2;</b>
+            </div>
+          </div>
+        </div>
+
+        <!-- 9-Question Interactive Quiz Deck -->
+        <div class="challenge-card">
+          <div class="quiz-header-row">
+            <span class="challenge-badge">🎯 ÔN TẬP 9 CÂU HỎI TRẮC NGHIỆM</span>
+            <span class="quiz-progress-badge" id="quizProgressBadge">Câu 1 / 9</span>
+          </div>
+
+          <!-- Question indicator dots -->
+          <div class="quiz-nav-dots" id="quizNavDots"></div>
+
+          <div class="challenge-question" id="quizQuestionText">
+            Đang tải câu hỏi...
+          </div>
+
+          <div class="quiz-options-list" id="quizOptionsContainer"></div>
+
+          <div class="quiz-feedback" id="quizFeedback"></div>
+
+          <div class="quiz-bottom-controls">
+            <button id="btnPrevQuestion" class="btn-utility" style="padding:4px 10px; font-size:0.76rem;">&larr; Câu trước</button>
+            <span id="quizScoreText" style="font-size:0.76rem; font-weight:700; color:var(--text-secondary);">Điểm: 0/9</span>
+            <button id="btnNextQuestion" class="btn-utility" style="padding:4px 10px; font-size:0.76rem;">Câu tiếp &rarr;</button>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <!-- Bottom Telemetry Log -->
+    <footer class="bottom-telemetry-panel">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-heading); text-transform: uppercase;">
+          📋 NHẬT KÝ ĐO LƯỜNG TỌA ĐỘ VÀ HÌNH CHIẾU LƯỢNG GIÁC 2D Oxy
+        </span>
+        <button id="btnClearLog" class="btn-utility" style="padding: 2px 8px; font-size: 0.72rem;">Xóa nhật ký</button>
+      </div>
+      <div class="log-table-wrap">
+        <table class="telemetry-table">
+          <thead>
+            <tr>
+              <th>Thời Điểm</th>
+              <th>Bán Kính R (cm)</th>
+              <th>Góc &theta; (&deg;)</th>
+              <th>Góc &theta; (rad)</th>
+              <th>Tọa Độ x (cm)</th>
+              <th>Tọa Độ y (cm)</th>
+              <th>cos(&theta;)</th>
+              <th>sin(&theta;)</th>
+            </tr>
+          </thead>
+          <tbody id="telemetryLogBody">
+            <tr>
+              <td>[Khởi tạo]</td>
+              <td>10.0</td>
+              <td>45.0&deg;</td>
+              <td>0.79</td>
+              <td>7.07</td>
+              <td>7.07</td>
+              <td>0.707</td>
+              <td>0.707</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </footer>
+  </div>
+
+  <script src="assets/images_data.js"></script>
+  <script>
+    if (window.AYOR_LOGO) document.getElementById('ayorLogoImg').src = window.AYOR_LOGO;
+    if (window.MASCOT_BEAR) document.getElementById('mascotBearImg').src = window.MASCOT_BEAR;
+
+    // Simulation State
+    const state = {
+      R: 10.0, // cm
+      thetaDeg: 45.0, // degrees
+      autoSpin: false,
+      omega: 1.0, // rad/s for auto-spin
+      showTriangle: true,
+      showProjections: true,
+      useDegrees: true,
+      time: 0,
+      lastTimestamp: null,
+      historyX: [],
+      historyY: []
+    };
+
+    // DOM Elements
+    const canvas = document.getElementById('simCanvas');
+    const ctx = canvas.getContext('2d');
+    const graphXCanvas = document.getElementById('graphXCanvas');
+    const ctxX = graphXCanvas.getContext('2d');
+    const graphYCanvas = document.getElementById('graphYCanvas');
+    const ctxY = graphYCanvas.getContext('2d');
+
+    const sliderRadius = document.getElementById('sliderRadius');
+    const sliderAngle = document.getElementById('sliderAngle');
+    const valRadiusBadge = document.getElementById('valRadiusBadge');
+    const valAngleBadge = document.getElementById('valAngleBadge');
+
+    const hudCoords = document.getElementById('hudCoords');
+    const hudR = document.getElementById('hudR');
+    const hudTheta = document.getElementById('hudTheta');
+
+    const telX = document.getElementById('telX');
+    const telY = document.getElementById('telY');
+    const telR = document.getElementById('telR');
+    const telRad = document.getElementById('telRad');
+    const telCos = document.getElementById('telCos');
+    const telSin = document.getElementById('telSin');
+
+    const mathSubstX = document.getElementById('mathSubstX');
+    const mathSubstY = document.getElementById('mathSubstY');
+    const mathPythagoras = document.getElementById('mathPythagoras');
+
+    const btnAutoSpin = document.getElementById('btnAutoSpin');
+    const btnStepAngle = document.getElementById('btnStepAngle');
+    const btnResetAngle = document.getElementById('btnResetAngle');
+    const toggleTriangleBtn = document.getElementById('toggleTriangleBtn');
+    const toggleProjectionsBtn = document.getElementById('toggleProjectionsBtn');
+    const toggleAngleUnitsBtn = document.getElementById('toggleAngleUnitsBtn');
+    const logBody = document.getElementById('telemetryLogBody');
+
+    // Resize Canvases
+    function resizeCanvases() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      canvas.width = rect.width * window.devicePixelRatio;
+      canvas.height = rect.height * window.devicePixelRatio;
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+      const rX = graphXCanvas.getBoundingClientRect();
+      graphXCanvas.width = rX.width * window.devicePixelRatio;
+      graphXCanvas.height = rX.height * window.devicePixelRatio;
+      ctxX.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+      const rY = graphYCanvas.getBoundingClientRect();
+      graphYCanvas.width = rY.width * window.devicePixelRatio;
+      graphYCanvas.height = rY.height * window.devicePixelRatio;
+      ctxY.scale(window.devicePixelRatio, window.devicePixelRatio);
+    }
+    window.addEventListener('resize', resizeCanvases);
+
+    // Update Telemetry & UI
+    function updateUI() {
+      const rad = (state.thetaDeg * Math.PI) / 180;
+      const x = state.R * Math.cos(rad);
+      const y = state.R * Math.sin(rad);
+      const cosVal = Math.cos(rad);
+      const sinVal = Math.sin(rad);
+
+      valRadiusBadge.textContent = state.R.toFixed(1) + ' cm';
+      valAngleBadge.textContent = state.thetaDeg.toFixed(1) + '°';
+
+      hudCoords.textContent = `(${x.toFixed(2)}, ${y.toFixed(2)}) cm`;
+      hudR.textContent = state.R.toFixed(1) + ' cm';
+      hudTheta.textContent = `${state.thetaDeg.toFixed(1)}° (${rad.toFixed(2)} rad)`;
+
+      telX.textContent = x.toFixed(2);
+      telY.textContent = y.toFixed(2);
+      telR.textContent = state.R.toFixed(1);
+      telRad.textContent = rad.toFixed(2);
+      telCos.textContent = cosVal.toFixed(3);
+      telSin.textContent = sinVal.toFixed(3);
+
+      mathSubstX.textContent = `${state.R.toFixed(1)} × ${cosVal.toFixed(3)} = ${x.toFixed(2)} cm`;
+      mathSubstY.textContent = `${state.R.toFixed(1)} × ${sinVal.toFixed(3)} = ${y.toFixed(2)} cm`;
+      mathPythagoras.textContent = `${(x*x).toFixed(1)} + ${(y*y).toFixed(1)} = ${(x*x + y*y).toFixed(1)} = R² (${(state.R*state.R).toFixed(1)})`;
+    }
+
+    sliderRadius.addEventListener('input', (e) => {
+      state.R = parseFloat(e.target.value);
+      updateUI();
+    });
+
+    sliderAngle.addEventListener('input', (e) => {
+      state.thetaDeg = parseFloat(e.target.value);
+      updateUI();
+    });
+
+    document.querySelectorAll('.btn-preset[data-radius]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.R = parseFloat(btn.dataset.radius);
+        sliderRadius.value = state.R;
+        updateUI();
+      });
+    });
+
+    document.querySelectorAll('.btn-preset[data-angle]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.thetaDeg = parseFloat(btn.dataset.angle);
+        sliderAngle.value = state.thetaDeg;
+        updateUI();
+      });
+    });
+
+    btnAutoSpin.addEventListener('click', () => {
+      state.autoSpin = !state.autoSpin;
+      btnAutoSpin.textContent = state.autoSpin ? '⏸ DỪNG QUAY' : '▶ TỰ ĐỘNG QUAY (ω = 1 rad/s)';
+      btnAutoSpin.classList.toggle('btn-primary-play', !state.autoSpin);
+    });
+
+    btnStepAngle.addEventListener('click', () => {
+      state.thetaDeg = (state.thetaDeg + 15) % 360;
+      sliderAngle.value = state.thetaDeg;
+      updateUI();
+      addLogEntry('Xoay thêm +15°');
+    });
+
+    btnResetAngle.addEventListener('click', () => {
+      state.thetaDeg = 0;
+      sliderAngle.value = 0;
+      state.autoSpin = false;
+      btnAutoSpin.textContent = '▶ TỰ ĐỘNG QUAY (ω = 1 rad/s)';
+      btnAutoSpin.classList.add('btn-primary-play');
+      updateUI();
+      addLogEntry('Đã đặt lại về θ = 0°');
+    });
+
+    toggleTriangleBtn.addEventListener('click', () => {
+      state.showTriangle = !state.showTriangle;
+      toggleTriangleBtn.textContent = state.showTriangle ? '📐 Tam giác vuông: BẬT' : '📐 Tam giác vuông: TẮT';
+    });
+
+    toggleProjectionsBtn.addEventListener('click', () => {
+      state.showProjections = !state.showProjections;
+      toggleProjectionsBtn.textContent = state.showProjections ? '📏 Hình chiếu Ox, Oy: BẬT' : '📏 Hình chiếu Ox, Oy: TẮT';
+    });
+
+    toggleAngleUnitsBtn.addEventListener('click', () => {
+      state.useDegrees = !state.useDegrees;
+      toggleAngleUnitsBtn.textContent = state.useDegrees ? '🔄 Đơn vị: Độ (°)' : '🔄 Đơn vị: Radian';
+      updateUI();
+    });
+
+    document.getElementById('btnClearLog').addEventListener('click', () => {
+      logBody.innerHTML = '';
+      addLogEntry('Nhật ký đã được làm mới');
+    });
+
+    document.getElementById('btnFullscreen').addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    });
+
+    function addLogEntry(note = '') {
+      const now = new Date().toLocaleTimeString();
+      const rad = ((state.thetaDeg * Math.PI) / 180).toFixed(2);
+      const x = (state.R * Math.cos(state.thetaDeg * Math.PI / 180)).toFixed(2);
+      const y = (state.R * Math.sin(state.thetaDeg * Math.PI / 180)).toFixed(2);
+      const cosV = Math.cos(state.thetaDeg * Math.PI / 180).toFixed(3);
+      const sinV = Math.sin(state.thetaDeg * Math.PI / 180).toFixed(3);
+
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${now} ${note ? `(${note})` : ''}</td>
+        <td>${state.R.toFixed(1)}</td>
+        <td>${state.thetaDeg.toFixed(1)}&deg;</td>
+        <td>${rad}</td>
+        <td>${x}</td>
+        <td>${y}</td>
+        <td>${cosV}</td>
+        <td>${sinV}</td>
+      `;
+      logBody.insertBefore(tr, logBody.firstChild);
+      if (logBody.children.length > 8) logBody.removeChild(logBody.lastChild);
+    }
+
+    // Interactive Dragging on Circle
+    let isDraggingM = false;
+    canvas.addEventListener('mousedown', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const clickY = e.clientY - rect.top;
+      const cX = rect.width / 2;
+      const cY = rect.height / 2;
+      const scale = 11.5; // px per cm
+
+      const rad = (state.thetaDeg * Math.PI) / 180;
+      const mX = cX + state.R * scale * Math.cos(rad);
+      const mY = cY - state.R * scale * Math.sin(rad);
+
+      if (Math.hypot(clickX - mX, clickY - mY) < 25) {
+        isDraggingM = true;
+      }
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDraggingM) return;
+      const rect = canvas.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const clickY = e.clientY - rect.top;
+      const cX = rect.width / 2;
+      const cY = rect.height / 2;
+
+      // Calculate angle from center
+      const dx = clickX - cX;
+      const dy = -(clickY - cY); // inverted Y for Cartesian
+
+      let angleRad = Math.atan2(dy, dx);
+      if (angleRad < 0) angleRad += 2 * Math.PI;
+
+      state.thetaDeg = (angleRad * 180) / Math.PI;
+      sliderAngle.value = state.thetaDeg;
+      updateUI();
+    });
+
+    window.addEventListener('mouseup', () => { isDraggingM = false; });
+
+    // Main Draw Function
+    function draw() {
+      const width = canvas.width / window.devicePixelRatio;
+      const height = canvas.height / window.devicePixelRatio;
+      ctx.clearRect(0, 0, width, height);
+
+      // Light Beige Paper Background
+      ctx.fillStyle = '#f8f6f0';
+      ctx.fillRect(0, 0, width, height);
+
+      const cX = width / 2;
+      const cY = height / 2;
+      const scale = 11.5; // px per cm
+      const R_px = state.R * scale;
+      const rad = (state.thetaDeg * Math.PI) / 180;
+
+      // 1. Solid Black Grid Lines (Giấy kẻ ô li nét liền đen)
+      ctx.strokeStyle = 'rgba(0, 0, 0, 0.12)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([]);
+      for (let x = 0; x < width; x += 30) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+        ctx.stroke();
+      }
+      for (let y = 0; y < height; y += 30) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+        ctx.stroke();
+      }
+
+      // 2. Cartesian Axes (Ox and Oy) - Solid Dark Purple/Black
+      ctx.strokeStyle = '#2e1065';
+      ctx.lineWidth = 2;
+
+      // Ox Axis
+      ctx.beginPath();
+      ctx.moveTo(20, cY);
+      ctx.lineTo(width - 20, cY);
+      ctx.stroke();
+
+      // Oy Axis
+      ctx.beginPath();
+      ctx.moveTo(cX, height - 20);
+      ctx.lineTo(cX, 20);
+      ctx.stroke();
+
+      // Arrow heads for Ox, Oy
+      drawArrowHead(width - 20, cY, 0, '#2e1065');
+      drawArrowHead(cX, 20, -Math.PI / 2, '#2e1065');
+
+      // Axis labels
+      ctx.fillStyle = '#0284c7';
+      ctx.font = 'bold 12px Consolas, monospace';
+      ctx.fillText('Ox (+cm)', width - 65, cY + 18);
+      ctx.fillStyle = '#e11d48';
+      ctx.fillText('Oy (+cm)', cX + 12, 32);
+      ctx.fillStyle = '#475569';
+      ctx.fillText('O (0,0)', cX - 35, cY + 18);
+
+      // Ticks on Ox and Oy
+      ctx.strokeStyle = 'rgba(0, 0, 0, 0.35)';
+      ctx.lineWidth = 1.2;
+      for (let cm = -15; cm <= 15; cm += 2) {
+        if (cm === 0) continue;
+        const tx = cX + cm * scale;
+        if (tx > 20 && tx < width - 20) {
+          ctx.beginPath();
+          ctx.moveTo(tx, cY - 4);
+          ctx.lineTo(tx, cY + 4);
+          ctx.stroke();
+          if (cm % 4 === 0) {
+            ctx.fillStyle = '#64748b';
+            ctx.font = '9px Consolas, monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText(cm, tx, cY + 14);
+          }
+        }
+
+        const ty = cY - cm * scale;
+        if (ty > 20 && ty < height - 20) {
+          ctx.beginPath();
+          ctx.moveTo(cX - 4, ty);
+          ctx.lineTo(cX + 4, ty);
+          ctx.stroke();
+          if (cm % 4 === 0) {
+            ctx.fillStyle = '#64748b';
+            ctx.font = '9px Consolas, monospace';
+            ctx.textAlign = 'right';
+            ctx.fillText(cm, cX - 8, ty + 3);
+          }
+        }
+      }
+
+      // 3. The Circle of Radius R
+      ctx.strokeStyle = '#7c3aed';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.arc(cX, cY, R_px, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // Circle Fill with soft light purple
+      ctx.fillStyle = 'rgba(124, 58, 237, 0.05)';
+      ctx.fill();
+
+      // 4. Coordinates of Point M on Circle
+      const mX = cX + R_px * Math.cos(rad);
+      const mY = cY - R_px * Math.sin(rad); // negative Y
+      const projX = mX;
+
+      // 5. Right Triangle & Projections (Tam giác vuông O - projX - M)
+      if (state.showTriangle) {
+        // Shaded right triangle
+        ctx.fillStyle = 'rgba(2, 132, 199, 0.12)';
+        ctx.beginPath();
+        ctx.moveTo(cX, cY);
+        ctx.lineTo(projX, cY);
+        ctx.lineTo(mX, mY);
+        ctx.closePath();
+        ctx.fill();
+
+        // Right angle marker
+        const sqSize = 10;
+        const signX = Math.cos(rad) >= 0 ? 1 : -1;
+        const signY = Math.sin(rad) >= 0 ? -1 : 1;
+        ctx.strokeStyle = 'rgba(2, 132, 199, 0.6)';
+        ctx.lineWidth = 1.2;
+        ctx.strokeRect(projX - signX * sqSize, cY, signX * sqSize, signY * sqSize);
+      }
+
+      if (state.showProjections) {
+        // Projection to Ox (cyan/blue line)
+        ctx.strokeStyle = '#0284c7';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(cX, cY);
+        ctx.lineTo(projX, cY);
+        ctx.stroke();
+
+        // Dashed line from M to Ox
+        ctx.strokeStyle = 'rgba(2, 132, 199, 0.6)';
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        ctx.moveTo(mX, mY);
+        ctx.lineTo(projX, cY);
+        ctx.stroke();
+
+        // Projection to Oy (pink/red line)
+        ctx.strokeStyle = '#e11d48';
+        ctx.lineWidth = 3;
+        ctx.setLineDash([]);
+        ctx.beginPath();
+        ctx.moveTo(cX, cY);
+        ctx.lineTo(cX, mY);
+        ctx.stroke();
+
+        // Dashed line from M to Oy
+        ctx.strokeStyle = 'rgba(225, 29, 72, 0.6)';
+        ctx.setLineDash([4, 4]);
+        ctx.beginPath();
+        ctx.moveTo(mX, mY);
+        ctx.lineTo(cX, mY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Labels for projections
+        const curX = state.R * Math.cos(rad);
+        const curY = state.R * Math.sin(rad);
+
+        ctx.fillStyle = '#0369a1';
+        ctx.font = 'bold 11px Consolas, monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(`x = ${curX.toFixed(1)} cm`, (cX + projX) / 2, cY + (curY >= 0 ? 18 : -10));
+
+        ctx.fillStyle = '#be123c';
+        ctx.textAlign = curX >= 0 ? 'right' : 'left';
+        ctx.fillText(`y = ${curY.toFixed(1)} cm`, cX + (curX >= 0 ? -10 : 10), (cY + mY) / 2);
+      }
+
+      // 6. Swept Angle Arc & Label
+      ctx.strokeStyle = '#d97706';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(cX, cY, 32, 0, -rad, true);
+      ctx.stroke();
+
+      const midAngle = -rad / 2;
+      ctx.fillStyle = '#b45309';
+      ctx.font = 'bold 10px Consolas, monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(`θ = ${state.thetaDeg.toFixed(0)}°`, cX + 46 * Math.cos(midAngle), cY + 46 * Math.sin(midAngle));
+
+      // 7. Radius Vector (Bán kính nối tâm O đến M)
+      ctx.strokeStyle = '#7c3aed';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(cX, cY);
+      ctx.lineTo(mX, mY);
+      ctx.stroke();
+
+      // Radius Label
+      ctx.fillStyle = '#4c1d95';
+      ctx.font = 'bold 11px Consolas, monospace';
+      ctx.textAlign = 'center';
+      const midRX = (cX + mX) / 2;
+      const midRY = (cY + mY) / 2;
+      ctx.fillText(`R = ${state.R.toFixed(1)} cm`, midRX, midRY - 8);
+
+      // 8. Point M on Circle (Chất điểm)
+      ctx.fillStyle = '#0284c7';
+      ctx.beginPath();
+      ctx.arc(mX, mY, 9, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(mX, mY, 4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#0c4a6e';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      // Label Point M(x, y) - High contrast dark text on light beige
+      ctx.fillStyle = '#1e1338';
+      ctx.font = 'bold 12px Consolas, monospace';
+      ctx.textAlign = 'center';
+      const curX = state.R * Math.cos(rad);
+      const curY = state.R * Math.sin(rad);
+      ctx.fillText(`M (${curX.toFixed(1)}, ${curY.toFixed(1)})`, mX, mY - 16);
+    }
+
+    function drawArrowHead(x, y, angle, color) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(angle);
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(-10, -5);
+      ctx.lineTo(-10, 5);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // Graphs for x(t) and y(t)
+    function drawGraphs() {
+      // 1. Graph x(t)
+      const w1 = graphXCanvas.width / window.devicePixelRatio;
+      const h1 = graphXCanvas.height / window.devicePixelRatio;
+      ctxX.clearRect(0, 0, w1, h1);
+
+      ctxX.fillStyle = '#f8f6f0';
+      ctxX.fillRect(0, 0, w1, h1);
+
+      ctxX.strokeStyle = 'rgba(0, 0, 0, 0.15)';
+      ctxX.lineWidth = 1;
+      const padL = 35;
+      const midY1 = h1 / 2;
+      ctxX.beginPath();
+      ctxX.moveTo(padL, 10);
+      ctxX.lineTo(padL, h1 - 10);
+      ctxX.moveTo(padL, midY1);
+      ctxX.lineTo(w1 - 10, midY1);
+      ctxX.stroke();
+
+      ctxX.fillStyle = '#475569';
+      ctxX.font = '9px Consolas, monospace';
+      ctxX.fillText('x(cm)', 3, 14);
+      ctxX.fillText('t', w1 - 15, midY1 + 12);
+
+      if (state.historyX.length > 1) {
+        ctxX.strokeStyle = '#0284c7';
+        ctxX.lineWidth = 2.2;
+        ctxX.beginPath();
+        const maxPts = 120;
+        state.historyX.forEach((val, idx) => {
+          const gx = padL + (idx / maxPts) * (w1 - padL - 15);
+          const gy = midY1 - (val / 16) * (h1 / 2 - 12);
+          if (idx === 0) ctxX.moveTo(gx, gy);
+          else ctxX.lineTo(gx, gy);
+        });
+        ctxX.stroke();
+      }
+
+      // 2. Graph y(t)
+      const w2 = graphYCanvas.width / window.devicePixelRatio;
+      const h2 = graphYCanvas.height / window.devicePixelRatio;
+      ctxY.clearRect(0, 0, w2, h2);
+
+      ctxY.fillStyle = '#f8f6f0';
+      ctxY.fillRect(0, 0, w2, h2);
+
+      const midY2 = h2 / 2;
+      ctxY.strokeStyle = 'rgba(0, 0, 0, 0.15)';
+      ctxY.lineWidth = 1;
+      ctxY.beginPath();
+      ctxY.moveTo(padL, 10);
+      ctxY.lineTo(padL, h2 - 10);
+      ctxY.moveTo(padL, midY2);
+      ctxY.lineTo(w2 - 10, midY2);
+      ctxY.stroke();
+
+      ctxY.fillStyle = '#475569';
+      ctxY.font = '9px Consolas, monospace';
+      ctxY.fillText('y(cm)', 3, 14);
+      ctxY.fillText('t', w2 - 15, midY2 + 12);
+
+      if (state.historyY.length > 1) {
+        ctxY.strokeStyle = '#e11d48';
+        ctxY.lineWidth = 2.2;
+        ctxY.beginPath();
+        const maxPts = 120;
+        state.historyY.forEach((val, idx) => {
+          const gx = padL + (idx / maxPts) * (w2 - padL - 15);
+          const gy = midY2 - (val / 16) * (h2 / 2 - 12);
+          if (idx === 0) ctxY.moveTo(gx, gy);
+          else ctxY.lineTo(gx, gy);
+        });
+        ctxY.stroke();
+      }
+    }
+
+    // Animation Loop
+    function animate(timestamp) {
+      if (!state.lastTimestamp) state.lastTimestamp = timestamp;
+      const dt = (timestamp - state.lastTimestamp) / 1000;
+      state.lastTimestamp = timestamp;
+
+      if (state.autoSpin) {
+        state.thetaDeg = (state.thetaDeg + (state.omega * 180 / Math.PI) * dt) % 360;
+        sliderAngle.value = state.thetaDeg;
+        updateUI();
+      }
+
+      // Record history
+      const curRad = (state.thetaDeg * Math.PI) / 180;
+      state.historyX.push(state.R * Math.cos(curRad));
+      state.historyY.push(state.R * Math.sin(curRad));
+      if (state.historyX.length > 120) state.historyX.shift();
+      if (state.historyY.length > 120) state.historyY.shift();
+
+      draw();
+      drawGraphs();
+      requestAnimationFrame(animate);
+    }
+
+    // ==========================================
+    // 9-QUESTION QUIZ SYSTEM FOR SLIDE 12
+    // ==========================================
+    const quizData = [
+      {
+        q: "1. Cho chất điểm M nằm trên đường tròn bán kính R = 10 cm tại góc θ = 0° (0 rad). Tọa độ (x, y) của chất điểm là:",
+        options: [
+          { text: "A. (10.0, 0.0) cm", correct: true, explain: "Chính xác! Vì x = R·cos(0°) = 10×1 = 10 cm, và y = R·sin(0°) = 10×0 = 0 cm." },
+          { text: "B. (0.0, 10.0) cm", correct: false, explain: "Chưa đúng. Tại θ = 0°, điểm nằm hoàn toàn trên trục Ox nên y = 0." },
+          { text: "C. (10.0, 10.0) cm", correct: false, explain: "Chưa đúng. Điểm nằm trên đường tròn bán kính 10 cm, không thể có cả 2 tọa độ đều bằng 10." },
+          { text: "D. (0.0, 0.0) cm", correct: false, explain: "Chưa đúng. (0,0) là gốc tọa độ tâm O." }
+        ],
+        applyState: { R: 10, thetaDeg: 0 }
+      },
+      {
+        q: "2. Khi chất điểm quay đến góc θ = 90° (π/2 rad), hình chiếu của điểm lên trục Ox và trục Oy lần lượt là:",
+        options: [
+          { text: "A. x = 0 cm, y = R", correct: true, explain: "Chính xác! Vì cos(90°) = 0 nên x = 0; sin(90°) = 1 nên y = R (nằm tại đỉnh trên của trục Oy)." },
+          { text: "B. x = R, y = 0 cm", correct: false, explain: "Chưa đúng, đó là vị trí góc θ = 0°." },
+          { text: "C. x = R, y = R", correct: false, explain: "Chưa đúng." },
+          { text: "D. x = -R, y = 0 cm", correct: false, explain: "Chưa đúng, đó là vị trí góc θ = 180°." }
+        ],
+        applyState: { R: 10, thetaDeg: 90 }
+      },
+      {
+        q: "3. Công thức chuẩn liên hệ giữa tọa độ (x, y) với bán kính R và góc quay θ trong hệ tọa độ Oxy là:",
+        options: [
+          { text: "A. x = R·cos(θ) và y = R·sin(θ)", correct: true, explain: "Chính xác 100%! Đây là định nghĩa lượng giác cơ bản trong mặt phẳng Oxy." },
+          { text: "B. x = R·sin(θ) và y = R·cos(θ)", correct: false, explain: "Chưa đúng. Ox liên hệ với hàm cos, Oy liên hệ với hàm sin." },
+          { text: "C. x = R / cos(θ) và y = R / sin(θ)", correct: false, explain: "Chưa đúng." },
+          { text: "D. x = R + cos(θ) và y = R + sin(θ)", correct: false, explain: "Chưa đúng." }
+        ]
+      },
+      {
+        q: "4. Cho bán kính R = 10 cm, góc θ = 60° (π/3 rad). Biết cos(60°) = 0.5 và sin(60°) ≈ 0.866. Tọa độ (x, y) là:",
+        options: [
+          { text: "A. x = 5.0 cm, y = 8.66 cm", correct: true, explain: "Tuyệt vời! x = 10 × 0.5 = 5 cm; y = 10 × 0.866 = 8.66 cm." },
+          { text: "B. x = 8.66 cm, y = 5.0 cm", correct: false, explain: "Chưa đúng. Em bị nhầm lẫn giữa cos(60°) và sin(60°)." },
+          { text: "C. x = 10.0 cm, y = 5.0 cm", correct: false, explain: "Chưa đúng." },
+          { text: "D. x = 5.0 cm, y = 10.0 cm", correct: false, explain: "Chưa đúng." }
+        ],
+        applyState: { R: 10, thetaDeg: 60 }
+      },
+      {
+        q: "5. Theo định lý Pythagoras trong tam giác vuông tạo bởi bán kính và 2 trục tọa độ, mối quan hệ giữa x, y và R là:",
+        options: [
+          { text: "A. x² + y² = R² ⟺ R = √(x² + y²)", correct: true, explain: "Chính xác! Khoảng cách từ tâm O(0,0) đến điểm M(x, y) luôn bằng bán kính R." },
+          { text: "B. x + y = R", correct: false, explain: "Chưa đúng, đây là phép cộng độ dài thông thường, không phải hình học Euclid." },
+          { text: "C. x² - y² = R²", correct: false, explain: "Chưa đúng, đó là phương trình hyperbol." },
+          { text: "D. R = x² + y²", correct: false, explain: "Chưa đúng, thiếu căn bậc hai." }
+        ]
+      },
+      {
+        q: "6. Cảm biến robot đo được tọa độ của vật cản là x = 6.0 cm và y = 8.0 cm. Khoảng cách từ robot (tâm O) đến vật cản (bán kính R) là:",
+        options: [
+          { text: "A. R = √(6² + 8²) = √(36 + 64) = 10.0 cm", correct: true, explain: "Rất chuẩn xác! Tam giác vuông Ai Cập 6-8-10 giúp tính khoảng cách cực nhanh!" },
+          { text: "B. R = 14.0 cm", correct: false, explain: "Chưa đúng, không thể cộng trực tiếp 6 + 8." },
+          { text: "C. R = 2.0 cm", correct: false, explain: "Chưa đúng." },
+          { text: "D. R = 48.0 cm", correct: false, explain: "Chưa đúng." }
+        ],
+        applyState: { R: 10, thetaDeg: 53.13 }
+      },
+      {
+        q: "7. Khi chất điểm quay đến góc θ = 180° (π rad) với bán kính R = 12 cm, tọa độ (x, y) của chất điểm là:",
+        options: [
+          { text: "A. (-12.0, 0.0) cm", correct: true, explain: "Chính xác! Vì cos(180°) = -1 nên x = -12 cm; sin(180°) = 0 nên y = 0." },
+          { text: "B. (0.0, -12.0) cm", correct: false, explain: "Chưa đúng, đó là góc 270°." },
+          { text: "C. (12.0, 0.0) cm", correct: false, explain: "Chưa đúng, đó là góc 0°." },
+          { text: "D. (0.0, 12.0) cm", correct: false, explain: "Chưa đúng." }
+        ],
+        applyState: { R: 12, thetaDeg: 180 }
+      },
+      {
+        q: "8. Nếu góc quay θ = 45° (π/4 rad), điều gì xảy ra với giá trị hình chiếu x và y?",
+        options: [
+          { text: "A. x = y = R·(√2 / 2) ≈ 0.707·R", correct: true, explain: "Chính xác! Vì cos(45°) = sin(45°) = √2/2 ≈ 0.707, nên 2 hình chiếu bằng nhau!" },
+          { text: "B. x = 2y", correct: false, explain: "Chưa đúng." },
+          { text: "C. y = 2x", correct: false, explain: "Chưa đúng." },
+          { text: "D. x = -y", correct: false, explain: "Chưa đúng." }
+        ],
+        applyState: { R: 10, thetaDeg: 45 }
+      },
+      {
+        q: "9. Trong cơ cấu tay máy robot xoay tròn quanh trục O với tốc độ góc ω (θ = ω·t), hình chiếu của khớp tay trên 2 trục Ox và Oy di chuyển thế nào?",
+        options: [
+          { text: "A. Dao động điều hòa: x(t) = R·cos(ωt) và y(t) = R·sin(ωt)", correct: true, explain: "Xuất sắc! Đây chính là nguyên lý chuyển động điều hòa và cơ cấu biến chuyển động quay thành chuyển động tịnh tiến trong Robotics!" },
+          { text: "B. Chuyển động thẳng đều", correct: false, explain: "Chưa đúng, hình chiếu đổi chiều liên tục." },
+          { text: "C. Khớp tay đứng yên", correct: false, explain: "Chưa đúng." },
+          { text: "D. Di chuyển theo đường xoắn ốc", correct: false, explain: "Chưa đúng." }
+        ]
+      }
+    ];
+
+    let currentQIdx = 0;
+    let quizScores = new Array(quizData.length).fill(null);
+
+    const quizProgressBadge = document.getElementById('quizProgressBadge');
+    const quizNavDots = document.getElementById('quizNavDots');
+    const quizQuestionText = document.getElementById('quizQuestionText');
+    const quizOptionsContainer = document.getElementById('quizOptionsContainer');
+    const quizFeedback = document.getElementById('quizFeedback');
+    const quizScoreText = document.getElementById('quizScoreText');
+    const btnPrevQuestion = document.getElementById('btnPrevQuestion');
+    const btnNextQuestion = document.getElementById('btnNextQuestion');
+
+    function initQuiz() {
+      // Build dots
+      quizNavDots.innerHTML = '';
+      quizData.forEach((_, i) => {
+        const dot = document.createElement('div');
+        dot.className = 'quiz-dot' + (i === 0 ? ' active' : '');
+        dot.addEventListener('click', () => loadQuestion(i));
+        quizNavDots.appendChild(dot);
+      });
+      loadQuestion(0);
+    }
+
+    function loadQuestion(idx) {
+      currentQIdx = idx;
+      quizProgressBadge.textContent = `Câu ${idx + 1} / ${quizData.length}`;
+
+      // Update dots
+      document.querySelectorAll('.quiz-dot').forEach((dot, i) => {
+        dot.className = 'quiz-dot';
+        if (i === currentQIdx) dot.classList.add('active');
+        if (quizScores[i] === true) dot.classList.add('correct');
+        else if (quizScores[i] === false) dot.classList.add('incorrect');
+      });
+
+      const q = quizData[idx];
+      quizQuestionText.innerHTML = `<b>${q.q}</b>`;
+      quizOptionsContainer.innerHTML = '';
+      quizFeedback.className = 'quiz-feedback';
+      quizFeedback.innerHTML = '';
+
+      q.options.forEach((opt, oIdx) => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-opt-btn';
+        btn.textContent = opt.text;
+        btn.addEventListener('click', () => selectAnswer(btn, opt, q));
+        quizOptionsContainer.appendChild(btn);
+      });
+
+      updateScoreDisplay();
+    }
+
+    function selectAnswer(selectedBtn, opt, q) {
+      const isCorrect = opt.correct;
+      quizScores[currentQIdx] = isCorrect;
+
+      document.querySelectorAll('.quiz-opt-btn').forEach(b => b.disabled = true);
+
+      if (isCorrect) {
+        selectedBtn.classList.add('correct');
+        quizFeedback.className = 'quiz-feedback show success';
+        quizFeedback.innerHTML = `🎉 <b>Chính xác!</b> ${opt.explain}`;
+        if (q.applyState) {
+          if (q.applyState.R !== undefined) {
+            state.R = q.applyState.R;
+            sliderRadius.value = state.R;
+          }
+          if (q.applyState.thetaDeg !== undefined) {
+            state.thetaDeg = q.applyState.thetaDeg;
+            sliderAngle.value = state.thetaDeg;
+          }
+          updateUI();
+          addLogEntry(`Áp dụng câu ${currentQIdx + 1}`);
+        }
+      } else {
+        selectedBtn.classList.add('incorrect');
+        quizFeedback.className = 'quiz-feedback show error';
+        quizFeedback.innerHTML = `❌ <b>Chưa chính xác!</b> ${opt.explain}`;
+      }
+
+      // Update current dot
+      const dot = quizNavDots.children[currentQIdx];
+      dot.className = 'quiz-dot active ' + (isCorrect ? 'correct' : 'incorrect');
+
+      updateScoreDisplay();
+    }
+
+    function updateScoreDisplay() {
+      const answered = quizScores.filter(s => s !== null).length;
+      const correct = quizScores.filter(s => s === true).length;
+      quizScoreText.textContent = `Điểm: ${correct}/${quizData.length}`;
+    }
+
+    btnPrevQuestion.addEventListener('click', () => {
+      if (currentQIdx > 0) loadQuestion(currentQIdx - 1);
+    });
+
+    btnNextQuestion.addEventListener('click', () => {
+      if (currentQIdx < quizData.length - 1) loadQuestion(currentQIdx + 1);
+    });
+
+    // Init
+    resizeCanvases();
+    updateUI();
+    initQuiz();
+    requestAnimationFrame(animate);
+  </script>
+</body>
+</html>

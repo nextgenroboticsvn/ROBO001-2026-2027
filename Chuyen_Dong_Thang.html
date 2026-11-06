@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide 13: Chuyển Động Thẳng Đều - Quan Hệ Vận Tốc, Quãng Đường, Thời Gian (v = s/t)</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Top Header -->
+    <header class="top-header">
+      <div class="header-left">
+        <div class="logo-wrap">
+          <img id="ayorLogoImg" class="logo-img" src="assets/ayor_logo.png" alt="AYOR 2026">
+          <div class="title-wrap">
+            <h1>CHUYỂN ĐỘNG HỌC ROBOT <span class="badge-tag badge-cyan">SLIDE 13</span></h1>
+            <div class="sub-title">
+              <span>Chuyển Động Thẳng Đều: Quan Hệ Vận Tốc - Quãng Đường - Thời Gian</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="system-status">
+          <span class="status-dot"></span>
+          <span>LINEAR MOTION: 1 DoF</span>
+        </div>
+        <button id="btnFullscreen" class="btn-utility" title="Toàn màn hình trình chiếu">⛶ Toàn màn hình</button>
+        <div class="mascot-avatar-wrap" title="Trợ lý ảo AYOR 2026">
+          <div class="mascot-bubble">Hãy thay đổi vận tốc v và xem chất điểm chạy trên trục Ox nhé!</div>
+          <img id="mascotBearImg" class="mascot-img" src="assets/mascot_bear.png" alt="Mascot Astronaut Bear">
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Grid -->
+    <main class="sim-grid">
+      <!-- Left: Simulation Canvas & Graphs -->
+      <section class="sim-stage-card">
+        <div class="card-header-bar">
+          <div class="card-title">
+            <span>Mặt Phẳng Chuyển Động Của Chất Điểm / Robot Trên Trục Ox</span>
+            <span class="formula-tag">v = s / t &hArr; s = v &middot; t &hArr; t = s / v</span>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button id="toggleTargetBtn" class="btn-canvas-tool">🎯 Đích đến: BẬT</button>
+            <button id="toggleVectorBtn" class="btn-canvas-tool">↗ Vector v: BẬT</button>
+            <button id="toggleEntityBtn" class="btn-canvas-tool">🤖 Chế độ: Robot Mini</button>
+          </div>
+        </div>
+
+        <!-- Canvas Area -->
+        <div class="canvas-viewport-wrap" id="canvasContainer">
+          <canvas id="simCanvas" class="sim-canvas"></canvas>
+          <div class="canvas-overlay-hud">
+            <div class="hud-pill"><span>TỌA ĐỘ x:</span> <b id="hudPos">0.0 cm</b></div>
+            <div class="hud-pill"><span>VECTOR v:</span> <b id="hudVel" style="color:var(--cyan-accent);">+20.0 cm/s</b></div>
+            <div class="hud-pill"><span>THỜI GIAN t:</span> <b id="hudTime">0.00 s</b></div>
+          </div>
+          <div class="canvas-overlay-controls">
+            <span style="font-size:0.75rem; color:#cbd5e1; align-self:center;">💡 Mẹo: Nhấp & kéo trực tiếp robot hoặc cờ đích!</span>
+          </div>
+        </div>
+
+        <!-- Playback Controls -->
+        <div class="playback-bar">
+          <div class="playback-buttons">
+            <button id="btnPlayPause" class="btn-control btn-primary-play">▶ BẮT ĐẦU CHẠY</button>
+            <button id="btnStep" class="btn-control">⏭ Bước (+0.1s)</button>
+            <button id="btnReset" class="btn-control">↺ Đặt lại (t=0)</button>
+          </div>
+
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span style="font-size:0.8rem; color:var(--text-secondary);">Tốc độ mô phỏng:</span>
+            <div class="speed-selector">
+              <button class="speed-btn" data-speed="0.5">0.5x</button>
+              <button class="speed-btn active" data-speed="1.0">1.0x</button>
+              <button class="speed-btn" data-speed="2.0">2.0x</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Realtime Dual Graphs -->
+        <div class="graphs-row">
+          <div class="graph-card">
+            <div class="graph-header">
+              <span style="color:#00f2fe;">📈 ĐỒ THỊ TỌA ĐỘ - THỜI GIAN s(t)</span>
+              <span>Độ dốc = Vận tốc v</span>
+            </div>
+            <canvas id="graphStCanvas" class="graph-canvas"></canvas>
+          </div>
+          <div class="graph-card">
+            <div class="graph-header">
+              <span style="color:#c084fc;">📊 ĐỒ THỊ VẬN TỐC - THỜI GIAN v(t)</span>
+              <span>Diện tích dưới đồ thị = Quãng đường s</span>
+            </div>
+            <canvas id="graphVtCanvas" class="graph-canvas"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right: Telemetry & Interactive Controls -->
+      <aside class="sim-side-deck">
+        <!-- Control Panel -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <span class="panel-title">⚙️ BẢNG ĐIỀU KHIỂN THÔNG SỐ</span>
+            <span class="badge-tag">SLIDER CONTROL</span>
+          </div>
+
+          <!-- Velocity Slider -->
+          <div class="control-group">
+            <div class="control-label-row">
+              <span class="param-name">Vận tốc chất điểm (v):</span>
+              <span class="param-val-badge" id="valVelBadge">+20.0 cm/s</span>
+            </div>
+            <div class="slider-container">
+              <input type="range" id="sliderVel" class="custom-slider" min="-60" max="60" step="1" value="20">
+            </div>
+            <div class="preset-pills-row">
+              <button class="btn-preset" data-vel="-30">-30 cm/s</button>
+              <button class="btn-preset" data-vel="0">0 (Đứng yên)</button>
+              <button class="btn-preset" data-vel="10">+10 cm/s</button>
+              <button class="btn-preset" data-vel="25">+25 cm/s</button>
+              <button class="btn-preset" data-vel="50">+50 cm/s</button>
+            </div>
+          </div>
+
+          <!-- Initial Position Slider -->
+          <div class="control-group">
+            <div class="control-label-row">
+              <span class="param-name">Vị trí ban đầu (s₀):</span>
+              <span class="param-val-badge" id="valPos0Badge">0.0 cm</span>
+            </div>
+            <div class="slider-container">
+              <input type="range" id="sliderPos0" class="custom-slider" min="-50" max="150" step="5" value="0">
+            </div>
+          </div>
+
+          <!-- Target Distance Slider -->
+          <div class="control-group">
+            <div class="control-label-row">
+              <span class="param-name">Vị trí cờ đích (s_đích):</span>
+              <span class="param-val-badge" id="valTargetBadge">200.0 cm</span>
+            </div>
+            <div class="slider-container">
+              <input type="range" id="sliderTarget" class="custom-slider" min="50" max="350" step="10" value="200">
+            </div>
+          </div>
+        </div>
+
+        <!-- Telemetry Data Grid -->
+        <div class="panel-card">
+          <div class="panel-header">
+            <span class="panel-title">📡 BẢNG THÔNG SỐ ĐO THỜI GIAN THỰC</span>
+            <span class="badge-tag">TELEMETRY</span>
+          </div>
+          <div class="telemetry-grid">
+            <div class="telemetry-cell highlight">
+              <span class="tel-label">Thời gian trôi qua (t)</span>
+              <div class="tel-value"><span id="telTime">0.00</span><span class="tel-unit">s</span></div>
+            </div>
+            <div class="telemetry-cell highlight">
+              <span class="tel-label">Vị trí hiện tại s(t)</span>
+              <div class="tel-value"><span id="telPos">0.0</span><span class="tel-unit">cm</span></div>
+            </div>
+            <div class="telemetry-cell">
+              <span class="tel-label">Quãng đường đi được (d)</span>
+              <div class="tel-value"><span id="telDist">0.0</span><span class="tel-unit">cm</span></div>
+            </div>
+            <div class="telemetry-cell">
+              <span class="tel-label">Vận tốc tức thời (v)</span>
+              <div class="tel-value"><span id="telVel">20.0</span><span class="tel-unit">cm/s</span></div>
+            </div>
+          </div>
+
+          <!-- Step-by-step Math calculation box -->
+          <div class="calc-breakdown-box">
+            <div class="step-title">📐 CÔNG THỨC VÀ BƯỚC TÍNH CHI TIẾT:</div>
+            <div class="math-formula-row">
+              <span>Quãng đường:</span>
+              <span>s = v &times; t</span>
+            </div>
+            <div id="mathSubstRow">
+              s = <span class="val-plugged" id="calcV">20.0</span> &times; <span class="val-plugged" id="calcT">0.00</span> = <span class="val-res" id="calcS">0.0 cm</span>
+            </div>
+            <div style="font-size:0.75rem; color:var(--text-secondary); margin-top:3px;">
+              Thời gian dự kiến đến đích: <b id="calcTimeEst" style="color:#0284c7;">10.00 s</b>
+            </div>
+          </div>
+        </div>
+
+        <!-- 9-Question Interactive Quiz Deck -->
+        <div class="challenge-card">
+          <div class="quiz-header-row">
+            <span class="challenge-badge">🎯 ÔN TẬP 9 CÂU HỎI TRẮC NGHIỆM</span>
+            <span class="quiz-progress-badge" id="quizProgressBadge">Câu 1 / 9</span>
+          </div>
+
+          <div class="quiz-nav-dots" id="quizNavDots"></div>
+
+          <div class="challenge-question" id="quizQuestionText">
+            Đang tải câu hỏi...
+          </div>
+
+          <div class="quiz-options-list" id="quizOptionsContainer"></div>
+
+          <div class="quiz-feedback" id="quizFeedback"></div>
+
+          <div class="quiz-bottom-controls">
+            <button id="btnPrevQuestion" class="btn-utility" style="padding:4px 10px; font-size:0.76rem;">&larr; Câu trước</button>
+            <span id="quizScoreText" style="font-size:0.76rem; font-weight:700; color:var(--text-secondary);">Điểm: 0/9</span>
+            <button id="btnNextQuestion" class="btn-utility" style="padding:4px 10px; font-size:0.76rem;">Câu tiếp &rarr;</button>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <!-- Bottom Telemetry Log -->
+    <footer class="bottom-telemetry-panel">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <span style="font-size: 0.8rem; font-weight: 700; color: var(--text-heading); text-transform: uppercase;">
+          📋 NHẬT KÝ VẬN HÀNH & KIỂM CHỨNG VẬT LÝ THEO THỜI GIAN
+        </span>
+        <button id="btnClearLog" class="btn-utility" style="padding: 2px 8px; font-size: 0.72rem;">Xóa nhật ký</button>
+      </div>
+      <div class="log-table-wrap">
+        <table class="telemetry-table">
+          <thead>
+            <tr>
+              <th>Thời Điểm</th>
+              <th>Thời Gian t (s)</th>
+              <th>Vận Tốc v (cm/s)</th>
+              <th>Vị Trí s (cm)</th>
+              <th>Quãng Đường d (cm)</th>
+              <th>Trạng Thái Hệ Thống</th>
+            </tr>
+          </thead>
+          <tbody id="telemetryLogBody">
+            <tr>
+              <td>[Hệ thống khởi động]</td>
+              <td>0.00</td>
+              <td>20.0</td>
+              <td>0.0</td>
+              <td>0.0</td>
+              <td><span style="color:var(--green-online);">Sẵn sàng vận hành</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </footer>
+  </div>
+
+  <script src="assets/images_data.js"></script>
+  <script>
+    if (window.AYOR_LOGO) document.getElementById('ayorLogoImg').src = window.AYOR_LOGO;
+    if (window.MASCOT_BEAR) document.getElementById('mascotBearImg').src = window.MASCOT_BEAR;
+
+    // Simulation State
+    const state = {
+      running: false,
+      time: 0,
+      v: 20, // cm/s
+      s0: 0, // cm
+      s: 0,  // cm
+      targetDist: 200, // cm
+      showTarget: true,
+      showVector: true,
+      entityMode: 'robot', // 'point' or 'robot'
+      speedMultiplier: 1.0,
+      lastTimestamp: null,
+      reachedTarget: false,
+      history: []
+    };
+
+    // DOM Elements
+    const canvas = document.getElementById('simCanvas');
+    const ctx = canvas.getContext('2d');
+    const graphStCanvas = document.getElementById('graphStCanvas');
+    const ctxSt = graphStCanvas.getContext('2d');
+    const graphVtCanvas = document.getElementById('graphVtCanvas');
+    const ctxVt = graphVtCanvas.getContext('2d');
+
+    const sliderVel = document.getElementById('sliderVel');
+    const sliderPos0 = document.getElementById('sliderPos0');
+    const sliderTarget = document.getElementById('sliderTarget');
+
+    const valVelBadge = document.getElementById('valVelBadge');
+    const valPos0Badge = document.getElementById('valPos0Badge');
+    const valTargetBadge = document.getElementById('valTargetBadge');
+
+    const hudPos = document.getElementById('hudPos');
+    const hudVel = document.getElementById('hudVel');
+    const hudTime = document.getElementById('hudTime');
+
+    const telTime = document.getElementById('telTime');
+    const telPos = document.getElementById('telPos');
+    const telDist = document.getElementById('telDist');
+    const telVel = document.getElementById('telVel');
+
+    const calcV = document.getElementById('calcV');
+    const calcT = document.getElementById('calcT');
+    const calcS = document.getElementById('calcS');
+    const calcTimeEst = document.getElementById('calcTimeEst');
+
+    const btnPlayPause = document.getElementById('btnPlayPause');
+    const btnStep = document.getElementById('btnStep');
+    const btnReset = document.getElementById('btnReset');
+    const toggleTargetBtn = document.getElementById('toggleTargetBtn');
+    const toggleVectorBtn = document.getElementById('toggleVectorBtn');
+    const toggleEntityBtn = document.getElementById('toggleEntityBtn');
+    const logBody = document.getElementById('telemetryLogBody');
+
+    function resizeCanvases() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      canvas.width = rect.width * window.devicePixelRatio;
+      canvas.height = rect.height * window.devicePixelRatio;
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+      const rSt = graphStCanvas.getBoundingClientRect();
+      graphStCanvas.width = rSt.width * window.devicePixelRatio;
+      graphStCanvas.height = rSt.height * window.devicePixelRatio;
+      ctxSt.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+      const rVt = graphVtCanvas.getBoundingClientRect();
+      graphVtCanvas.width = rVt.width * window.devicePixelRatio;
+      graphVtCanvas.height = rVt.height * window.devicePixelRatio;
+      ctxVt.scale(window.devicePixelRatio, window.devicePixelRatio);
+    }
+    window.addEventListener('resize', resizeCanvases);
+
+    function worldToScreenX(worldX, width) {
+      const minX = -60;
+      const maxX = 360;
+      const margin = 50;
+      return margin + ((worldX - minX) / (maxX - minX)) * (width - 2 * margin);
+    }
+
+    function screenToWorldX(screenX, width) {
+      const minX = -60;
+      const maxX = 360;
+      const margin = 50;
+      return minX + ((screenX - margin) / (width - 2 * margin)) * (maxX - minX);
+    }
+
+    let isDraggingEntity = false;
+    let isDraggingTarget = false;
+
+    canvas.addEventListener('mousedown', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const width = rect.width;
+      const entityScreenX = worldToScreenX(state.s, width);
+      const targetScreenX = worldToScreenX(state.targetDist, width);
+
+      if (Math.abs(clickX - entityScreenX) < 30) {
+        isDraggingEntity = true;
+      } else if (Math.abs(clickX - targetScreenX) < 25) {
+        isDraggingTarget = true;
+      }
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isDraggingEntity && !isDraggingTarget) return;
+      const rect = canvas.getBoundingClientRect();
+      const clickX = e.clientX - rect.left;
+      const width = rect.width;
+      const worldX = Math.round(screenToWorldX(clickX, width));
+
+      if (isDraggingEntity) {
+        state.s = Math.max(-50, Math.min(300, worldX));
+        state.s0 = state.s;
+        sliderPos0.value = state.s0;
+        valPos0Badge.textContent = state.s0.toFixed(1) + ' cm';
+        state.time = 0;
+        state.history = [{ t: 0, s: state.s, v: state.v }];
+        updateUI();
+      } else if (isDraggingTarget) {
+        state.targetDist = Math.max(50, Math.min(350, worldX));
+        sliderTarget.value = state.targetDist;
+        valTargetBadge.textContent = state.targetDist.toFixed(1) + ' cm';
+        updateUI();
+      }
+    });
+
+    window.addEventListener('mouseup', () => {
+      isDraggingEntity = false;
+      isDraggingTarget = false;
+    });
+
+    function updateUI() {
+      valVelBadge.textContent = (state.v >= 0 ? '+' : '') + state.v.toFixed(1) + ' cm/s';
+      valPos0Badge.textContent = state.s0.toFixed(1) + ' cm';
+      valTargetBadge.textContent = state.targetDist.toFixed(1) + ' cm';
+
+      hudPos.textContent = state.s.toFixed(1) + ' cm';
+      hudVel.textContent = (state.v >= 0 ? '+' : '') + state.v.toFixed(1) + ' cm/s';
+      hudTime.textContent = state.time.toFixed(2) + ' s';
+
+      telTime.textContent = state.time.toFixed(2);
+      telPos.textContent = state.s.toFixed(1);
+      telDist.textContent = Math.abs(state.s - state.s0).toFixed(1);
+      telVel.textContent = state.v.toFixed(1);
+
+      calcV.textContent = state.v.toFixed(1);
+      calcT.textContent = state.time.toFixed(2);
+      calcS.textContent = (state.v * state.time).toFixed(1) + ' cm';
+
+      const remDist = state.targetDist - state.s0;
+      if (state.v !== 0 && remDist / state.v > 0) {
+        calcTimeEst.textContent = (remDist / state.v).toFixed(2) + ' s';
+      } else {
+        calcTimeEst.textContent = 'Không chạm đích';
+      }
+    }
+
+    sliderVel.addEventListener('input', (e) => {
+      state.v = parseFloat(e.target.value);
+      updateUI();
+    });
+
+    sliderPos0.addEventListener('input', (e) => {
+      state.s0 = parseFloat(e.target.value);
+      state.s = state.s0 + state.v * state.time;
+      updateUI();
+    });
+
+    sliderTarget.addEventListener('input', (e) => {
+      state.targetDist = parseFloat(e.target.value);
+      updateUI();
+    });
+
+    document.querySelectorAll('.btn-preset[data-vel]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.v = parseFloat(btn.dataset.vel);
+        sliderVel.value = state.v;
+        updateUI();
+      });
+    });
+
+    document.querySelectorAll('.speed-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.speed-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.speedMultiplier = parseFloat(btn.dataset.speed);
+      });
+    });
+
+    btnPlayPause.addEventListener('click', () => {
+      state.running = !state.running;
+      btnPlayPause.textContent = state.running ? '⏸ TẠM DỪNG' : '▶ BẮT ĐẦU CHẠY';
+      btnPlayPause.classList.toggle('btn-primary-play', !state.running);
+      state.lastTimestamp = performance.now();
+      if (state.running) addLogEntry('Bắt đầu chuyển động');
+    });
+
+    btnStep.addEventListener('click', () => {
+      state.running = false;
+      btnPlayPause.textContent = '▶ BẮT ĐẦU CHẠY';
+      btnPlayPause.classList.add('btn-primary-play');
+      stepSimulation(0.1);
+      addLogEntry('Bước chuyển động +0.1s');
+    });
+
+    btnReset.addEventListener('click', () => {
+      state.running = false;
+      state.time = 0;
+      state.s = state.s0;
+      state.reachedTarget = false;
+      state.history = [{ t: 0, s: state.s, v: state.v }];
+      btnPlayPause.textContent = '▶ BẮT ĐẦU CHẠY';
+      btnPlayPause.classList.add('btn-primary-play');
+      updateUI();
+      addLogEntry('Đã đặt lại về t=0');
+    });
+
+    toggleTargetBtn.addEventListener('click', () => {
+      state.showTarget = !state.showTarget;
+      toggleTargetBtn.textContent = state.showTarget ? '🎯 Đích đến: BẬT' : '🎯 Đích đến: TẮT';
+    });
+
+    toggleVectorBtn.addEventListener('click', () => {
+      state.showVector = !state.showVector;
+      toggleVectorBtn.textContent = state.showVector ? '↗ Vector v: BẬT' : '↗ Vector v: TẮT';
+    });
+
+    toggleEntityBtn.addEventListener('click', () => {
+      state.entityMode = state.entityMode === 'robot' ? 'point' : 'robot';
+      toggleEntityBtn.textContent = state.entityMode === 'robot' ? '🤖 Chế độ: Robot Mini' : '✨ Chế độ: Chất Điểm';
+    });
+
+    document.getElementById('btnClearLog').addEventListener('click', () => {
+      logBody.innerHTML = '';
+      addLogEntry('Nhật ký đã được làm mới');
+    });
+
+    document.getElementById('btnFullscreen').addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    });
+
+    function addLogEntry(statusText) {
+      const now = new Date().toLocaleTimeString();
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${now}</td>
+        <td>${state.time.toFixed(2)}</td>
+        <td>${state.v.toFixed(1)}</td>
+        <td>${state.s.toFixed(1)}</td>
+        <td>${Math.abs(state.s - state.s0).toFixed(1)}</td>
+        <td><span style="color:#0284c7; font-weight:600;">${statusText}</span></td>
+      `;
+      logBody.insertBefore(tr, logBody.firstChild);
+      if (logBody.children.length > 8) logBody.removeChild(logBody.lastChild);
+    }
+
+    function stepSimulation(dt) {
+      state.time += dt;
+      state.s = state.s0 + state.v * state.time;
+
+      if (state.showTarget && !state.reachedTarget) {
+        if ((state.v > 0 && state.s >= state.targetDist && (state.s - state.v * dt) < state.targetDist) ||
+            (state.v < 0 && state.s <= state.targetDist && (state.s - state.v * dt) > state.targetDist)) {
+          state.reachedTarget = true;
+          state.running = false;
+          btnPlayPause.textContent = '▶ BẮT ĐẦU CHẠY';
+          btnPlayPause.classList.add('btn-primary-play');
+          addLogEntry(`🎉 Chạm đích ${state.targetDist} cm tại t=${state.time.toFixed(2)}s!`);
+        }
+      }
+
+      state.history.push({ t: state.time, s: state.s, v: state.v });
+      if (state.history.length > 500) state.history.shift();
+
+      updateUI();
+    }
+
+    // Main Draw Function
+    function draw() {
+      const width = canvas.width / window.devicePixelRatio;
+      const height = canvas.height / window.devicePixelRatio;
+      ctx.clearRect(0, 0, width, height);
+
+      // Light Beige Paper Background
+      ctx.fillStyle = '#f8f6f0';
+      ctx.fillRect(0, 0, width, height);
+
+      const trackY = height * 0.58;
+
+      // 1. Solid Black Grid Lines (Giấy kẻ ô li nét liền đen)
+      ctx.strokeStyle = 'rgba(0, 0, 0, 0.12)';
+      ctx.lineWidth = 1;
+      ctx.setLineDash([]);
+      const gridSize = 40;
+      for (let x = 0; x < width; x += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+        ctx.stroke();
+      }
+      for (let y = 0; y < height; y += gridSize) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+        ctx.stroke();
+      }
+
+      // 2. Draw Track (Ox axis with Ruler markings)
+      const roadH = 34;
+      ctx.fillStyle = '#eae4d8';
+      ctx.fillRect(0, trackY - roadH / 2, width, roadH);
+      ctx.strokeStyle = '#7c3aed';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(0, trackY - roadH / 2, width, roadH);
+
+      // Axis center dashed line
+      ctx.strokeStyle = 'rgba(124, 58, 237, 0.4)';
+      ctx.setLineDash([6, 6]);
+      ctx.beginPath();
+      ctx.moveTo(0, trackY);
+      ctx.lineTo(width, trackY);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Ruler ticks from -50cm to 350cm
+      ctx.font = '10px Consolas, monospace';
+      ctx.textAlign = 'center';
+
+      for (let wX = -50; wX <= 350; wX += 10) {
+        const sx = worldToScreenX(wX, width);
+        const isMajor = (wX % 50 === 0);
+        const isZero = (wX === 0);
+
+        ctx.strokeStyle = isZero ? '#0284c7' : (isMajor ? 'rgba(0, 0, 0, 0.65)' : 'rgba(0, 0, 0, 0.25)');
+        ctx.lineWidth = isZero ? 2.5 : (isMajor ? 1.5 : 1);
+
+        const tickH = isMajor ? 12 : 6;
+        ctx.beginPath();
+        ctx.moveTo(sx, trackY + roadH / 2);
+        ctx.lineTo(sx, trackY + roadH / 2 + tickH);
+        ctx.stroke();
+
+        if (isMajor) {
+          ctx.fillStyle = isZero ? '#0284c7' : '#1e1338';
+          ctx.fillText(wX + ' cm', sx, trackY + roadH / 2 + tickH + 12);
+        }
+      }
+
+      // Axis label Ox
+      ctx.fillStyle = '#0284c7';
+      ctx.font = 'bold 12px sans-serif';
+      ctx.textAlign = 'right';
+      ctx.fillText('Trục Ox (cm) ➔', width - 15, trackY + 45);
+
+      // 3. Draw Trajectory Trail
+      const originX = worldToScreenX(state.s0, width);
+      const currX = worldToScreenX(state.s, width);
+
+      const trailGrad = ctx.createLinearGradient(originX, 0, currX, 0);
+      trailGrad.addColorStop(0, 'rgba(124, 58, 237, 0.15)');
+      trailGrad.addColorStop(1, 'rgba(2, 132, 199, 0.45)');
+
+      ctx.fillStyle = trailGrad;
+      const leftTrail = Math.min(originX, currX);
+      const rightTrail = Math.max(originX, currX);
+      ctx.fillRect(leftTrail, trackY - 6, rightTrail - leftTrail, 12);
+
+      // Trajectory distance bracket
+      if (Math.abs(currX - originX) > 15) {
+        ctx.strokeStyle = '#7c3aed';
+        ctx.lineWidth = 1.5;
+        const braceY = trackY - 35;
+        ctx.beginPath();
+        ctx.moveTo(originX, braceY + 6);
+        ctx.lineTo(originX, braceY);
+        ctx.lineTo(currX, braceY);
+        ctx.lineTo(currX, braceY + 6);
+        ctx.stroke();
+
+        ctx.fillStyle = '#581c87';
+        ctx.font = 'bold 11px Consolas, monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(`s = ${Math.abs(state.s - state.s0).toFixed(1)} cm`, (originX + currX) / 2, braceY - 6);
+      }
+
+      // 4. Draw Target Flag
+      if (state.showTarget) {
+        const flagX = worldToScreenX(state.targetDist, width);
+        const flagY = trackY - roadH / 2;
+
+        ctx.strokeStyle = '#d97706';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(flagX, flagY);
+        ctx.lineTo(flagX, flagY - 50);
+        ctx.stroke();
+
+        ctx.fillStyle = state.reachedTarget ? '#10b981' : '#d97706';
+        ctx.beginPath();
+        ctx.moveTo(flagX, flagY - 50);
+        ctx.lineTo(flagX + 26, flagY - 38);
+        ctx.lineTo(flagX, flagY - 26);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.fillStyle = '#1e1338';
+        ctx.font = 'bold 9px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('ĐÍCH', flagX, flagY - 56);
+        ctx.fillText(`${state.targetDist}cm`, flagX, flagY + 20);
+      }
+
+      // 5. Draw Entity (Robot Mini or Glowing Point Mass)
+      const entityX = worldToScreenX(state.s, width);
+      const entityY = trackY;
+
+      if (state.entityMode === 'robot') {
+        const rw = 44;
+        const rh = 26;
+
+        ctx.fillStyle = '#4c1d95';
+        ctx.strokeStyle = '#2e1065';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.roundRect(entityX - rw / 2, entityY - rh / 2 - 4, rw, rh, 6);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = '#1e293b';
+        ctx.strokeStyle = '#475569';
+        ctx.lineWidth = 1.5;
+        ctx.fillRect(entityX - 16, entityY - rh / 2 - 9, 32, 6);
+        ctx.strokeRect(entityX - 16, entityY - rh / 2 - 9, 32, 6);
+        ctx.fillRect(entityX - 16, entityY + rh / 2 - 1, 32, 6);
+        ctx.strokeRect(entityX - 16, entityY + rh / 2 - 1, 32, 6);
+
+        ctx.fillStyle = '#0284c7';
+        ctx.beginPath();
+        ctx.arc(entityX, entityY - 4, 6, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = state.v >= 0 ? '#10b981' : '#f43f5e';
+        ctx.beginPath();
+        ctx.arc(entityX + (state.v >= 0 ? rw / 2 - 4 : -rw / 2 + 4), entityY - 4, 3, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        ctx.fillStyle = '#0284c7';
+        ctx.beginPath();
+        ctx.arc(entityX, entityY, 9, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(entityX, entityY, 4, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#0369a1';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+      }
+
+      ctx.fillStyle = '#1e1338';
+      ctx.font = 'bold 11px Consolas, monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(`s = ${state.s.toFixed(1)} cm`, entityX, entityY - 32);
+
+      // 6. Velocity Vector arrow
+      if (state.showVector && Math.abs(state.v) > 0.1) {
+        const arrowLen = (state.v / 60) * 110;
+        const arrowY = entityY + 30;
+        const startX = entityX;
+        const endX = entityX + arrowLen;
+
+        ctx.strokeStyle = '#0284c7';
+        ctx.fillStyle = '#0284c7';
+        ctx.lineWidth = 3;
+
+        ctx.beginPath();
+        ctx.moveTo(startX, arrowY);
+        ctx.lineTo(endX, arrowY);
+        ctx.stroke();
+
+        const headSize = 8;
+        const sign = arrowLen >= 0 ? 1 : -1;
+        ctx.beginPath();
+        ctx.moveTo(endX, arrowY);
+        ctx.lineTo(endX - sign * headSize, arrowY - headSize * 0.7);
+        ctx.lineTo(endX - sign * headSize, arrowY + headSize * 0.7);
+        ctx.closePath();
+        ctx.fill();
+
+        ctx.fillStyle = '#0369a1';
+        ctx.font = 'bold 11px Consolas, monospace';
+        ctx.fillText(`v = ${(state.v >= 0 ? '+' : '') + state.v.toFixed(1)} cm/s`, endX + sign * 10, arrowY + 4);
+      }
+    }
+
+    // Draw Graphs
+    function drawGraphs() {
+      // 1. Graph s(t)
+      const w1 = graphStCanvas.width / window.devicePixelRatio;
+      const h1 = graphStCanvas.height / window.devicePixelRatio;
+      ctxSt.clearRect(0, 0, w1, h1);
+
+      ctxSt.fillStyle = '#f8f6f0';
+      ctxSt.fillRect(0, 0, w1, h1);
+
+      ctxSt.strokeStyle = 'rgba(0, 0, 0, 0.15)';
+      ctxSt.lineWidth = 1;
+      const padL = 35;
+      const padB = 25;
+      ctxSt.beginPath();
+      ctxSt.moveTo(padL, 10);
+      ctxSt.lineTo(padL, h1 - padB);
+      ctxSt.lineTo(w1 - 10, h1 - padB);
+      ctxSt.stroke();
+
+      ctxSt.fillStyle = '#475569';
+      ctxSt.font = '9px Consolas, monospace';
+      ctxSt.fillText('s(cm)', 5, 14);
+      ctxSt.fillText('t(s)', w1 - 25, h1 - 8);
+
+      if (state.history.length > 1) {
+        const maxT = Math.max(10, state.time);
+        const maxS = 350;
+
+        ctxSt.strokeStyle = '#0284c7';
+        ctxSt.lineWidth = 2.5;
+        ctxSt.beginPath();
+
+        state.history.forEach((pt, idx) => {
+          const gx = padL + (pt.t / maxT) * (w1 - padL - 15);
+          const gy = (h1 - padB) - (pt.s / maxS) * (h1 - padB - 20);
+          if (idx === 0) ctxSt.moveTo(gx, gy);
+          else ctxSt.lineTo(gx, gy);
+        });
+        ctxSt.stroke();
+      }
+
+      // 2. Graph v(t)
+      const w2 = graphVtCanvas.width / window.devicePixelRatio;
+      const h2 = graphVtCanvas.height / window.devicePixelRatio;
+      ctxVt.clearRect(0, 0, w2, h2);
+
+      ctxVt.fillStyle = '#f8f6f0';
+      ctxVt.fillRect(0, 0, w2, h2);
+
+      ctxVt.strokeStyle = 'rgba(0, 0, 0, 0.15)';
+      ctxVt.lineWidth = 1;
+      ctxVt.beginPath();
+      ctxVt.moveTo(padL, 10);
+      ctxVt.lineTo(padL, h2 - padB);
+      ctxVt.lineTo(w2 - 10, h2 - padB);
+      ctxVt.stroke();
+
+      ctxVt.fillStyle = '#475569';
+      ctxVt.font = '9px Consolas, monospace';
+      ctxVt.fillText('v(cm/s)', 3, 14);
+      ctxVt.fillText('t(s)', w2 - 25, h2 - 8);
+
+      if (state.history.length > 1) {
+        const maxT = Math.max(10, state.time);
+        const maxV = 70;
+
+        ctxVt.fillStyle = 'rgba(124, 58, 237, 0.15)';
+        ctxVt.beginPath();
+        const startX = padL + (state.history[0].t / maxT) * (w2 - padL - 15);
+        const zeroY = h2 - padB;
+        ctxVt.moveTo(startX, zeroY);
+
+        state.history.forEach(pt => {
+          const gx = padL + (pt.t / maxT) * (w2 - padL - 15);
+          const gy = (h2 - padB) - (pt.v / maxV) * (h2 - padB - 20);
+          ctxVt.lineTo(gx, gy);
+        });
+        const lastX = padL + (state.history[state.history.length - 1].t / maxT) * (w2 - padL - 15);
+        ctxVt.lineTo(lastX, zeroY);
+        ctxVt.closePath();
+        ctxVt.fill();
+
+        ctxVt.strokeStyle = '#7c3aed';
+        ctxVt.lineWidth = 2.5;
+        ctxVt.beginPath();
+        state.history.forEach((pt, idx) => {
+          const gx = padL + (pt.t / maxT) * (w2 - padL - 15);
+          const gy = (h2 - padB) - (pt.v / maxV) * (h2 - padB - 20);
+          if (idx === 0) ctxVt.moveTo(gx, gy);
+          else ctxVt.lineTo(gx, gy);
+        });
+        ctxVt.stroke();
+
+        ctxVt.fillStyle = '#6d28d9';
+        ctxVt.font = '10px sans-serif';
+        ctxVt.fillText('Diện tích = s', (startX + lastX) / 2, zeroY - 14);
+      }
+    }
+
+    function animate(timestamp) {
+      if (!state.lastTimestamp) state.lastTimestamp = timestamp;
+      const rawDt = (timestamp - state.lastTimestamp) / 1000;
+      state.lastTimestamp = timestamp;
+
+      if (state.running) {
+        const dt = Math.min(rawDt, 0.1) * state.speedMultiplier;
+        stepSimulation(dt);
+      }
+
+      draw();
+      drawGraphs();
+      requestAnimationFrame(animate);
+    }
+
+    // ==========================================
+    // 9-QUESTION QUIZ SYSTEM FOR SLIDE 13
+    // ==========================================
+    const quizData = [
+      {
+        q: "1. Robot VEX IQ chuyển động thẳng đều với vận tốc v = 20 cm/s trong thời gian t = 5 giây. Quãng đường s robot đi được là:",
+        options: [
+          { text: "A. s = v × t = 20 × 5 = 100 cm", correct: true, explain: "Chính xác! s = v × t = 20 × 5 = 100 cm." },
+          { text: "B. s = 25 cm", correct: false, explain: "Chưa đúng. Em bị nhầm sang phép cộng hoặc chia." },
+          { text: "C. s = 4 cm", correct: false, explain: "Chưa đúng, đây là phép chia 20 / 5." },
+          { text: "D. s = 15 cm", correct: false, explain: "Chưa đúng." }
+        ],
+        applyState: { v: 20, targetDist: 100 }
+      },
+      {
+        q: "2. Robot cần hoàn thành chặng đường s = 180 cm trong đúng thời gian t = 6 giây. Vận tốc v cần cài đặt là:",
+        options: [
+          { text: "A. v = s / t = 180 / 6 = 30 cm/s", correct: true, explain: "Tuyệt vời! v = s / t = 180 / 6 = 30 cm/s." },
+          { text: "B. v = 1080 cm/s", correct: false, explain: "Chưa đúng, đây là phép nhân 180 × 6." },
+          { text: "C. v = 174 cm/s", correct: false, explain: "Chưa đúng." },
+          { text: "D. v = 25 cm/s", correct: false, explain: "Chưa đúng." }
+        ],
+        applyState: { v: 30, targetDist: 180 }
+      },
+      {
+        q: "3. Robot chạy với vận tốc v = 25 cm/s. Để robot đi được quãng đường s = 150 cm, thời gian t cần thiết là:",
+        options: [
+          { text: "A. t = s / v = 150 / 25 = 6.0 giây", correct: true, explain: "Chính xác! t = s / v = 150 / 25 = 6 giây." },
+          { text: "B. t = 3750 giây", correct: false, explain: "Chưa đúng, đây là phép nhân." },
+          { text: "C. t = 125 giây", correct: false, explain: "Chưa đúng." },
+          { text: "D. t = 5.0 giây", correct: false, explain: "Chưa đúng." }
+        ],
+        applyState: { v: 25, targetDist: 150 }
+      },
+      {
+        q: "4. Trên đồ thị tọa độ - thời gian s(t), đường biểu diễn là một đường thẳng dốc. Đại lượng nào thể hiện độ dốc (slope) của đường này?",
+        options: [
+          { text: "A. Vận tốc v (vì độ dốc = Δs / Δt = v)", correct: true, explain: "Chính xác 100%! Độ dốc càng lớn thì xe chạy càng nhanh." },
+          { text: "B. Quãng đường s", correct: false, explain: "Chưa đúng." },
+          { text: "C. Thời gian t", correct: false, explain: "Chưa đúng." },
+          { text: "D. Khối lượng robot", correct: false, explain: "Chưa đúng." }
+        ]
+      },
+      {
+        q: "5. Trên đồ thị vận tốc - thời gian v(t), diện tích hình chữ nhật giới hạn bởi đường v và trục thời gian từ 0 đến t có ý nghĩa gì?",
+        options: [
+          { text: "A. Quãng đường s = v × t", correct: true, explain: "Rất chuẩn! Diện tích = Chiều cao (v) × Chiều rộng (t) = Quãng đường s." },
+          { text: "B. Gia tốc của robot", correct: false, explain: "Chưa đúng." },
+          { text: "C. Khối lượng robot", correct: false, explain: "Chưa đúng." },
+          { text: "D. Góc quay", correct: false, explain: "Chưa đúng." }
+        ]
+      },
+      {
+        q: "6. Robot xuất phát từ vị trí ban đầu s₀ = 30 cm, chạy thẳng đều với vận tốc v = 15 cm/s. Sau thời gian t = 4 giây, vị trí tọa độ của robot là:",
+        options: [
+          { text: "A. s = s₀ + v·t = 30 + 15 × 4 = 90 cm", correct: true, explain: "Xuất sắc! Phương trình tọa độ chuyển động thẳng: s(t) = s₀ + v·t." },
+          { text: "B. s = 60 cm", correct: false, explain: "Chưa đúng, em quên cộng vị trí xuất phát s₀ = 30 cm." },
+          { text: "C. s = 120 cm", correct: false, explain: "Chưa đúng." },
+          { text: "D. s = 45 cm", correct: false, explain: "Chưa đúng." }
+        ],
+        applyState: { s0: 30, v: 15, targetDist: 90 }
+      },
+      {
+        q: "7. Nếu vận tốc cài đặt có giá trị âm (ví dụ: v = -20 cm/s), điều này có ý nghĩa gì đối với chuyển động của robot?",
+        options: [
+          { text: "A. Robot chuyển động lùi lại ngược chiều dương của trục tọa độ", correct: true, explain: "Chính xác! Dấu của vận tốc thể hiện chiều chuyển động theo quy ước trục tọa độ." },
+          { text: "B. Robot đứng yên", correct: false, explain: "Chưa đúng." },
+          { text: "C. Động cơ robot bị hỏng", correct: false, explain: "Chưa đúng." },
+          { text: "D. Robot tăng tốc", correct: false, explain: "Chưa đúng." }
+        ],
+        applyState: { v: -20 }
+      },
+      {
+        q: "8. Một robot di chuyển trên sân thi đấu với vận tốc 0.5 m/s. Đổi sang đơn vị cm/s, vận tốc này bằng:",
+        options: [
+          { text: "A. 50 cm/s (vì 1 m = 100 cm nên 0.5 × 100 = 50)", correct: true, explain: "Chính xác! 1 m = 100 cm &rarr; 0.5 m/s = 50 cm/s." },
+          { text: "B. 5 cm/s", correct: false, explain: "Chưa đúng." },
+          { text: "C. 500 cm/s", correct: false, explain: "Chưa đúng." },
+          { text: "D. 0.005 cm/s", correct: false, explain: "Chưa đúng." }
+        ],
+        applyState: { v: 50 }
+      },
+      {
+        q: "9. Hai robot cùng xuất phát tại s = 0 cm. Robot A chạy v_A = 20 cm/s, robot B chạy v_B = 30 cm/s. Sau t = 5 giây, khoảng cách giữa 2 robot là:",
+        options: [
+          { text: "A. Δs = (30 - 20) × 5 = 50 cm", correct: true, explain: "Rất xuất sắc! Robot B đi được 150 cm, Robot A đi được 100 cm, cách nhau 50 cm." },
+          { text: "B. Δs = 100 cm", correct: false, explain: "Chưa đúng." },
+          { text: "C. Δs = 250 cm", correct: false, explain: "Chưa đúng." },
+          { text: "D. Δs = 10 cm", correct: false, explain: "Chưa đúng." }
+        ]
+      }
+    ];
+
+    let currentQIdx = 0;
+    let quizScores = new Array(quizData.length).fill(null);
+
+    const quizProgressBadge = document.getElementById('quizProgressBadge');
+    const quizNavDots = document.getElementById('quizNavDots');
+    const quizQuestionText = document.getElementById('quizQuestionText');
+    const quizOptionsContainer = document.getElementById('quizOptionsContainer');
+    const quizFeedback = document.getElementById('quizFeedback');
+    const quizScoreText = document.getElementById('quizScoreText');
+    const btnPrevQuestion = document.getElementById('btnPrevQuestion');
+    const btnNextQuestion = document.getElementById('btnNextQuestion');
+
+    function initQuiz() {
+      quizNavDots.innerHTML = '';
+      quizData.forEach((_, i) => {
+        const dot = document.createElement('div');
+        dot.className = 'quiz-dot' + (i === 0 ? ' active' : '');
+        dot.addEventListener('click', () => loadQuestion(i));
+        quizNavDots.appendChild(dot);
+      });
+      loadQuestion(0);
+    }
+
+    function loadQuestion(idx) {
+      currentQIdx = idx;
+      quizProgressBadge.textContent = `Câu ${idx + 1} / ${quizData.length}`;
+
+      document.querySelectorAll('.quiz-dot').forEach((dot, i) => {
+        dot.className = 'quiz-dot';
+        if (i === currentQIdx) dot.classList.add('active');
+        if (quizScores[i] === true) dot.classList.add('correct');
+        else if (quizScores[i] === false) dot.classList.add('incorrect');
+      });
+
+      const q = quizData[idx];
+      quizQuestionText.innerHTML = `<b>${q.q}</b>`;
+      quizOptionsContainer.innerHTML = '';
+      quizFeedback.className = 'quiz-feedback';
+      quizFeedback.innerHTML = '';
+
+      q.options.forEach((opt) => {
+        const btn = document.createElement('button');
+        btn.className = 'quiz-opt-btn';
+        btn.textContent = opt.text;
+        btn.addEventListener('click', () => selectAnswer(btn, opt, q));
+        quizOptionsContainer.appendChild(btn);
+      });
+
+      updateScoreDisplay();
+    }
+
+    function selectAnswer(selectedBtn, opt, q) {
+      const isCorrect = opt.correct;
+      quizScores[currentQIdx] = isCorrect;
+
+      document.querySelectorAll('.quiz-opt-btn').forEach(b => b.disabled = true);
+
+      if (isCorrect) {
+        selectedBtn.classList.add('correct');
+        quizFeedback.className = 'quiz-feedback show success';
+        quizFeedback.innerHTML = `🎉 <b>Chính xác!</b> ${opt.explain}`;
+        if (q.applyState) {
+          if (q.applyState.v !== undefined) {
+            state.v = q.applyState.v;
+            sliderVel.value = state.v;
+          }
+          if (q.applyState.s0 !== undefined) {
+            state.s0 = q.applyState.s0;
+            sliderPos0.value = state.s0;
+          }
+          if (q.applyState.targetDist !== undefined) {
+            state.targetDist = q.applyState.targetDist;
+            sliderTarget.value = state.targetDist;
+          }
+          updateUI();
+          addLogEntry(`Áp dụng câu ${currentQIdx + 1}`);
+        }
+      } else {
+        selectedBtn.classList.add('incorrect');
+        quizFeedback.className = 'quiz-feedback show error';
+        quizFeedback.innerHTML = `❌ <b>Chưa chính xác!</b> ${opt.explain}`;
+      }
+
+      const dot = quizNavDots.children[currentQIdx];
+      dot.className = 'quiz-dot active ' + (isCorrect ? 'correct' : 'incorrect');
+
+      updateScoreDisplay();
+    }
+
+    function updateScoreDisplay() {
+      const correct = quizScores.filter(s => s === true).length;
+      quizScoreText.textContent = `Điểm: ${correct}/${quizData.length}`;
+    }
+
+    btnPrevQuestion.addEventListener('click', () => {
+      if (currentQIdx > 0) loadQuestion(currentQIdx - 1);
+    });
+
+    btnNextQuestion.addEventListener('click', () => {
+      if (currentQIdx < quizData.length - 1) loadQuestion(currentQIdx + 1);
+    });
+
+    // Initial setup
+    state.history.push({ t: 0, s: state.s, v: state.v });
+    resizeCanvases();
+    updateUI();
+    initQuiz();
+    requestAnimationFrame(animate);
+  </script>
+</body>
+</html>

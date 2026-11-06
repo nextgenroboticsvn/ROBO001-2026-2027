@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AYOR 2026 - HỆ THỐNG MÔ PHỎNG CHUYỂN ĐỘNG HỌC ROBOT (SLIDES 12 - 13 - 14)</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .portal-hero {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(243, 235, 255, 0.9));
+      border: 1px solid var(--border-glow);
+      border-radius: var(--radius-lg);
+      padding: 24px 28px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+    .portal-hero h2 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text-heading);
+      margin-bottom: 8px;
+      background: linear-gradient(90deg, #2e1065, #7c3aed, #0284c7);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .portal-hero p {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      max-width: 860px;
+    }
+
+    .portal-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    @media (max-width: 1024px) {
+      .portal-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .sim-card {
+      background: #ffffff;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+      box-shadow: var(--shadow-card);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    .sim-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, #7c3aed, #0284c7);
+      opacity: 0.8;
+      transition: height 0.2s ease;
+    }
+    .sim-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 28px rgba(124, 58, 237, 0.15);
+      border-color: rgba(124, 58, 237, 0.4);
+    }
+    .sim-card:hover::before {
+      height: 7px;
+    }
+
+    .sim-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .slide-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .badge-s12 {
+      background: rgba(124, 58, 237, 0.1);
+      color: #6d28d9;
+      border: 1px solid rgba(124, 58, 237, 0.3);
+    }
+    .badge-s13 {
+      background: rgba(2, 132, 199, 0.1);
+      color: #0284c7;
+      border: 1px solid rgba(2, 132, 199, 0.3);
+    }
+    .badge-s14 {
+      background: rgba(13, 148, 136, 0.1);
+      color: #0d9488;
+      border: 1px solid rgba(13, 148, 136, 0.3);
+    }
+
+    .quiz-count-tag {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #059669;
+      background: #ecfdf5;
+      padding: 3px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
+
+    .sim-card-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-heading);
+      line-height: 1.4;
+      min-height: 54px;
+    }
+
+    .formula-box {
+      background: #fdfbf7;
+      border: 1px solid rgba(124, 58, 237, 0.15);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: #4338ca;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    .feature-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .feature-list li {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      line-height: 1.45;
+    }
+    .feature-list li::before {
+      content: "✓";
+      color: #7c3aed;
+      font-weight: 800;
+    }
+
+    .btn-launch {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 14px 20px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, #7c3aed, #4f46e5) !important;
+      color: #ffffff !important;
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 4px 14px rgba(124, 58, 237, 0.25);
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-launch:hover {
+      background: linear-gradient(135deg, #6d28d9, #3730a3) !important;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(124, 58, 237, 0.35);
+      color: #ffffff !important;
+    }
+
+    .guide-box {
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .guide-text {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+    }
+    .guide-text b {
+      color: var(--text-heading);
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Top Header -->
+    <header class="top-header">
+      <div class="header-left">
+        <div class="logo-wrap">
+          <img id="ayorLogoImg" class="logo-img" src="assets/ayor_logo.png" alt="AYOR 2026">
+          <div class="title-wrap">
+            <h1>AYOR 2026 &bull; KINEMATICS ROBOTICS LAB</h1>
+            <div class="sub-title">
+              <span>Hệ Thống Mô Phỏng Tương Tác Vật Lý 2D K12 - Lesson 4: Kinematics</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="system-status">
+          <span class="status-dot"></span>
+          <span>LAB SUITE: READY</span>
+        </div>
+        <div class="mascot-avatar-wrap" title="Trợ lý ảo AYOR 2026">
+          <div class="mascot-bubble">Chào mừng các bạn đến với các bài mô phỏng chuyển động học robot!</div>
+          <img id="mascotBearImg" class="mascot-img" src="assets/mascot_bear.png" alt="Mascot Astronaut Bear">
+        </div>
+      </div>
+    </header>
+
+    <!-- Portal Hero Intro -->
+    <section class="portal-hero">
+      <div class="hero-info">
+        <h2>HỆ THỐNG MÔ PHỎNG VẬT LÝ VÀ CHUYỂN ĐỘNG HỌC ROBOT</h2>
+        <p>
+          Các bài mô phỏng được phân tách thành 3 phần mềm độc lập chuyên biệt cho từng Slide, được thiết kế với giao diện sáng sủa (nền be ô li nét liền), trực quan, dễ thao tác và tích hợp trọn bộ <b>9 câu hỏi ôn tập tương tác cho mỗi phần</b> giúp học sinh nắm vững toàn diện kiến thức.
+        </p>
+      </div>
+    </section>
+
+    <!-- 3 Independent Simulation Cards -->
+    <div class="portal-grid">
+      <!-- Card 1: Slide 12 -->
+      <article class="sim-card">
+        <div>
+          <div class="sim-card-header">
+            <span class="slide-badge badge-s12">🎯 Slide 12 &bull; 2D Oxy</span>
+            <span class="quiz-count-tag">9 Câu Trắc Nghiệm</span>
+          </div>
+          <h3 class="sim-card-title" style="margin-top: 14px;">Hệ Trục Tọa Độ Oxy & Mối Quan Hệ Bán Kính R Trên Đường Tròn</h3>
+          
+          <div class="formula-box" style="margin: 14px 0;">
+            x = R&middot;cos&theta; &nbsp;|&nbsp; y = R&middot;sin&theta;<br>
+            R = &radic;(x&sup2; + y&sup2;) &nbsp;|&nbsp; tan&theta; = y / x
+          </div>
+
+          <ul class="feature-list">
+            <li>Kéo thả chuột trực tiếp chất điểm trên đường tròn</li>
+            <li>Điều chỉnh thanh trượt bán kính R và góc quay &theta;</li>
+            <li>Chế độ tự động quay & đồ thị hình chiếu điều hòa trên Ox, Oy</li>
+            <li>Bộ 9 câu hỏi trắc nghiệm kiểm tra toạ độ và lượng giác</li>
+          </ul>
+        </div>
+
+        <a href="He_Truc_Oxy.html" class="btn-launch" target="_blank">
+          <span>🚀 Mở Mô Phỏng Slide 12</span>
+          <span style="font-size: 1.1rem;">&rarr;</span>
+        </a>
+      </article>
+
+      <!-- Card 2: Slide 13 -->
+      <article class="sim-card">
+        <div>
+          <div class="sim-card-header">
+            <span class="slide-badge badge-s13">🚀 Slide 13 &bull; Linear</span>
+            <span class="quiz-count-tag">9 Câu Trắc Nghiệm</span>
+          </div>
+          <h3 class="sim-card-title" style="margin-top: 14px;">Chuyển Động Thẳng Đều: Quan Hệ Vận Tốc, Quãng Đường, Thời Gian</h3>
+          
+          <div class="formula-box" style="margin: 14px 0;">
+            v = s / t &nbsp;&hArr;&nbsp; s = v &middot; t &nbsp;&hArr;&nbsp; t = s / v<br>
+            s(t) = s₀ + v &middot; t
+          </div>
+
+          <ul class="feature-list">
+            <li>Điều chỉnh vận tốc v (âm/dương), vị trí ban đầu s₀, cờ đích</li>
+            <li>Robot rover VEX IQ mini di chuyển trên thước đo milimet</li>
+            <li>Hai đồ thị thời gian thực s(t) (độ dốc) và v(t) (diện tích)</li>
+            <li>Bộ 9 câu hỏi trắc nghiệm bài toán chuyển động thẳng đều</li>
+          </ul>
+        </div>
+
+        <a href="Chuyen_Dong_Thang.html" class="btn-launch" target="_blank">
+          <span>🚀 Mở Mô Phỏng Slide 13</span>
+          <span style="font-size: 1.1rem;">&rarr;</span>
+        </a>
+      </article>
+
+      <!-- Card 3: Slide 14 -->
+      <article class="sim-card">
+        <div>
+          <div class="sim-card-header">
+            <span class="slide-badge badge-s14">⚙️ Slide 14 &bull; Kinematics</span>
+            <span class="quiz-count-tag">9 Câu Trắc Nghiệm</span>
+          </div>
+          <h3 class="sim-card-title" style="margin-top: 14px;">Tốc Độ Góc, Tốc Độ Dài & Động Học Bánh Xe Robot Lăn Không Trượt</h3>
+          
+          <div class="formula-box" style="margin: 14px 0;">
+            &omega; = &phi; / t &nbsp;|&nbsp; v = &omega; &middot; R &nbsp;|&nbsp; d = &phi; &middot; R<br>
+            1 vòng (2&pi;) &rarr; d = 2&pi;R &nbsp;|&nbsp; &Delta;d = &Delta;&theta; &middot; R
+          </div>
+
+          <ul class="feature-list">
+            <li>Đĩa quay encoder động cơ đồng bộ góc quay &phi; với bánh xe</li>
+            <li>Quỹ đạo đường cong Cycloid của điểm trên vành bánh xe</li>
+            <li>3 Vector vận tốc: v(đáy) = 0, v(tâm) = &omega;R, v(đỉnh) = 2&omega;R</li>
+            <li>Module kiểm chứng sai số động cơ VEX IQ (bánh xe vs cánh tay)</li>
+            <li>Bộ 9 câu hỏi trắc nghiệm chuyển động quay và bánh xe robot</li>
+          </ul>
+        </div>
+
+        <a href="Chuyen_Dong_Quay.html" class="btn-launch" target="_blank">
+          <span>🚀 Mở Mô Phỏng Slide 14</span>
+          <span style="font-size: 1.1rem;">&rarr;</span>
+        </a>
+      </article>
+    </div>
+
+    <!-- Quick Slide Embedding Guide -->
+    <div class="guide-box">
+      <div class="guide-text">
+        💡 <b>Cách tích hợp vào Google Slides:</b> Mỗi mô phỏng mở hoàn toàn độc lập trong tab mới, có nút <b>⛶ Toàn màn hình</b> ở góc phải. Bạn có thể copy đường dẫn của từng tệp (hoặc link host) và gắn hyperlink vào nút bấm trong Slide 12, Slide 13, Slide 14 tương ứng.
+      </div>
+    </div>
+
+    <!-- Footer Guide -->
+    <footer class="app-footer">
+      <span>AYOR 2026 - A Year of Robotics &bull; Giảng viên: Thầy Nguyễn Tấn Sỹ (UQAR Canada)</span>
+      <span>&bull;</span>
+      <span>Nền tảng: HTML5 Canvas / CSS3 / JavaScript</span>
+    </footer>
+  </div>
+
+  <script src="assets/images_data.js"></script>
+  <script>
+    if (window.AYOR_LOGO) document.getElementById('ayorLogoImg').src = window.AYOR_LOGO;
+    if (window.MASCOT_BEAR) document.getElementById('mascotBearImg').src = window.MASCOT_BEAR;
+  </script>
+</body>
+</html>
