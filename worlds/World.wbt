@@ -1,0 +1,780 @@
+#VRML_SIM R2023b utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "../protos/Field_IQ_Rectangle_Zone_With_Center.proto"
+EXTERNPROTO "../protos/Vex_IQ_Field.proto"
+EXTERNPROTO "../protos/Vex_IQ_Basebot.proto"
+
+WorldInfo {
+  contactProperties [
+    ContactProperties {
+      coulombFriction [
+        0.5
+      ]
+    }
+  ]
+}
+Viewpoint {
+  orientation 0.2741031564871905 0.023062392376558317 -0.9614237284681653 2.8526404324480543
+  position 3.1564327828934644 0.8484005260650718 1.9278118086316556
+}
+TexturedBackground {
+  texture "noon_sunny_empty"
+}
+TexturedBackgroundLight {
+  castShadows FALSE
+}
+Vex_IQ_Field {
+  name "Vex_IQ_Field"
+}
+DEF Origin Pose {
+}
+DEF Goal_Obj Group {
+  children [
+    DEF Ball_150mm Solid {
+      translation -1.1 0.65 0.075
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0.6 0
+            metalness 0.1
+          }
+          geometry Mesh {
+            url [
+              "3D_Models/Objects/Vex_IQ_Competition_2025/Ball_D150.STL"
+            ]
+          }
+          castShadows FALSE
+        }
+      ]
+      name "solid(14)"
+      boundingObject Sphere {
+        radius 0.075
+      }
+    }
+    DEF Ball_150mm Solid {
+      translation -1.1 -0.65 0.075
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0.6 0
+            metalness 0.1
+          }
+          geometry Mesh {
+            url [
+              "3D_Models/Objects/Vex_IQ_Competition_2025/Ball_D150.STL"
+            ]
+          }
+          castShadows FALSE
+        }
+      ]
+      name "solid(15)"
+      boundingObject Sphere {
+        radius 0.075
+      }
+    }
+    DEF Goal_Group_Bonding Solid {
+      translation -1.08 0 0.3
+      name "solid(13)"
+      boundingObject Box {
+        size 0.28 1.83 0.6
+      }
+    }
+    Solid {
+      translation -0.94976 0.300756 0
+      rotation 0 0 1 1.57
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 1 0 0
+            metalness 0.2
+            emissiveColor 0.2 0.1 0
+          }
+          geometry Mesh {
+            url [
+              "3D_Models/Objects/Vex_IQ_Competition_2025/Front_Part.STL"
+            ]
+          }
+          castShadows FALSE
+        }
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 1
+            metalness 0.2
+            emissiveColor 0 0.1 0.2
+          }
+          geometry Mesh {
+            url [
+              "3D_Models/Objects/Vex_IQ_Competition_2025/Ring_Down.STL"
+            ]
+          }
+          castShadows FALSE
+        }
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 1
+            metalness 0.2
+            emissiveColor 0 0.1 0.2
+          }
+          geometry Mesh {
+            url [
+              "3D_Models/Objects/Vex_IQ_Competition_2025/Ring_Up.STL"
+            ]
+          }
+          castShadows FALSE
+        }
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 1 0
+            metalness 0.2
+            emissiveColor 0 0.1 0
+          }
+          geometry Mesh {
+            url [
+              "3D_Models/Objects/Vex_IQ_Competition_2025/Goal_Down.STL"
+            ]
+          }
+          castShadows FALSE
+        }
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 1 0
+            metalness 0.2
+            emissiveColor 0 0.1 0
+          }
+          geometry Mesh {
+            url [
+              "3D_Models/Objects/Vex_IQ_Competition_2025/Goal_Up.STL"
+            ]
+          }
+          castShadows FALSE
+        }
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.4 0.4 0.4
+            metalness 0.1
+          }
+          geometry Mesh {
+            url [
+              "3D_Models/Objects/Vex_IQ_Competition_2025/Goal_Support.STL"
+            ]
+          }
+          castShadows FALSE
+        }
+      ]
+      name "solid(6)"
+    }
+    Solid {
+      translation -0.95024 -0.299244 0
+      rotation 0 0 1 1.57
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 1 0 0
+            metalness 0.2
+            emissiveColor 0.2 0.1 0
+          }
+          geometry Mesh {
+            url [
+              "3D_Models/Objects/Vex_IQ_Competition_2025/Front_Part.STL"
+            ]
+          }
+          castShadows FALSE
+        }
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 1
+            metalness 0.2
+            emissiveColor 0 0.1 0.2
+          }
+          geometry Mesh {
+            url [
+              "3D_Models/Objects/Vex_IQ_Competition_2025/Ring_Down.STL"
+            ]
+          }
+          castShadows FALSE
+        }
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 1
+            metalness 0.2
+            emissiveColor 0 0.1 0.2
+          }
+          geometry Mesh {
+            url [
+              "3D_Models/Objects/Vex_IQ_Competition_2025/Ring_Up.STL"
+            ]
+          }
+          castShadows FALSE
+        }
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 1 0
+            metalness 0.2
+            emissiveColor 0 0.1 0
+          }
+          geometry Mesh {
+            url [
+              "3D_Models/Objects/Vex_IQ_Competition_2025/Goal_Down.STL"
+            ]
+          }
+          castShadows FALSE
+        }
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 1 0
+            metalness 0.2
+            emissiveColor 0 0.1 0
+          }
+          geometry Mesh {
+            url [
+              "3D_Models/Objects/Vex_IQ_Competition_2025/Goal_Up.STL"
+            ]
+          }
+          castShadows FALSE
+        }
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.4 0.4 0.4
+            metalness 0.1
+          }
+          geometry Mesh {
+            url [
+              "3D_Models/Objects/Vex_IQ_Competition_2025/Goal_Support.STL"
+            ]
+          }
+          castShadows FALSE
+        }
+      ]
+      name "solid(7)"
+    }
+    Solid {
+      translation -0.97 9.50973e-17 0.05
+      rotation 0 0.7071067811865476 0.7071067811865476 3.141592653589793
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 1 0
+            metalness 0.2
+            emissiveColor 0 0.1 0
+          }
+          geometry Cylinder {
+            height 1.85
+            radius 0.01
+          }
+          castShadows FALSE
+        }
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0 1 0
+            metalness 0.2
+            emissiveColor 0 0.1 0
+          }
+          geometry Cylinder {
+            height 1.85
+            radius 0.01
+          }
+          castShadows FALSE
+        }
+      ]
+      name "solid(8)"
+    }
+    Solid {
+      translation -0.950224 -0.279244 0
+      rotation 0 0 1 1.57
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 0.4 0.4 0.4
+            metalness 0.1
+          }
+          geometry Mesh {
+            url [
+              "3D_Models/Objects/Vex_IQ_Competition_2025/Support_Table.STL"
+            ]
+          }
+          castShadows FALSE
+        }
+      ]
+      name "solid(11)"
+    }
+    DEF Image_S4V_1 Solid {
+      translation -1.10305 -4.2e-05 0.456631
+      rotation 0 1 0 -0.5
+      children [
+        Shape {
+          appearance Appearance {
+            material Material {
+              ambientIntensity 0.75
+            }
+            texture ImageTexture {
+              url [
+                "3D_Models/Objects/Vex_IQ_Competition_2025/S4V.jpg"
+              ]
+            }
+          }
+          geometry Box {
+            size 0.001 0.25 0.25
+          }
+          castShadows FALSE
+        }
+      ]
+      name "solid(10)"
+    }
+    DEF Image_S4V_2 Solid {
+      translation -1.02638 -4.2e-05 0.316216
+      rotation 0 1 0 -0.5
+      children [
+        Shape {
+          appearance Appearance {
+            material Material {
+              ambientIntensity 0.75
+            }
+            texture ImageTexture {
+              url [
+                "3D_Models/Objects/Vex_IQ_Competition_2025/S4V_Text.PNG"
+              ]
+            }
+          }
+          geometry Box {
+            size 0.001 0.128 0.064
+          }
+          castShadows FALSE
+        }
+      ]
+      name "solid(2)"
+    }
+    Solid {
+      translation -0.950224 -0.279244 0
+      rotation 0 0 1 1.57
+      children [
+        Shape {
+          appearance Appearance {
+            material Material {
+              ambientIntensity 0.9
+            }
+          }
+          geometry Mesh {
+            url [
+              "3D_Models/Objects/Vex_IQ_Competition_2025/Table.STL"
+            ]
+          }
+          castShadows FALSE
+        }
+      ]
+      name "solid(9)"
+    }
+  ]
+}
+DEF Field_Objects Group {
+  children [
+    Field_IQ_Rectangle_Zone_With_Center {
+      translation 0.61 0 0
+    }
+    Field_IQ_Rectangle_Zone_With_Center {
+      translation -0.61 0 0
+    }
+  ]
+}
+DEF Maze Pose {
+}
+Vex_IQ_Basebot {
+  translation 1.0797 0.00393823 0.000861996
+  rotation -0.0007155527493298919 4.273490683194453e-07 0.9999997439920073 -3.1341859272918025
+  children [
+    Accelerometer {
+      translation 0.075 0 0.1
+    }
+    InertialUnit {
+      translation 0.075 0 0.1
+    }
+    Gyro {
+      translation 0.075 0 0.1
+    }
+    DistanceSensor {
+      translation 0.191 0 0.032
+      children [
+        Pose {
+          translation -0.191 0 -0.032
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor 0.4 0.4 0.4
+                metalness 0
+              }
+              geometry Mesh {
+                url [
+                  "3D_Models/Robot/Distance_Sensor.STL"
+                ]
+              }
+              castShadows FALSE
+            }
+          ]
+        }
+      ]
+      boundingObject Pose {
+        translation -0.0125 0 0
+        children [
+          Box {
+            size 0.025 0.025 0.025
+          }
+        ]
+      }
+      physics Physics {
+        density -1
+        mass 0.03
+      }
+      lookupTable [
+        0 0 0
+        2 2000 0
+      ]
+      numberOfRays 3
+      aperture 0.02
+    }
+    TouchSensor {
+      translation -0.026999998110501466 -8.225467182376711e-12 0.03199858782316563
+      rotation 0.40149603393928396 0.587383506394183 -0.7026959165578666 3.0463355643991524e-15
+      children [
+        Pose {
+          translation 0.027 0 -0.032
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor 0.4 0.4 0.4
+                metalness 0
+              }
+              geometry Mesh {
+                url [
+                  "3D_Models/Robot/Bumper.STL"
+                ]
+              }
+              castShadows FALSE
+            }
+          ]
+        }
+      ]
+      boundingObject Pose {
+        translation 0.0133 0 0
+        children [
+          Box {
+            size 0.025 0.05 0.025
+          }
+        ]
+      }
+      physics Physics {
+        density -1
+        mass 0.03
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 17.77634767829754
+        axis 0 1 0
+        anchor 0.0188 0 0.032
+      }
+      device [
+        PositionSensor {
+          name "Wheel_BL"
+        }
+      ]
+      endPoint DEF Wheel_Back_Left Solid {
+        translation 0.03794618214180702 0 0.00020591706947912375
+        rotation 0 1 0 5.209977063938367
+        children [
+          Pose {
+            children [
+              Shape {
+                appearance PBRAppearance {
+                  baseColor 0.6 0.6 0.6
+                  metalness 0
+                }
+                geometry Mesh {
+                  url [
+                    "3D_Models/Robot/Back_Left_Wheel_Omni_Lock.STL"
+                  ]
+                }
+                castShadows FALSE
+              }
+              Shape {
+                appearance PBRAppearance {
+                  baseColor 0.2 0.2 0.2
+                  metalness 0
+                }
+                geometry Mesh {
+                  url [
+                    "3D_Models/Robot/Back_Left_Wheel_Omni.STL"
+                  ]
+                }
+                castShadows FALSE
+              }
+            ]
+          }
+        ]
+        name "solid(3)"
+        boundingObject Pose {
+          translation 0.0188 0.077 0.032
+          rotation 1 0 0 1.57
+          children [
+            Cylinder {
+              height 0.02
+              radius 0.032
+            }
+          ]
+        }
+        physics Physics {
+          density -1
+          mass 0.0001
+        }
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 17.819685579729732
+        axis 0 1 0
+        anchor 0.0188 0 0.032
+      }
+      device [
+        PositionSensor {
+          name "Wheel_BR"
+        }
+      ]
+      endPoint DEF Wheel_Back_Right Solid {
+        translation 0.036550747474287854 0 -0.0005937258395539158
+        rotation 0 1 0 5.25331496537056
+        children [
+          Pose {
+            children [
+              Shape {
+                appearance PBRAppearance {
+                  baseColor 0.2 0.2 0.2
+                  metalness 0
+                }
+                geometry Mesh {
+                  url [
+                    "3D_Models/Robot/Back_Right_Wheel_Omni.STL"
+                  ]
+                }
+                castShadows FALSE
+              }
+              Shape {
+                appearance PBRAppearance {
+                  baseColor 0.6 0.6 0.6
+                  metalness 0
+                }
+                geometry Mesh {
+                  url [
+                    "3D_Models/Robot/Back_Right_Wheel_Omni_Lock.STL"
+                  ]
+                }
+                castShadows FALSE
+              }
+            ]
+          }
+        ]
+        name "solid(4)"
+        boundingObject Pose {
+          translation 0.0188 -0.077 0.032
+          rotation 1 0 0 1.57
+          children [
+            Cylinder {
+              height 0.02
+              radius 0.032
+            }
+          ]
+        }
+        physics Physics {
+          density -1
+          mass 0.0001
+        }
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 17.5363668952381
+        axis 0 1 0
+        anchor 0.1204 0 0.032
+      }
+      device [
+        PositionSensor {
+          name "Pos_Sensor_FL"
+        }
+        RotationalMotor {
+          name "Wheel_FL"
+        }
+      ]
+      endPoint DEF Wheel_Front_Left Solid {
+        translation 0.12067006298767177 0 -0.09257964145871429
+        rotation 0 0.9999999999999999 0 4.969996280878927
+        children [
+          Pose {
+            children [
+              Shape {
+                appearance PBRAppearance {
+                  baseColor 0.6 0.6 0.6
+                  metalness 0
+                }
+                geometry Mesh {
+                  url [
+                    "3D_Models/Robot/Front_Left_Wheel_Lock.STL"
+                  ]
+                }
+                castShadows FALSE
+              }
+              Shape {
+                appearance PBRAppearance {
+                  baseColor 0.2 0.2 0.2
+                  metalness 0
+                }
+                geometry Mesh {
+                  url [
+                    "3D_Models/Robot/Front_Left_Wheel.STL"
+                  ]
+                }
+                castShadows FALSE
+              }
+            ]
+          }
+        ]
+        name "solid_Wheel_FL"
+        boundingObject Pose {
+          translation 0.1204 0.074 0.032
+          rotation 1 0 0 1.57
+          children [
+            Cylinder {
+              height 0.02
+              radius 0.032
+            }
+          ]
+        }
+        physics Physics {
+          density -1
+          mass 0.04
+        }
+      }
+    }
+    HingeJoint {
+      jointParameters HingeJointParameters {
+        position 17.85367243993216
+        axis 0 1 0
+        anchor 0.1204 0 0.032
+      }
+      device [
+        PositionSensor {
+          name "Pos_Sensor_FR"
+        }
+        RotationalMotor {
+          name "Wheel_FR"
+        }
+      ]
+      endPoint DEF Wheel_Front_Right Solid {
+        translation 0.08178676776954166 0 -0.08644483229215091
+        rotation 0 0.9999999999999999 0 5.287301825572989
+        children [
+          Pose {
+            children [
+              Shape {
+                appearance PBRAppearance {
+                  baseColor 0.6 0.6 0.6
+                  metalness 0
+                }
+                geometry Mesh {
+                  url [
+                    "3D_Models/Robot/Front_Right_Wheel_Lock.STL"
+                  ]
+                }
+                castShadows FALSE
+              }
+              Shape {
+                appearance PBRAppearance {
+                  baseColor 0.2 0.2 0.2
+                  metalness 0
+                }
+                geometry Mesh {
+                  url [
+                    "3D_Models/Robot/Front_Right_Wheel.STL"
+                  ]
+                }
+                castShadows FALSE
+              }
+            ]
+          }
+        ]
+        name "solid_Wheel_FR"
+        boundingObject Pose {
+          translation 0.1204 -0.074 0.032
+          rotation 1 0 0 1.57
+          children [
+            Cylinder {
+              height 0.02
+              radius 0.032
+            }
+          ]
+        }
+        physics Physics {
+          density -1
+          mass 0.04
+        }
+      }
+    }
+    DEF Body_Solid Solid {
+      children [
+        DEF Body Shape {
+          appearance PBRAppearance {
+            baseColor 0.5 0.5 0.55
+            metalness 0
+          }
+          geometry Mesh {
+            url [
+              "3D_Models/Robot/Body.STL"
+            ]
+          }
+          castShadows FALSE
+        }
+        DEF Support_Bodyx4 Shape {
+          appearance PBRAppearance {
+            baseColor 0.8 0.8 0.8
+            metalness 0
+          }
+          geometry Mesh {
+            url [
+              "3D_Models/Robot/Support_Brain.STL"
+            ]
+          }
+          castShadows FALSE
+        }
+        DEF IQ_Brain Shape {
+          appearance PBRAppearance {
+            baseColor 0.3 0.3 0.3
+            metalness 0
+          }
+          geometry Mesh {
+            url [
+              "3D_Models/Robot/Brain.STL"
+            ]
+          }
+          castShadows FALSE
+        }
+      ]
+      name "solid_body"
+    }
+    DEF Virtual_mass Solid {
+      translation 0.03 0 0
+      name "solid_Wheel_FR(3)"
+      boundingObject Pose {
+        translation 0 0 0.08
+        children [
+          Box {
+            size 0.04 0.04 0.04
+          }
+        ]
+      }
+      physics Physics {
+        density -1
+        mass 0.1
+      }
+    }
+  ]
+  name "robot(1)"
+  controller "basebot_controller"
+}
