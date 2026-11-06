@@ -32,6 +32,7 @@ Chuyển từ các môi trường Webots cũ sang dạng chạy được trên w
 | [`Salamander`](../../tree/Salamander) | Robot kỳ giông bò trên cạn và bơi dưới nước |
 | [`Drone_SteamPlanet`](../../tree/Drone_SteamPlanet) | Drone Mavic 2 Pro bay trong thành phố |
 | [`Basebot_VEXIQ`](../../tree/Basebot_VEXIQ) | VEX IQ Basebot trên sân thi đấu |
+| [`Basebot_VEXIQ_DapAn`](../../tree/Basebot_VEXIQ_DapAn) | Basebot – đáp án bài 2 và bài 4 (`controllers/basebot_controller/Lesson2_Controller*_Correction.py`) |
 
 Trong các nhánh này, học sinh viết chương trình ở `controllers/<tên>_controller/robot_controller.py`.
 
