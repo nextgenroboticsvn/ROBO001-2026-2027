@@ -15,7 +15,25 @@ Mỗi nhánh chứa trọn một dự án Webots (thư mục `worlds/`, `control
 | [`Lesson2`](../../tree/Lesson2) | Mô phỏng Bài 2 |
 | [`Lesson2_Debugging`](../../tree/Lesson2_Debugging) | Bài 2 – đề bài tìm và sửa lỗi |
 | [`Lesson2_Debugging_DapAn`](../../tree/Lesson2_Debugging_DapAn) | Bài 2 – đáp án bài tìm và sửa lỗi |
+| [`Lesson4`](../../tree/Lesson4) | Bài 4 – cảm biến khoảng cách, rover sao Hỏa leo lề đường |
+| [`Lesson5`](../../tree/Lesson5) | Mô phỏng Bài 5 – cảm biến |
+| [`Lesson6`](../../tree/Lesson6) | Mô phỏng Bài 6 – cảm biến |
 | [`Mo_Phong_Nang_Cao`](../../tree/Mo_Phong_Nang_Cao) | Mô phỏng nâng cao |
+
+### Môi trường mô phỏng khác
+
+Chuyển từ các môi trường Webots cũ sang dạng chạy được trên web (controller Python, texture đặt sẵn trong dự án).
+
+| Nhánh | Nội dung |
+|---|---|
+| [`Nao_Robocup`](../../tree/Nao_Robocup) | 2 robot NAO trên sân bóng, điều khiển bằng bàn phím |
+| [`Nao_Room`](../../tree/Nao_Room) | 2 robot NAO trong phòng, điều khiển bằng bàn phím |
+| [`Youbot`](../../tree/Youbot) | 2 robot KUKA youBot gắp hộp |
+| [`Salamander`](../../tree/Salamander) | Robot kỳ giông bò trên cạn và bơi dưới nước |
+| [`Drone_SteamPlanet`](../../tree/Drone_SteamPlanet) | Drone Mavic 2 Pro bay trong thành phố |
+| [`Basebot_VEXIQ`](../../tree/Basebot_VEXIQ) | VEX IQ Basebot trên sân thi đấu |
+
+Trong các nhánh này, học sinh viết chương trình ở `controllers/<tên>_controller/robot_controller.py`.
 
 Nhánh `main` (mặc định) chứa mô phỏng **Bài 2**, giống nhánh `Lesson2`, kèm tài liệu này.
 
