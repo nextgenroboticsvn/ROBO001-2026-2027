@@ -1,0 +1,237 @@
+#VRML_SIM R2023b utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/softbank/nao/protos/Nao.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/balls/protos/RobocupSoccerBall.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/robotstadium/protos/RobotstadiumGoal.proto"
+
+WorldInfo {
+  info [
+    "Simulation of the Robocup Standard Platform League"
+  ]
+  title "Robocup"
+  basicTimeStep 20
+  contactProperties [
+    ContactProperties {
+      material1 "NAO foot material"
+      coulombFriction [
+        7
+      ]
+      bounce 0.3
+      bounceVelocity 0.003
+    }
+  ]
+}
+Viewpoint {
+  orientation -0.060632801745670616 0.10719829981255845 0.9923871159329745 1.0361119045603366
+  position -1.2771176864768345 0.20853950544922695 0.5822715831168171
+  follow "soccer ball"
+}
+TexturedBackground {
+  texture "stadium"
+}
+TexturedBackgroundLight {
+  texture "stadium"
+}
+Solid {
+  rotation 0 0 1 1.5707963267948966
+  children [
+    Shape {
+      appearance DEF GREEN_APPEARANCE PBRAppearance {
+        baseColorMap ImageTexture {
+          url [
+            "web_textures/field_quarter_base_color.jpg"
+          ]
+          repeatS FALSE
+          repeatT FALSE
+        }
+        roughness 1
+        metalness 0
+        normalMap ImageTexture {
+          url [
+            "web_textures/field_quarter_normal.jpg"
+          ]
+          repeatS FALSE
+          repeatT FALSE
+        }
+        occlusionMap ImageTexture {
+          url [
+            "web_textures/field_quarter_occlusion.jpg"
+          ]
+          repeatS FALSE
+          repeatT FALSE
+        }
+      }
+      geometry IndexedFaceSet {
+        coord DEF QUATER_COORDS Coordinate {
+          point [
+            5.2 -3.7 0
+            0 -3.7 0
+            -5.2 -3.7 0
+            5.2 0 0
+            0 0 0
+            -5.2 0 0
+            5.2 3.7 0
+            0 3.7 0
+            -5.2 3.7 0
+          ]
+        }
+        texCoord TextureCoordinate {
+          point [
+            0 0
+            1 0
+            1 1
+            0 1
+          ]
+        }
+        coordIndex [
+          3, 4, 1, 0, -1, 4, 5, 2, 1, -1
+          6, 7, 4, 3, -1, 7, 8, 5, 4, -1
+        ]
+        texCoordIndex [
+          0, 1, 2, 3, -1, 1, 0, 3, 2, -1
+          3, 2, 1, 0, -1, 2, 3, 0, 1, -1
+        ]
+      }
+    }
+    DEF WALL_OUTSIDE Shape {
+      geometry IndexedFaceSet {
+        coord DEF WALL_COORDS Coordinate {
+          point [
+            5.22 -3.72 0
+            5.2 -3.7 0
+            -5.22 -3.72 0
+            -5.2 -3.7 0
+            5.22 3.72 0
+            5.2 3.7 0
+            -5.22 3.72 0
+            -5.2 3.7 0
+            5.22 -3.72 0.3
+            5.2 -3.7 0.3
+            -5.22 -3.72 0.3
+            -5.2 -3.7 0.3
+            5.22 3.72 0.3
+            5.2 3.7 0.3
+            -5.22 3.72 0.3
+            -5.2 3.7 0.3
+          ]
+        }
+        texCoord TextureCoordinate {
+          point [
+            0 0
+            1 0
+            1 1
+            0 1
+          ]
+        }
+        coordIndex [
+          4, 6, 14, 12, -1, 2, 0, 8, 10, -1, 6, 2, 10, 14, -1, 0, 4, 12, 8, -1, 9, 11, 10, 8, -1, 15, 13, 12, 14, -1, 11, 15, 14, 10, -1, 9, 8, 12, 13, -1
+        ]
+        texCoordIndex [
+          0, 1, 2, 3, -1, 0, 1, 2, 3, -1, 0, 1, 2, 3, -1, 0, 1, 2, 3, -1, 0, 0, 0, 0, -1, 0, 0, 0, 0, -1, 0, 0, 0, 0, -1, 0, 0, 0, 0, -1
+        ]
+      }
+    }
+    DEF WALL_INSIDE Shape {
+      geometry IndexedFaceSet {
+        coord USE WALL_COORDS
+        texCoord TextureCoordinate {
+          point [
+            0 0
+            1 0
+            1 1
+            0 1
+          ]
+        }
+        coordIndex [
+          1, 3, 11, 9, -1, 7, 5, 13, 15, -1
+          3, 7, 15, 11, -1, 5, 1, 9, 13, -1
+        ]
+        texCoordIndex [
+          0, 1, 2, 3, -1, 0, 1, 2, 3, -1
+          0, 1, 2, 3, -1, 0, 1, 2, 3, -1
+        ]
+      }
+    }
+    RobotstadiumGoal {
+      translation 4.55 0 0
+      name "goal 1"
+      frameColor 0.9 0.8 0.2
+    }
+    RobotstadiumGoal {
+      translation -4.55 0 0
+      rotation 0 0 1 3.14159
+      name "goal 2"
+      frameColor 0.2 0.4 0.8
+    }
+  ]
+  name "robotstadium soccer field"
+  model "robotstadium soccer field"
+  boundingObject Group {
+    children [
+      Plane {
+        size 10.4 7.4
+      }
+      Pose {
+        translation 5.2 0 0.15
+        rotation 0.5773489358556708 -0.5773509358554485 0.5773509358554485 2.094397
+        children [
+          Box {
+            size 0.3 0.02 7.4
+          }
+        ]
+      }
+      Pose {
+        translation -5.2 0 0.15
+        rotation -0.5773489358556708 -0.5773509358554485 0.5773509358554485 -2.094397
+        children [
+          Box {
+            size 0.3 0.02 7.4
+          }
+        ]
+      }
+      Pose {
+        translation 0 -3.7 0.15
+        rotation 1 0 0 0
+        children [
+          Box {
+            size 10.4 0.02 0.3
+          }
+        ]
+      }
+      Pose {
+        translation 0 3.7 0.15
+        rotation 1 0 0 -3.141589
+        children [
+          Box {
+            size 10.4 0.02 0.3
+          }
+        ]
+      }
+    ]
+  }
+  locked TRUE
+}
+DEF PLAYER_RED_0 Nao {
+  translation 0.002668 1.616548 0.33293
+  rotation 0.00031700009995696274 0.0018080005701015414 0.9999983153210185 1.219204
+  name "NAO RED 0"
+  controller "nao_do"
+  customColor [
+    1 0 0
+  ]
+}
+DEF PLAYER_BLUE_0 Nao {
+  translation 0.05 4.309063 0.330154
+  rotation 0.0008999996982765018 0.001363999542721276 0.9999986647520039 -1.584002
+  name "NAO BLUE 0"
+  customColor [
+    0 0 1
+  ]
+  controller "nao_controller"
+}
+RobocupSoccerBall {
+  translation 0.10177 2.22287 0.07
+  rotation 0.5773502691896258 0.5773502691896258 0.5773502691896258 2.094395
+}
