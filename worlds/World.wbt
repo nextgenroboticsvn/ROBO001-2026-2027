@@ -1,0 +1,165 @@
+#VRML_SIM R2023b utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/lights/protos/CeilingLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/softbank/nao/protos/NaoRoom.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/cabinet/protos/Cabinet.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/PaintedWood.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/softbank/nao/protos/VisualArmature.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/softbank/nao/protos/Key.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/softbank/nao/protos/KeyPot.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/school_furniture/protos/Book.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/plants/protos/BunchOfSunFlowers.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/tables/protos/Table.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/chairs/protos/Chair.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/living_room_furniture/protos/Sofa.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/softbank/nao/protos/Nao.proto"
+
+WorldInfo {
+  info [
+    "An Aldebaran's Nao H25 V5.0 robot in a living room"
+    "NAO is a programmable, 57-cm tall humanoid robot."
+    "The body has 25 degrees of freedom (DOF)."
+    "The sensors include 2 cameras, 4 microphones, sonar rangefinder, 2 IR emitters and receivers, 1 inertial board, and 8 pressure sensors."
+  ]
+  title "NAO room"
+  basicTimeStep 10
+  contactProperties [
+    ContactProperties {
+      material1 "key"
+      material2 "keyhole"
+      coulombFriction [
+        0.2
+      ]
+    }
+    ContactProperties {
+      material1 "NAO foot material"
+      coulombFriction [
+        7
+      ]
+      bounce 0.3
+      bounceVelocity 0.003
+    }
+  ]
+}
+Viewpoint {
+  orientation -0.040381374252596414 0.01805412761523936 0.9990212175372075 2.30152874933447
+  position 2.584875316915893 -1.0944769062605162 0.7230798867013438
+}
+Background {
+  backUrl [
+    "web_textures/brown_floor_side.png"
+  ]
+  bottomUrl [
+    "web_textures/brown_floor_bottom.png"
+  ]
+  frontUrl [
+    "web_textures/brown_floor_side.png"
+  ]
+  leftUrl [
+    "web_textures/brown_floor_side.png"
+  ]
+  rightUrl [
+    "web_textures/brown_floor_side.png"
+  ]
+  topUrl [
+    "web_textures/brown_floor_top.png"
+  ]
+}
+CeilingLight {
+  translation 0 0 2
+  pointLightIntensity 2
+  pointLightCastShadows TRUE
+}
+NaoRoom {
+}
+Cabinet {
+  translation -0.2 1.99 0
+  rotation 0 0 1 -1.5707953071795862
+  primaryAppearance PaintedWood {
+    colorOverride 0.666667 0.333333 0
+  }
+  secondaryAppearance PaintedWood {
+    colorOverride 0.619608 0.615686 0.560784
+  }
+}
+DEF PAINTING_BIG VisualArmature {
+  translation -2 -0.6 1.3
+  dimension 0.02 0.6 0.4
+  textureUrl [
+    "web_textures/nao_poster_5.jpg"
+  ]
+}
+DEF PAINTING_TOP VisualArmature {
+  translation -0.4 -2 1.3
+  rotation 0 0 1 1.5708
+  dimension 0.02 0.6 0.4
+  textureUrl [
+    "web_textures/nao_poster_1.jpg"
+  ]
+}
+DEF PAINTING_MIDDLE VisualArmature {
+  translation 0.4 -2 1.3
+  rotation 0 0 1 1.5708
+  dimension 0.02 0.6 0.4
+  textureUrl [
+    "web_textures/nao_poster_3.jpg"
+  ]
+}
+DEF PAINTING_VERTICAL VisualArmature {
+  translation 0.7 2 1.2
+  rotation 0 0 1 -1.5708
+  dimension 0.02 0.675 0.9
+  textureUrl [
+    "web_textures/nao_poster_2.jpg"
+  ]
+}
+Key {
+  translation -0.3753771484666158 1.56 0.2899896388411726
+  rotation 3.2788670692975743e-15 1 3.464823107652668e-15 1.530769205339326
+  contactMaterial "key"
+}
+KeyPot {
+  translation 0.12 0.2 0.3
+}
+Book {
+  translation -0.18999789849810172 -0.16992001456412764 0.3099632125000014
+  rotation 0.6215269003889441 0.47687380320774864 0.6215269003889445 -2.251640491557647
+  name "book(1)"
+}
+BunchOfSunFlowers {
+  translation -1.50435 -1.39292 0
+  name "bunch of sunflowers(1)"
+}
+BunchOfSunFlowers {
+  translation -1.02404 1.70659 0
+  rotation 0 0 1 -1.3118
+}
+Table {
+  translation 3.67318e-08 -0.01 0
+  rotation 0 0 1 1.5708
+  size 0.6 0.8 0.3
+}
+Chair {
+  translation -1.69 0 0
+  color 0.25098 0.756863 0.368627
+}
+Sofa {
+  translation 0 -1.44 0
+  rotation 0 0 1 1.5708
+}
+DEF NAO_BLUE Nao {
+  translation 0.677436 0.828711 0.332765
+  rotation -0.00043789902762358306 -0.0012969500818143134 -0.9999990630820245 0.781746
+  version "V4 (blue)"
+  controller "nao_controller"
+  cameraWidth 320
+  cameraHeight 240
+}
+DEF NAO_RED Nao {
+  translation 1.21236 1.04723 0.342959
+  rotation -5.476827980499883e-05 -0.0008570126839891225 -0.9999996312647795 1.30535
+  name "NAO(1)"
+  controller "nao_do"
+  cameraWidth 320
+  cameraHeight 240
+}
