@@ -1,0 +1,2274 @@
+#VRML_SIM R2023b utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/road/protos/CurvedRoadSegment.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/road/protos/RoadLine.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/road/protos/StraightRoadSegment.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/road/protos/RoadIntersection.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/traffic/protos/GenericTrafficLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/traffic/protos/CrossRoadsTrafficLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/buildings/protos/BuildingUnderConstruction.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/buildings/protos/CommercialBuilding.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/buildings/protos/UBuilding.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/buildings/protos/HollowBuilding.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/buildings/protos/Hotel.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/buildings/protos/TheThreeTowers.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/buildings/protos/CyberboticsTower.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/buildings/protos/BigGlassTower.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/buildings/protos/Museum.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/buildings/protos/ResidentialBuilding.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/buildings/protos/FastFoodRestaurant.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/buildings/protos/SimpleBuilding.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/trees/protos/Forest.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/trees/protos/SimpleTree.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/traffic/protos/PedestrianCrossing.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/traffic/protos/CautionSign.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/traffic/protos/CautionPanel.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/traffic/protos/OrderSign.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/traffic/protos/OrderPanel.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/traffic/protos/StopSign.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/traffic/protos/YieldSign.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/traffic/protos/SpeedLimitSign.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/traffic/protos/SpeedLimitPanel.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/traffic/protos/TrafficCone.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/traffic/protos/HighwayPole.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/traffic/protos/HighwaySign.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/road/protos/Crossroad.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/advertising_board/protos/AdvertisingBoard.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/clearpath/moose/protos/Moose.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/robots/abb/irb/protos/Irb4600-40.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/floors/protos/Floor.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/street_furniture/protos/Fountain.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/buildings/protos/Auditorium.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/factory/manhole/protos/SquareManhole.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/dji/mavic/protos/Mavic2Pro.proto"
+
+WorldInfo {
+  ERP 0.6
+  basicTimeStep 10
+  lineScale 1
+  contactProperties [
+    ContactProperties {
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "CitroenCZeroWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "ToyotaPriusWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "LincolnMKZWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "RangeRoverSportSVRWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+    ContactProperties {
+      material2 "TruckWheels"
+      coulombFriction [
+        8
+      ]
+      softCFM 1e-05
+      bumpSound ""
+      rollSound ""
+      slideSound ""
+    }
+  ]
+}
+Viewpoint {
+  orientation -0.040351631774496764 -0.043643410530053245 0.9982319362404914 4.78903495593716
+  position -26.777748418096152 253.84200652988216 1.3514418629343272
+  near 1
+  follow "Mavic 2 PRO"
+  lensFlare LensFlare {
+  }
+}
+TexturedBackground {
+  texture "noon_sunny_empty"
+}
+TexturedBackgroundLight {
+}
+Fog {
+  color 0.3607843137254902 0.3607843137254902 0.3607843137254902
+  visibilityRange 1200
+}
+DEF GROUND Solid {
+  boundingObject DEF GROUND_PLANE Plane {
+    size 2000 2000
+  }
+  locked TRUE
+}
+DEF GROUND_SHAPE Solid {
+  translation 0 0 -0.02
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColor 0.8 0.8 0.8
+        baseColorMap ImageTexture {
+          url [
+            "3D_Models/Grass.jpg"
+          ]
+        }
+        roughness 0.5
+        metalness 0
+        textureTransform TextureTransform {
+          scale 500 500
+        }
+      }
+      geometry DEF GROUND_PLANE Plane {
+        size 400 650
+      }
+    }
+  ]
+  name "solid(1)"
+  boundingObject USE GROUND_PLANE
+  locked TRUE
+}
+Auditorium {
+  translation 0 91.07 0
+}
+CurvedRoadSegment {
+  translation -64.5 4.5 0.02
+  rotation 0 0 1 1.5708
+  id "0"
+  startJunction "40"
+  endJunction "26"
+  width 21.5
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  lines [
+    RoadLine {
+    }
+    RoadLine {
+      color 0.85 0.75 0.3
+      type "double"
+    }
+  ]
+  rightBorder FALSE
+  leftBorder FALSE
+  curvatureRadius 40.5
+}
+StraightRoadSegment {
+  translation -105 4.5 0.02
+  rotation 0 0 1 -1.5708
+  name "road(1)"
+  id "1"
+  startJunction "40"
+  endJunction "39"
+  width 21.5
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  lines [
+    RoadLine {
+    }
+    RoadLine {
+      color 0.85 0.75 0.3
+      type "double"
+    }
+  ]
+  rightBorder FALSE
+  leftBorder FALSE
+  length 69
+}
+CurvedRoadSegment {
+  translation -64.5 -64.5 0.02
+  rotation 0 0 1 3.14156
+  name "road(2)"
+  id "2"
+  startJunction "38"
+  endJunction "39"
+  width 21.5
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  lines [
+    RoadLine {
+    }
+    RoadLine {
+      color 0.85 0.75 0.3
+      type "double"
+    }
+  ]
+  rightBorder FALSE
+  leftBorder FALSE
+  curvatureRadius 40.5
+}
+StraightRoadSegment {
+  translation -64.5 -105 0.02
+  name "road(3)"
+  id "3"
+  startJunction "38"
+  endJunction "37"
+  width 21.5
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  lines [
+    RoadLine {
+    }
+    RoadLine {
+      color 0.85 0.75 0.3
+      type "double"
+    }
+  ]
+  rightBorder FALSE
+  leftBorder FALSE
+  length 69
+}
+CurvedRoadSegment {
+  translation 4.5 -64.5 0.02
+  rotation 0 0 1 -1.5708
+  name "road(4)"
+  id "4"
+  startJunction "25"
+  endJunction "37"
+  width 21.5
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  lines [
+    RoadLine {
+    }
+    RoadLine {
+      color 0.85 0.75 0.3
+      type "double"
+    }
+  ]
+  rightBorder FALSE
+  leftBorder FALSE
+  curvatureRadius 40.5
+}
+RoadIntersection {
+  translation 45 -45 0.02
+  rotation 0 0 1 0.785398
+  id "25"
+  connectedRoadIDs [
+    "9"
+    "10"
+    "4"
+    "5"
+  ]
+  roadsWidth 21.5
+  startRoadsLength [
+    8.75
+  ]
+  startRoadsNumberOfLanes 4
+  startRoadsStartLine [
+    "web_textures/road_line_dashed.png"
+    "web_textures/road_line_dashed.png"
+    "web_textures/road_line_triangle.png"
+    "web_textures/road_line_triangle.png"
+  ]
+  startRoadsLine [
+    RoadLine {
+    }
+    RoadLine {
+      color 0.85 0.75 0.3
+      type "double"
+    }
+  ]
+  startRoadBorder FALSE
+}
+StraightRoadSegment {
+  translation 45 4.5 0.02
+  rotation 0 0 1 -1.5708
+  name "road(5)"
+  id "5"
+  startJunction "43"
+  endJunction "25"
+  width 21.5
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  lines [
+    RoadLine {
+    }
+    RoadLine {
+      color 0.85 0.75 0.3
+      type "double"
+    }
+  ]
+  rightBorder FALSE
+  leftBorder FALSE
+  length 30
+}
+CurvedRoadSegment {
+  translation 4.5 4.5 0.02
+  name "road(6)"
+  id "6"
+  startJunction "44"
+  endJunction "43"
+  width 21.5
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  lines [
+    RoadLine {
+    }
+    RoadLine {
+      color 0.85 0.75 0.3
+      type "double"
+    }
+  ]
+  rightBorder FALSE
+  leftBorder FALSE
+  curvatureRadius 40.5
+}
+StraightRoadSegment {
+  translation -25.5 45 0.02
+  name "road(7)"
+  id "7"
+  startJunction "26"
+  endJunction "44"
+  width 21.5
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  lines [
+    RoadLine {
+    }
+    RoadLine {
+      color 0.85 0.75 0.3
+      type "double"
+    }
+  ]
+  rightBorder FALSE
+  leftBorder FALSE
+  length 30
+}
+RoadIntersection {
+  translation -45 45 0.02
+  rotation 0 0 1 0.785398
+  name "road intersection(1)"
+  id "26"
+  connectedRoadIDs [
+    "7"
+    "23"
+    "0"
+    "24"
+  ]
+  roadsWidth 21.5
+  startRoadsLength [
+    8.75
+  ]
+  startRoadsNumberOfLanes 4
+  startRoadsStartLine [
+    "web_textures/road_line_dashed.png"
+    "web_textures/road_line_dashed.png"
+    "web_textures/road_line_triangle.png"
+    "web_textures/road_line_triangle.png"
+  ]
+  startRoadsLine [
+    RoadLine {
+    }
+    RoadLine {
+      color 0.85 0.75 0.3
+      type "double"
+    }
+  ]
+  startRoadBorder FALSE
+}
+RoadIntersection {
+  translation 105 93 0.02
+  rotation 0 0 1 0.785398
+  name "road intersection(2)"
+  id "27"
+  connectedRoadIDs [
+    "12"
+    "20"
+    "17"
+    "16"
+  ]
+  roadsWidth 21.5
+  startRoadsLength [
+    8.75
+  ]
+  startRoadsNumberOfLanes 4
+  startRoadsStartLine [
+    "web_textures/road_line_dashed.png"
+    "web_textures/road_line_dashed.png"
+    "web_textures/road_line_triangle.png"
+    "web_textures/road_line_triangle.png"
+  ]
+  startRoadsLine [
+    RoadLine {
+    }
+    RoadLine {
+      color 0.85 0.75 0.3
+      type "double"
+    }
+  ]
+  startRoadBorder FALSE
+}
+CurvedRoadSegment {
+  translation -4.5 -4.5 0.02
+  rotation 0 0 1 3.14156
+  name "road(8)"
+  id "8"
+  startJunction "42"
+  endJunction "41"
+  width 21.5
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  lines [
+    RoadLine {
+    }
+    RoadLine {
+      color 0.85 0.75 0.3
+      type "double"
+    }
+  ]
+  rightBorder FALSE
+  leftBorder FALSE
+  curvatureRadius 40.5
+}
+StraightRoadSegment {
+  translation -4.5 -45 0.02
+  name "road(9)"
+  id "9"
+  startJunction "42"
+  endJunction "25"
+  width 21.5
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  lines [
+    RoadLine {
+    }
+    RoadLine {
+      color 0.85 0.75 0.3
+      type "double"
+    }
+  ]
+  rightBorder FALSE
+  leftBorder FALSE
+  length 30
+}
+CurvedRoadSegment {
+  translation 64.5 -4.5 0.02
+  rotation 0 0 1 -1.5708
+  name "road(10)"
+  id "10"
+  startJunction "45"
+  endJunction "25"
+  width 21.5
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  lines [
+    RoadLine {
+    }
+    RoadLine {
+      color 0.85 0.75 0.3
+      type "double"
+    }
+  ]
+  rightBorder FALSE
+  leftBorder FALSE
+  curvatureRadius 40.5
+}
+CurvedRoadSegment {
+  translation 75 -97.5 0.02
+  rotation 0 0 1 -1.5708
+  name "road(11)"
+  id "11"
+  startJunction "35"
+  endJunction "36"
+  width 21.5
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  lines [
+    RoadLine {
+    }
+    RoadLine {
+      color 0.85 0.75 0.3
+      type "double"
+    }
+  ]
+  rightBorder FALSE
+  leftBorder FALSE
+  curvatureRadius 90
+}
+StraightRoadSegment {
+  translation 85.5 93 0.02
+  rotation 0 0 1 3.14156
+  name "road(12)"
+  id "12"
+  startJunction "27"
+  endJunction "28"
+  width 21.5
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  lines [
+    RoadLine {
+    }
+    RoadLine {
+      color 0.85 0.75 0.3
+      type "double"
+    }
+  ]
+  rightBorder FALSE
+  leftBorder FALSE
+  length 9
+}
+StraightRoadSegment {
+  translation 75 -187.5 0.02
+  rotation 0 0 -1 3.14156
+  name "road(13)"
+  id "13"
+  startJunction "36"
+  width 21.5
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  lines [
+    RoadLine {
+    }
+    RoadLine {
+      color 0.85 0.75 0.3
+      type "double"
+    }
+  ]
+  rightBorder FALSE
+  leftBorder FALSE
+  length 250
+}
+StraightRoadSegment {
+  translation 165 52.5 0.02
+  rotation 0 0 1 -1.5708
+  name "road(14)"
+  id "14"
+  startJunction "34"
+  endJunction "35"
+  width 21.5
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  lines [
+    RoadLine {
+    }
+    RoadLine {
+      color 0.85 0.75 0.3
+      type "double"
+    }
+  ]
+  rightBorder FALSE
+  leftBorder FALSE
+  length 150
+}
+StraightRoadSegment {
+  translation 64.5 231 0.02
+  rotation 0 0 1 3.14156
+  name "road(15)"
+  id "15"
+  startJunction "32"
+  width 21.5
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  lines [
+    RoadLine {
+    }
+    RoadLine {
+      color 0.85 0.75 0.3
+      type "double"
+    }
+  ]
+  rightBorder FALSE
+  leftBorder FALSE
+  length 200
+}
+StraightRoadSegment {
+  translation 105 112.5 0.02
+  rotation 0 0 1 1.57079
+  name "road(16)"
+  id "16"
+  startJunction "27"
+  endJunction "33"
+  width 21.5
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  lines [
+    RoadLine {
+    }
+    RoadLine {
+      color 0.85 0.75 0.3
+      type "double"
+    }
+  ]
+  rightBorder FALSE
+  leftBorder FALSE
+  length 78
+}
+StraightRoadSegment {
+  translation 105 -4.5 0.02
+  rotation 0 0 1 1.57079
+  name "road(17)"
+  id "17"
+  startJunction "45"
+  endJunction "27"
+  width 21.5
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  lines [
+    RoadLine {
+    }
+    RoadLine {
+      color 0.85 0.75 0.3
+      type "double"
+    }
+  ]
+  rightBorder FALSE
+  leftBorder FALSE
+  length 78
+}
+CurvedRoadSegment {
+  translation 76.5 133.5 0.02
+  rotation 0 0 -1 3.14156
+  name "road(18)"
+  id "18"
+  startJunction "28"
+  endJunction "29"
+  width 21.5
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  lines [
+    RoadLine {
+    }
+    RoadLine {
+      color 0.85 0.75 0.3
+      type "double"
+    }
+  ]
+  rightBorder FALSE
+  leftBorder FALSE
+  curvatureRadius 40.5
+}
+CurvedRoadSegment {
+  translation 64.5 190.5 0.02
+  name "road(19)"
+  id "19"
+  startJunction "32"
+  endJunction "33"
+  width 21.5
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  lines [
+    RoadLine {
+    }
+    RoadLine {
+      color 0.85 0.75 0.3
+      type "double"
+    }
+  ]
+  rightBorder FALSE
+  leftBorder FALSE
+  curvatureRadius 40.5
+}
+CurvedRoadSegment {
+  translation 124.5 52.5 0.02
+  name "road(20)"
+  id "20"
+  startJunction "27"
+  endJunction "34"
+  width 21.5
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  lines [
+    RoadLine {
+    }
+    RoadLine {
+      color 0.85 0.75 0.3
+      type "double"
+    }
+  ]
+  rightBorder FALSE
+  leftBorder FALSE
+  curvatureRadius 40.5
+}
+CurvedRoadSegment {
+  translation -4.5 133.5 0.02
+  name "road(21)"
+  id "21"
+  startJunction "30"
+  endJunction "29"
+  width 21.5
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  lines [
+    RoadLine {
+    }
+    RoadLine {
+      color 0.85 0.75 0.3
+      type "double"
+    }
+  ]
+  rightBorder FALSE
+  leftBorder FALSE
+  curvatureRadius 40.5
+}
+CurvedRoadSegment {
+  translation -4.5 133.5 0.02
+  rotation 0 0 1 1.5708
+  name "road(22)"
+  id "22"
+  startJunction "31"
+  endJunction "30"
+  width 21.5
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  lines [
+    RoadLine {
+    }
+    RoadLine {
+      color 0.85 0.75 0.3
+      type "double"
+    }
+  ]
+  rightBorder FALSE
+  leftBorder FALSE
+  curvatureRadius 40.5
+}
+StraightRoadSegment {
+  translation -45 25.5 0.02
+  rotation 0 0 -1 1.5708
+  name "road(23)"
+  id "23"
+  startJunction "26"
+  endJunction "41"
+  width 21.5
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  lines [
+    RoadLine {
+    }
+    RoadLine {
+      color 0.85 0.75 0.3
+      type "double"
+    }
+  ]
+  rightBorder FALSE
+  leftBorder FALSE
+  length 30
+}
+StraightRoadSegment {
+  translation -45 64.5 0.02
+  rotation 0 0 1 1.5708
+  name "road(24)"
+  id "24"
+  startJunction "26"
+  endJunction "31"
+  width 21.5
+  numberOfLanes 4
+  numberOfForwardLanes 2
+  lines [
+    RoadLine {
+    }
+    RoadLine {
+      color 0.85 0.75 0.3
+      type "double"
+    }
+  ]
+  rightBorder FALSE
+  leftBorder FALSE
+  length 69
+}
+Group {
+  children [
+    Transform {
+      scale 3 3 3
+    }
+  ]
+}
+GenericTrafficLight {
+  translation -34.665 55.2732 0
+  startGreen FALSE
+  greenTime 10
+  redTime 10
+  state "red"
+}
+CrossRoadsTrafficLight {
+  translation 45 -45 0
+}
+DEF STONES Solid {
+  translation 5.03891 -136.158 -4.23581
+  children [
+    DEF STONES_GROUP Group {
+      children [
+        Pose {
+          translation 0 2 -0.6
+          children [
+            Shape {
+              appearance DEF OBJECTS_APPEARANCE PBRAppearance {
+                baseColor 0.5 0.5 0.5
+                roughness 1
+                metalness 0
+              }
+              geometry Sphere {
+                radius 5
+                subdivision 2
+              }
+            }
+          ]
+        }
+        Pose {
+          translation 0.5 -3.5 -0.3
+          children [
+            Shape {
+              appearance USE OBJECTS_APPEARANCE
+              geometry Sphere {
+                radius 5
+                subdivision 2
+              }
+            }
+          ]
+        }
+        Pose {
+          translation 4 2 -0.15
+          children [
+            Shape {
+              appearance USE OBJECTS_APPEARANCE
+              geometry Sphere {
+                radius 5
+                subdivision 2
+              }
+            }
+          ]
+        }
+        Pose {
+          translation 6 -1 0
+          children [
+            Shape {
+              appearance USE OBJECTS_APPEARANCE
+              geometry Sphere {
+                radius 5
+                subdivision 2
+              }
+            }
+          ]
+        }
+        Pose {
+          translation 9 0 0.15
+          children [
+            Shape {
+              appearance USE OBJECTS_APPEARANCE
+              geometry Sphere {
+                radius 5
+                subdivision 2
+              }
+            }
+          ]
+        }
+        Pose {
+          translation 5.5 -5 0.2
+          children [
+            Shape {
+              appearance USE OBJECTS_APPEARANCE
+              geometry Sphere {
+                radius 5
+                subdivision 2
+              }
+            }
+          ]
+        }
+        Pose {
+          translation 0 0 0.05
+          children [
+            Shape {
+              appearance USE OBJECTS_APPEARANCE
+              geometry Sphere {
+                radius 5
+                subdivision 2
+              }
+            }
+          ]
+        }
+        Pose {
+          translation 10 5 0
+          children [
+            Shape {
+              appearance USE OBJECTS_APPEARANCE
+              geometry Sphere {
+                radius 5
+                subdivision 2
+              }
+            }
+          ]
+        }
+        Pose {
+          translation 1 6 0.3
+          children [
+            Shape {
+              appearance USE OBJECTS_APPEARANCE
+              geometry Sphere {
+                radius 5
+                subdivision 2
+              }
+            }
+          ]
+        }
+        Pose {
+          translation 13 -4 0
+          children [
+            Shape {
+              appearance USE OBJECTS_APPEARANCE
+              geometry Sphere {
+                radius 5
+                subdivision 2
+              }
+            }
+          ]
+        }
+        Pose {
+          translation 13.5 1.5 0.4
+          children [
+            Shape {
+              appearance USE OBJECTS_APPEARANCE
+              geometry Sphere {
+                radius 5
+                subdivision 2
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+  name "solid(2)"
+  boundingObject USE STONES_GROUP
+}
+BuildingUnderConstruction {
+  translation 78.5008 143.08 0
+}
+CommercialBuilding {
+  translation 70.9574 31.6315 0
+}
+UBuilding {
+  translation -87.1466 81.9927 0
+}
+HollowBuilding {
+}
+Hotel {
+  translation -61.9195 -67.6272 0
+}
+TheThreeTowers {
+  translation 68.118 -90.636 0
+}
+CyberboticsTower {
+  translation 27.5187 68.7504 0
+}
+BigGlassTower {
+  translation 68.6779 -9.29537 0
+  rotation 0 0 1 1.5708
+}
+BigGlassTower {
+  translation 67.1936 247.25 0
+  rotation 0 0 1 -3.1415853071795863
+  name "big glass tower(1)"
+}
+Museum {
+  translation -0.191182 -68.6571 0
+  rotation 0 0 1 1.5708
+}
+ResidentialBuilding {
+  translation -69.274 -1.81329 0
+}
+FastFoodRestaurant {
+  translation 63.46 212.26 0
+  height 4.3
+  length 13
+  width 12
+  brand "subway"
+  numberOfSides 2
+}
+FastFoodRestaurant {
+  translation 48.60864 48.933131 0
+  rotation 0 0 -1 -2.8797953071795863
+  name "fast food restaurant(1)"
+  height 4.3
+  length 13
+  width 12
+  brand "subway"
+  numberOfSides 2
+}
+SimpleBuilding {
+  translation -73.866 259.751 0
+  rotation 0 0 -1 0.785396
+  wallType "glass highrise"
+}
+SimpleBuilding {
+  translation -116.043 260.389 0
+  rotation 0 0 -1 0.785396
+  name "building(14)"
+  wallType "glass highrise"
+}
+SimpleBuilding {
+  translation -94.6764 267.279 0
+  rotation 0 0 -1 0.785396
+  name "building(7)"
+  wallType "glass highrise"
+}
+SimpleBuilding {
+  translation 66.8317 195.97 0
+  name "building(1)"
+  wallType "glass highrise"
+}
+SimpleBuilding {
+  translation 97.8047 -149.501 0
+  name "building(2)"
+  floorHeight 5
+  wallType "brick building"
+  roofType "gravel"
+  roofShape "flat roof"
+}
+SimpleBuilding {
+  translation 117.415 -135.778 0
+  name "building(3)"
+  floorHeight 5
+  wallType "brick building"
+  roofType "gravel"
+  roofShape "flat roof"
+}
+SimpleBuilding {
+  translation 126.106 -115.963 0
+  name "building(4)"
+  floorHeight 5
+  wallType "brick building"
+  roofType "gravel"
+  roofShape "flat roof"
+}
+SimpleBuilding {
+  translation 139.996 -95.9459 0
+  name "building(5)"
+  floorHeight 5
+  wallType "brick building"
+  roofType "gravel"
+  roofShape "flat roof"
+}
+SimpleBuilding {
+  translation 78.2778 175.999 0
+  name "building(6)"
+  wallType "glass highrise"
+}
+Group {
+  children [
+    Pose {
+      translation -25 0 0
+      children [
+        Group {
+          children [
+            Pose {
+              translation -0.15 -20 0
+            }
+          ]
+        }
+        Group {
+          children [
+            Pose {
+              translation -0.15 9 0
+              children [
+                TrafficCone {
+                  translation 34.1 262.17 0
+                  name "traffic cone(5)"
+                }
+                TrafficCone {
+                  translation 31.98 262.17 0
+                  name "traffic cone(5)"
+                }
+                TrafficCone {
+                  translation 29.92 262.17 0
+                  name "traffic cone(5)"
+                }
+                TrafficCone {
+                  translation 28.11 262.17 0
+                  name "traffic cone(5)"
+                }
+                TrafficCone {
+                  translation 26.2 262.17 0
+                  name "traffic cone(6)"
+                }
+              ]
+            }
+          ]
+        }
+        Group {
+          children [
+            Pose {
+              translation -20.1 -20 0
+            }
+          ]
+        }
+        Group {
+          children [
+            Pose {
+              translation 20 9 0
+              children [
+                TrafficCone {
+                  translation 34.1 262.17 0
+                  name "traffic cone(6)"
+                }
+                TrafficCone {
+                  translation 31.98 262.17 0
+                  name "traffic cone(6)"
+                }
+                TrafficCone {
+                  translation 29.92 262.17 0
+                  name "traffic cone(6)"
+                }
+                TrafficCone {
+                  translation 28.11 262.17 0
+                  name "traffic cone(6)"
+                }
+                TrafficCone {
+                  translation 26.2 262.17 0
+                  name "traffic cone(6)"
+                }
+              ]
+            }
+          ]
+        }
+        Group {
+          children [
+            Pose {
+              translation -20.2 9 0
+              children [
+                TrafficCone {
+                  translation 34.1 262.17 0
+                  name "traffic cone(6)"
+                }
+                TrafficCone {
+                  translation 31.98 262.17 0
+                  name "traffic cone(6)"
+                }
+                TrafficCone {
+                  translation 29.92 262.17 0
+                  name "traffic cone(6)"
+                }
+                TrafficCone {
+                  translation 28.11 262.17 0
+                  name "traffic cone(6)"
+                }
+                TrafficCone {
+                  translation 26.2 262.17 0
+                  name "traffic cone(6)"
+                }
+              ]
+            }
+          ]
+        }
+        Forest {
+          translation 35.18 292.63 0
+          shape [
+            -45.5 5
+            20 5
+            20 20
+            -45.5 20
+          ]
+          groundTexture [
+            "3D_Models/Grass.jpg"
+          ]
+        }
+        RoadIntersection {
+          translation 9.99153 257 0
+          rotation 0 0 1 -0.785395307179586
+          name "road intersection(5)"
+          roadsWidth 8.5
+          locked FALSE
+        }
+        RoadIntersection {
+          translation 50.1614 257.02 0
+          rotation 0 0 1 -0.785395307179586
+          name "road intersection(3)"
+          roadsWidth 8.5
+          locked FALSE
+        }
+        StraightRoadSegment {
+          translation 9.99 266.25 0
+          rotation 0 0 1 1.5708
+          name "road(2)"
+          width 8.5
+          length 5.69
+          locked FALSE
+        }
+        StraightRoadSegment {
+          translation 50.15 266.25 0
+          rotation 0 0 1 1.5708
+          name "road(2)"
+          width 8.5
+          length 5.69
+          locked FALSE
+        }
+        StraightRoadSegment {
+          translation 9.98 241.74 0
+          rotation 0 0 1 1.5708
+          name "road(2)"
+          width 8.5
+          length 6.01
+          locked FALSE
+        }
+        StraightRoadSegment {
+          translation 19.21 257 0
+          name "road(2)"
+          width 8.5
+          length 1.5
+          locked FALSE
+        }
+        SimpleBuilding {
+          translation 20 247 0
+          name "building(11)"
+          floorNumber 2
+          corners [
+            5 5
+            5 -5
+            -5 -5
+            -5 5
+          ]
+          wallType "factory building"
+        }
+        RoadIntersection {
+          translation 29.9459 257 0
+          rotation 0 0 1 -0.785395307179586
+          name "road intersection(4)"
+          roadsWidth 8.5
+          locked FALSE
+        }
+        StraightRoadSegment {
+          translation 29.95 266.23 0
+          rotation 0 0 1 1.5708
+          name "road(2)"
+          width 8.5
+          length 5.67
+          locked FALSE
+        }
+        StraightRoadSegment {
+          translation 29.94 241.74 0
+          rotation 0 0 1 1.5708
+          name "road(2)"
+          width 8.5
+          length 6.01
+          locked FALSE
+        }
+        StraightRoadSegment {
+          translation 50.14 241.74 0
+          rotation 0 0 1 1.5708
+          name "road(2)"
+          width 8.5
+          length 6.01
+          locked FALSE
+        }
+        StraightRoadSegment {
+          translation 39.12 257 0
+          name "road(2)"
+          width 8.5
+          length 1.8
+          locked FALSE
+        }
+        SimpleBuilding {
+          translation 40 267 0
+          name "building(15)"
+          floorNumber 2
+          corners [
+            5 5
+            5 -5
+            -5 -5
+            -5 5
+          ]
+          wallType "tall house"
+        }
+        CurvedRoadSegment {
+          translation 68 257 0
+          name "road(2)"
+          rightBorder FALSE
+          leftBorder FALSE
+          curvatureRadius 6.5
+          totalAngle 6.3
+        }
+        Fountain {
+          translation 68.03 257.03 0
+          height 3.5
+          radius 3
+        }
+        SimpleBuilding {
+          translation 40 247 0
+          name "building(12)"
+          floorNumber 2
+          corners [
+            5 5
+            5 -5
+            -5 -5
+            -5 5
+          ]
+          wallType "tall house"
+        }
+        FastFoodRestaurant {
+          translation 19.82 267.19 0
+          rotation 0 0 1 -1.5707953071795862
+          name "fast food restaurant(2)"
+          height 5
+        }
+        PedestrianCrossing {
+          translation 3.43904 257.01 -0.06
+          rotation 0 0 1 1.5708
+          name "pedestrian crossing(10)"
+          size 9 3
+        }
+        PedestrianCrossing {
+          translation 16.409 257.01 -0.06
+          rotation 0 0 1 1.5708
+          name "pedestrian crossing(5)"
+          size 9 3
+        }
+        PedestrianCrossing {
+          translation 23.649 257.01 -0.06
+          rotation 0 0 1 1.5708
+          name "pedestrian crossing(6)"
+          size 9 3
+        }
+        PedestrianCrossing {
+          translation 36.129 257.01 -0.06
+          rotation 0 0 1 1.5708
+          name "pedestrian crossing(8)"
+          size 9 3
+        }
+        PedestrianCrossing {
+          translation 43.919 257.01 -0.06
+          rotation 0 0 1 1.5708
+          name "pedestrian crossing(9)"
+          size 9 3
+        }
+        PedestrianCrossing {
+          translation 56.329 257.01 -0.06
+          rotation 0 0 1 1.5708
+          name "pedestrian crossing(11)"
+          size 9 3
+        }
+        PedestrianCrossing {
+          translation 10.0789 250.9 -0.06
+          rotation 0 0 1 -3.1415853071795863
+          name "pedestrian crossing(7)"
+          size 9 3
+        }
+        PedestrianCrossing {
+          translation 50.1289 250.9 -0.06
+          rotation 0 0 1 -3.1415853071795863
+          name "pedestrian crossing(13)"
+          size 9 3
+        }
+        PedestrianCrossing {
+          translation 29.9389 250.9 -0.06
+          rotation 0 0 1 -3.1415853071795863
+          name "pedestrian crossing(12)"
+          size 9 3
+        }
+        PedestrianCrossing {
+          translation 10.0789 263.14 -0.06
+          rotation 0 0 1 -3.1415853071795863
+          name "pedestrian crossing(4)"
+          size 9 3
+        }
+        PedestrianCrossing {
+          translation 29.8889 263.14 -0.06
+          rotation 0 0 1 -3.1415853071795863
+          name "pedestrian crossing(14)"
+          size 9 3
+        }
+        PedestrianCrossing {
+          translation 50.0989 263.14 -0.06
+          rotation 0 0 1 -3.1415853071795863
+          name "pedestrian crossing(15)"
+          size 9 3
+        }
+      ]
+    }
+  ]
+}
+SimpleBuilding {
+  translation -56.5761 182.166 0
+  rotation 0 0 -1 2.618
+  name "building(9)"
+  floorNumber 6
+  corners [
+    0 0
+    -10 0
+    -10 -10
+    10 -10
+    10 20
+    0 20
+  ]
+  wallType "gray glass building"
+  roofType "gravel"
+  roofShape "flat roof"
+}
+SimpleBuilding {
+  translation -80.6833 -121.381 0
+  rotation 0 0 -1 1.04719
+  name "building(10)"
+  floorNumber 2
+  corners [
+    0 0
+    -10 0
+    -10 -10
+    10 -10
+    10 10
+    0 10
+  ]
+  wallType "highrise"
+}
+SimpleBuilding {
+  translation -3.91795 144.18 0
+  name "building(13)"
+  wallType "residential building"
+}
+Forest {
+  translation -0.0143952 1.43992 0
+  rotation 0 0 1 -1.5608
+  shape [
+    -105.8 -117
+    -99 -150.8
+    -69.7 -174
+    -186 -176.3
+    -205.3 -140.5
+    -195 -117
+  ]
+  density 0.3
+}
+Forest {
+  translation -116.057 208.821 0
+  rotation 0 0 1 0.00999632
+  shape [
+    -20 -10
+    20 -10
+    20 100
+    0 120
+    -20 150
+  ]
+  density 0.3
+  groundTexture [
+    "3D_Models/Grass.jpg"
+  ]
+}
+Forest {
+  translation 0.0185927 -1.85992 0
+  rotation 0 0 -1 1.5608000000000002
+  shape [
+    -80 -118
+    -79 -130
+    -73.7 -141
+    -67 -147
+    -49 -153
+    64.3 -153
+    100 -90
+    55 -80
+    39 -108
+    12 -117
+  ]
+  groundTexture [
+    "3D_Models/Grass.jpg"
+  ]
+}
+Forest {
+  translation -44.4927 -18.6763 0
+  rotation 0 0 1 -3.131595307179586
+  shape [
+    -130 -118
+    -120 -153
+    90 -153
+    70 -130
+    30 -117
+    10 -100
+    -70 -100
+  ]
+  groundTexture [
+    "3D_Models/Grass.jpg"
+  ]
+}
+Forest {
+  translation 30.6632 -72.1571 0
+  rotation 0 0 1 -1.5608
+  shape [
+    100 210
+    100 150
+    -170 150
+    -220 150
+  ]
+  groundTexture []
+}
+Forest {
+  translation 112.588 5.97556 0
+  rotation 0 0 1 -3.131595307179586
+  shape [
+    76 210
+    240 210
+    240 190
+    170 194
+    120 200
+    76 200
+  ]
+  groundTexture [
+    "3D_Models/Grass.jpg"
+  ]
+}
+SimpleTree {
+  translation -86.3803 -3.69635 0
+}
+SimpleTree {
+  translation -86.3803 -18.9264 0
+  name "tree(1)"
+}
+SimpleTree {
+  translation -43.078 -123.055 0
+  name "tree(2)"
+}
+SimpleTree {
+  translation -22.318 -123.055 0
+  name "tree(3)"
+}
+SimpleTree {
+  translation 1.70201 -123.055 0
+  name "tree(4)"
+}
+SimpleTree {
+  translation 20.4431 130.5 0
+  name "tree(5)"
+}
+SimpleTree {
+  translation 53.4842 123.995 0
+  rotation 0 0 1 5.49779
+  name "tree(6)"
+}
+SimpleTree {
+  translation 83.0494 196.584 0
+  name "tree(7)"
+}
+SimpleTree {
+  translation -33.9112 179.976 0
+  rotation 0 -1 0 6.28319
+  name "tree(8)"
+}
+SimpleTree {
+  translation -59.8734 114.947 0
+  name "tree(9)"
+}
+SimpleTree {
+  translation -22.2335 150.308 0
+  rotation 0 -1 0 6.28319
+  name "tree(10)"
+}
+SimpleTree {
+  translation 16.4343 145.045 0
+  name "tree(11)"
+}
+SimpleTree {
+  translation 89.3742 77.3517 0
+  name "tree(12)"
+}
+SimpleTree {
+  translation 89.3742 59.8317 0
+  name "tree(13)"
+}
+SimpleTree {
+  translation 89.3742 42.5017 0
+  name "tree(14)"
+}
+SimpleTree {
+  translation 89.3742 24.6817 0
+  name "tree(15)"
+}
+SimpleTree {
+  translation 89.3742 6.71175 0
+  name "tree(16)"
+}
+SimpleTree {
+  translation 89.3742 -10.6583 0
+  name "tree(17)"
+}
+SimpleTree {
+  translation 137.36 -53.2389 0
+  name "tree(18)"
+}
+SimpleTree {
+  translation 122.111 -32.1201 0
+  name "tree(19)"
+}
+SimpleTree {
+  translation 110.762 -29.023 0
+  name "tree(20)"
+}
+SimpleTree {
+  translation 90.773 -54.456 0
+  name "tree(21)"
+}
+SimpleTree {
+  translation 40.292 -105.225 0
+  name "tree(22)"
+}
+SimpleTree {
+  translation -29.8047 -59.5626 0
+  name "tree(23)"
+}
+SimpleTree {
+  translation -56.111 -34.7085 0
+  name "tree(24)"
+}
+SimpleTree {
+  translation -86.3803 -38.0164 0
+  name "tree(25)"
+}
+SimpleTree {
+  translation -86.3803 9.02365 0
+  name "tree(26)"
+}
+PedestrianCrossing {
+  translation 45 -26 -0.06
+  rotation 0 0 1 -3.1415853071795863
+}
+PedestrianCrossing {
+  translation -61.4608 45.0693 -0.06
+  rotation 0 0 1 -1.5707853071795865
+  name "pedestrian crossing(1)"
+}
+PedestrianCrossing {
+  translation 26.9799 -45.1201 -0.06
+  rotation 0 0 1 -1.5707853071795865
+  name "pedestrian crossing(2)"
+}
+CautionSign {
+  translation -91.9275 48.9391 0
+  signBoards [
+    CautionPanel {
+      translation 0 0 -0.17
+      signImage [
+        "web_textures/turn_left.jpg"
+      ]
+    }
+  ]
+}
+CautionSign {
+  translation 45.9944 -94.6291 0
+  rotation 0 0 1 -2.4871
+  name "caution sign(1)"
+  signBoards [
+    CautionPanel {
+      translation 0 0 -0.17
+      signImage [
+        "web_textures/pedestrian_crossing.jpg"
+      ]
+    }
+  ]
+}
+CautionSign {
+  translation 8.87679 55.4925 0
+  name "caution sign(2)"
+}
+CautionSign {
+  translation 33.842 10.5534 0
+  rotation 0 0 1 1.7017
+  name "caution sign(3)"
+  signBoards [
+    CautionPanel {
+      translation 0 0 -0.17
+      signImage [
+        "web_textures/bump.jpg"
+      ]
+    }
+  ]
+}
+CautionSign {
+  translation 84.1154 -26.9475 0
+  rotation 0 0 1 0.6545
+  name "caution sign(4)"
+  signBoards [
+    CautionPanel {
+      translation 0 0 -0.17
+      signImage [
+        "web_textures/cross_roads.jpg"
+      ]
+    }
+  ]
+}
+CautionSign {
+  translation -5.43669 -34.1146 0
+  rotation 0 0 1 -0.5236
+  name "caution sign(5)"
+  signBoards [
+    CautionPanel {
+      translation 0 0 -0.17
+      signImage [
+        "web_textures/turn_right.jpg"
+      ]
+    }
+  ]
+}
+OrderSign {
+  translation -67.6589 34.4983 0
+  rotation 0 0 1 3.14159
+  signBoards [
+    OrderPanel {
+      translation 0.026 0 -0.175
+      signImage [
+        "web_textures/no_right_turn.jpg"
+      ]
+    }
+  ]
+}
+StopSign {
+  translation -34.6012 34.2884 0
+  rotation 0 0 1 -1.5708
+}
+YieldSign {
+  translation -55.468 66.4958 0
+  rotation 0 0 1 1.5708
+}
+SpeedLimitSign {
+  translation -113.192 20.4404 0
+  rotation 0 0 1 0.9163
+  signBoards [
+    SpeedLimitPanel {
+      translation 0.023 0 0
+      signImage [
+        "web_textures/speed_limit_55.jpg"
+      ]
+    }
+  ]
+}
+SpeedLimitSign {
+  translation 26.6277 -84.4244 0
+  rotation 0 0 1 0.6545
+  name "speed limit(1)"
+  signBoards [
+    SpeedLimitPanel {
+      translation 0.023 0 0
+      signImage [
+        "web_textures/speed_limit_55.jpg"
+      ]
+    }
+  ]
+}
+SpeedLimitSign {
+  translation -30.3528 79.1341 0
+  rotation 0 0 1 -2.3562
+  name "speed limit(2)"
+  signBoards [
+    SpeedLimitPanel {
+      translation 0.023 0 0
+      signImage [
+        "web_textures/speed_limit_65.jpg"
+      ]
+    }
+  ]
+}
+SpeedLimitSign {
+  translation 87.1538 -50.335 0
+  rotation 0 0 1 -3.14159
+  name "speed limit(3)"
+  signBoards [
+    SpeedLimitPanel {
+      translation 0.023 0 0
+      signImage [
+        "web_textures/speed_limit_65.jpg"
+      ]
+    }
+  ]
+}
+SpeedLimitSign {
+  translation 31.0289 -34.4459 0
+  name "speed limit(4)"
+  signBoards [
+    SpeedLimitPanel {
+      translation 0.023 0 0
+      signImage [
+        "web_textures/one_way_sign_left.jpg"
+      ]
+    }
+  ]
+}
+TrafficCone {
+  hidden linearVelocity_0 1.4122327145313967e-17 4.1548874824942745e-19 5.329070518200751e-17
+  hidden angularVelocity_0 -1.8446914950511144e-18 8.537224982217279e-17 -3.4357711059059635e-19
+  translation 33.974044699652104 -53.76079974890375 -0.004074351999659442
+  rotation -0.0002839386869994744 0.9999975512984229 0.002194715466824408 0.013700263284290207
+  physics Physics {
+    density -1
+    mass 1
+  }
+}
+TrafficCone {
+  hidden linearVelocity_0 4.094058425131506e-18 2.262130981480448e-18 5.329070518200751e-17
+  hidden angularVelocity_0 -1.3333003719968017e-17 2.4543430023852198e-17 -4.600740843980821e-19
+  translation 33.96964469965211 -51.43499974890375 -0.004074351999659442
+  rotation -0.00028393868699947425 0.9999975512984228 0.0021947154668244297 0.013700263284290205
+  name "traffic cone(1)"
+  physics Physics {
+    density -1
+    mass 1
+  }
+}
+TrafficCone {
+  hidden linearVelocity_0 2.3805332294315506e-18 -6.00140482987426e-18 5.329070518200751e-17
+  hidden angularVelocity_0 3.736474027161902e-17 1.4417733983375097e-17 -4.1442439857518214e-19
+  translation 33.953544699652106 -48.95439974890375 -0.004074351999659442
+  rotation -0.0002839386869995214 0.9999975512984228 0.002194715466824405 0.013700263284290205
+  name "traffic cone(2)"
+  physics Physics {
+    density -1
+    mass 1
+  }
+}
+TrafficCone {
+  hidden linearVelocity_0 1.4122327145313967e-17 4.1548874824942745e-19 5.329070518200751e-17
+  hidden angularVelocity_0 -1.8446914950511144e-18 8.537224982217279e-17 -3.4357711059059635e-19
+  translation 33.7171446996521 -45.723399748903745 -0.004074351999659442
+  rotation -0.0002839386869994744 0.9999975512984229 0.002194715466824408 0.013700263284290207
+  name "traffic cone(3)"
+  physics Physics {
+    density -1
+    mass 1
+  }
+}
+HighwayPole {
+  translation -17.67 -117.85 0
+  rotation 0 0 -1 3.14159
+  height 9
+  length 12
+  rightHorizontalSigns [
+    HighwaySign {
+      translation 0 -4.56 0
+      height 4
+      length 5.5
+      texture [
+        "web_textures/highway_sign_bayonne.jpg"
+      ]
+    }
+  ]
+  rightVerticalSigns [
+    HighwaySign {
+      name "highway sign(1)"
+      height 2.5
+      length 3
+      texture [
+        "web_textures/highway_sign_sebastian.jpg"
+      ]
+    }
+  ]
+}
+HighwayPole {
+  translation 118.15 72.97 0
+  rotation 0 0 1 -1.5707953071795862
+  name "highway pole(1)"
+  stand 2
+  height 8
+  length 25
+  thickness 0.3
+  curveRadius 0.5
+  rightHorizontalSigns [
+    HighwaySign {
+      translation 0 -3.95 0
+      height 4
+      length 5.5
+      color 0.6 0.6 0.6
+    }
+  ]
+  rightVerticalSigns []
+  leftVerticalSigns [
+    HighwaySign {
+      translation 0 0 0.58
+      name "highway sign(1)"
+      height 2.5
+      length 3
+      color 0.6 0.6 0.6
+      texture [
+        "web_textures/highway_sign_la_ciotat.jpg"
+      ]
+    }
+  ]
+}
+HighwayPole {
+  translation -3.62 218.18 0
+  rotation 0 0 1 3.14159
+  name "highway pole(2)"
+  stand 2
+  height 8
+  length 25
+  thickness 0.3
+  curveRadius 0.5
+  rightHorizontalSigns [
+    HighwaySign {
+      translation 0 -10 0
+      height 4
+      length 13
+      color 0.6 0.6 0.6
+      texture [
+        "3D_Models/Ayearofrobotics.png"
+      ]
+    }
+  ]
+  rightVerticalSigns []
+}
+HighwayPole {
+  translation -97.03 218.18 0
+  rotation 0 0 1 3.14159
+  name "highway pole(3)"
+  stand 2
+  height 8
+  length 25
+  thickness 0.3
+  curveRadius 0.5
+  rightHorizontalSigns [
+    HighwaySign {
+      translation 0 -10 0
+      height 4
+      length 13
+      color 0.6 0.6 0.6
+      texture [
+        "3D_Models/Ayearofrobotics.png"
+      ]
+    }
+  ]
+  rightVerticalSigns []
+}
+Crossroad {
+  translation 76.500107 93 0
+  id "28"
+  shape []
+  connectedRoadIDs [
+    "18"
+    "12"
+  ]
+}
+Crossroad {
+  translation 36 133.50015 0
+  name "crossroad(1)"
+  id "29"
+  shape []
+  connectedRoadIDs [
+    "21"
+    "18"
+  ]
+}
+Crossroad {
+  translation -4.500405 174 0
+  name "crossroad(2)"
+  id "30"
+  shape []
+  connectedRoadIDs [
+    "22"
+    "21"
+  ]
+}
+Crossroad {
+  translation -45.000035 133.49978 0
+  name "crossroad(3)"
+  id "31"
+  shape []
+  connectedRoadIDs [
+    "24"
+    "22"
+  ]
+}
+Crossroad {
+  translation 64.499851 231 0
+  name "crossroad(4)"
+  id "32"
+  shape []
+  connectedRoadIDs [
+    "15"
+    "19"
+  ]
+}
+Crossroad {
+  translation 104.99975 190.50007 0
+  name "crossroad(5)"
+  id "33"
+  shape []
+  connectedRoadIDs [
+    "16"
+    "19"
+  ]
+}
+Crossroad {
+  translation 165 52.500074 0
+  name "crossroad(6)"
+  id "34"
+  shape []
+  connectedRoadIDs [
+    "20"
+    "14"
+  ]
+}
+Crossroad {
+  translation 165.00028 -97.499835 0
+  name "crossroad(7)"
+  id "35"
+  shape []
+  connectedRoadIDs [
+    "11"
+    "14"
+  ]
+}
+Crossroad {
+  translation 75 -187.5 0
+  name "crossroad(8)"
+  id "36"
+  shape []
+  connectedRoadIDs [
+    "13"
+    "11"
+  ]
+}
+Crossroad {
+  translation 4.5 -104.99975 0
+  name "crossroad(9)"
+  id "37"
+  shape []
+  connectedRoadIDs [
+    "3"
+    "4"
+  ]
+}
+Crossroad {
+  translation -64.5 -105 0
+  name "crossroad(10)"
+  id "38"
+  shape []
+  connectedRoadIDs [
+    "2"
+    "3"
+  ]
+}
+Crossroad {
+  translation -104.99987 -64.499926 0
+  name "crossroad(11)"
+  id "39"
+  shape []
+  connectedRoadIDs [
+    "1"
+    "2"
+  ]
+}
+Crossroad {
+  translation -105 4.4999794 0
+  name "crossroad(12)"
+  id "40"
+  shape []
+  connectedRoadIDs [
+    "0"
+    "1"
+  ]
+}
+Crossroad {
+  translation -45.000015 -4.4999256 0
+  name "crossroad(13)"
+  id "41"
+  shape []
+  connectedRoadIDs [
+    "23"
+    "8"
+  ]
+}
+Crossroad {
+  translation -4.5 -45 0
+  name "crossroad(14)"
+  id "42"
+  shape []
+  connectedRoadIDs [
+    "9"
+    "8"
+  ]
+}
+Crossroad {
+  translation 45 4.5000744 0
+  name "crossroad(15)"
+  id "43"
+  shape []
+  connectedRoadIDs [
+    "5"
+    "6"
+  ]
+}
+Crossroad {
+  translation 4.4998512 45.00011 0
+  name "crossroad(16)"
+  id "44"
+  shape []
+  connectedRoadIDs [
+    "7"
+    "6"
+  ]
+}
+Crossroad {
+  translation 105 -4.4999256 0
+  name "crossroad(17)"
+  id "45"
+  shape []
+  connectedRoadIDs [
+    "10"
+    "17"
+  ]
+}
+CautionSign {
+  translation -22.44 -52.79 0
+  rotation 0 0 1 2.61799
+  name "caution sign(6)"
+  signBoards [
+    CautionPanel {
+      translation 0 0 -0.17
+    }
+  ]
+}
+PedestrianCrossing {
+  translation -0.46 -45.13 0
+  rotation 0 0 1 1.5708
+  name "pedestrian crossing(3)"
+}
+HighwaySign {
+  translation -0.21 -58.43 7.76
+  rotation 0 0 1 1.5708
+  height 1.5
+}
+AdvertisingBoard {
+  translation -29.5027 178.65 0
+  rotation 0 0 1 -1.047195307179586
+  name "advertising board(1)"
+  frontTexture [
+    "3D_Models/logosteam.JPG"
+  ]
+  backTexture [
+    "3D_Models/logosteam.JPG"
+  ]
+  poleNumber 1
+}
+Moose {
+  hidden position_0_0 7.35706449494108e-07
+  hidden position_0_1 5.996667485005647e-07
+  hidden position_0_2 4.6162325684909905e-07
+  hidden position_0_3 3.2557986789428873e-07
+  hidden position_0_4 7.357063733933074e-07
+  hidden position_0_5 5.996666640906084e-07
+  hidden position_0_6 4.6162312397212714e-07
+  hidden position_0_7 3.255796700031902e-07
+  hidden linearVelocity_0 0.0003757093595463139 1.907347067444214e-09 -0.012059279286311338
+  hidden angularVelocity_0 -3.5740082380657855e-09 0.0007034039205201114 6.289142968206301e-14
+  hidden rotation_1 0 -1 0 7.354594873936853e-07
+  hidden linearVelocity_1 0.0002264309410837108 1.1289178220920536e-09 0.0001669128110429165
+  hidden angularVelocity_1 -3.5846310369220497e-09 0.0007047965765918394 -4.730326356105911e-12
+  hidden rotation_2 0 -1 0 5.997601687162573e-07
+  hidden linearVelocity_2 0.00022640636044667054 1.1285864687437857e-09 0.0002280436223295537
+  hidden angularVelocity_2 -3.584888644759698e-09 0.0007048819527834594 -4.736452807957586e-12
+  hidden rotation_3 0 -1 0 4.6169559314339464e-07
+  hidden linearVelocity_3 0.0002263812939932202 1.1280278565265043e-09 0.0002900734161461828
+  hidden angularVelocity_3 -3.58467346688897e-09 0.0007049681358842323 -4.742688774984258e-12
+  hidden rotation_4 0 -1 0 3.251049552749314e-07
+  hidden linearVelocity_4 0.00022635683781723436 1.1277498512145507e-09 0.00035120422742883627
+  hidden angularVelocity_4 -3.5851262098721475e-09 0.00070505396473213 -4.748806006815231e-12
+  hidden rotation_5 0 1 0 7.354594873936853e-07
+  hidden linearVelocity_5 0.00022643094098526563 1.1710358310714538e-09 0.0001669129065433621
+  hidden angularVelocity_5 -3.5738355755913803e-09 0.0007047965762728592 4.9163061293852975e-12
+  hidden rotation_6 0 1 0 5.997601687162573e-07
+  hidden linearVelocity_6 0.00022640636024373563 1.1710261305783427e-09 0.00022804371783064035
+  hidden angularVelocity_6 -3.574376592609833e-09 0.0007048819525300023 4.922243707086751e-12
+  hidden rotation_7 0 0.9999999999999999 0 4.6169559314339464e-07
+  hidden linearVelocity_7 0.0002263812921959901 1.1708158076874986e-09 0.00029007351164838345
+  hidden angularVelocity_7 -3.5745437273085472e-09 0.0007049681297988304 4.928283036167065e-12
+  hidden rotation_8 0 1 0 3.251049552749314e-07
+  hidden linearVelocity_8 0.00022635683749064393 1.1711186813353298e-09 0.0003512043229302764
+  hidden angularVelocity_8 -3.5753406646822367e-09 0.0007050539644695793 4.934205996073534e-12
+  translation 91.72963369630422 147.81200000173152 0.3517159336949921
+  rotation -2.5371419235522396e-06 0.9999850694494135 0.005464510208137736 0.0009712085389784504
+}
+Floor {
+  translation 90.5 143 0
+  size 5 5
+}
+Irb4600-40 {
+  hidden position_0_0 0.00014590282416334459
+  hidden linearVelocity_0 -5.1369255581172815e-06 -3.1872780823706164e-07 8.699786510635754e-09
+  hidden angularVelocity_0 -1.9185341826002355e-06 -3.8013072742953774e-05 -2.574500611385857e-05
+  hidden rotation_1 0 0 1 0.00014590282343846702
+  hidden position_1_0 0.0002682021953057944
+  hidden linearVelocity_1 -8.433483340664617e-06 2.816778188678076e-05 2.5992175837476467e-06
+  hidden angularVelocity_1 -4.096491626120685e-06 -6.23396973730871e-05 0.0006675546849784154
+  hidden rotation_2 0 1 0 0.00026820219511354066
+  hidden position_2_0 0.00027243913179876014
+  hidden linearVelocity_2 1.0196259174061351e-05 -0.0001309108377088818 -1.1907532247645042e-05
+  hidden angularVelocity_2 3.165508256030741e-05 -8.342030963787367e-05 0.0006433216190032727
+  hidden rotation_3 0 0.9999999999999999 0 0.0002724391312592101
+  hidden position_3_0 -1.7706355281777505e-08
+  hidden linearVelocity_3 -9.372391789054808e-06 -1.3446247506278188e-05 9.06913517125058e-07
+  hidden angularVelocity_3 7.232721486106125e-05 -8.610229996978963e-05 0.0006209380542441895
+  hidden position_4_0 1.8373191020982587e-07
+  hidden linearVelocity_4 0.00043417942587586184 -4.865875631629609e-05 -5.9264769847458074e-05
+  hidden angularVelocity_4 7.245561601251794e-05 4.6958139690313414e-05 0.0006084346094223229
+  hidden rotation_5 0 1 0 1.8371385344770487e-07
+  hidden position_5_0 -9.027882662770638e-09
+  hidden linearVelocity_5 0.0006869432333015553 -5.1364649833494034e-05 -8.935739782859123e-05
+  hidden angularVelocity_5 7.248226593642494e-05 4.6958045376134186e-05 0.0006084065983625721
+  hidden linearVelocity_6 0.0007474956668203614 -4.902452690208976e-05 -9.678231479967173e-05
+  hidden angularVelocity_6 7.248221065468291e-05 4.6936678335703945e-05 0.0006084121293364496
+  translation 90.3999999919492 146.22000003070443 -0.0002805797857273751
+  rotation 0.0001558638869606474 0.00018999582572328176 -0.999999969804017 1.5707954622645712
+  controller "<none>"
+}
+SquareManhole {
+  translation -25.53 248.21 0
+}
+SquareManhole {
+  translation -27.24 248.21 0
+  name "manhole(1)"
+}
+Mavic2Pro {
+  hidden position_0_0 1.1145157693685357e-09
+  hidden linearVelocity_0 1.1399518826234764e-10 -3.6602470546508924e-16 1.2318838278129323e-14
+  hidden angularVelocity_0 -1.8051175097122566e-13 -6.596312760034594e-13 -2.4264505207048868e-09
+  hidden position_5_0 -2.608002536887823e-09
+  hidden linearVelocity_5 -1.8938854456858973e-10 2.8778039344260973e-11 -6.669339753576685e-13
+  hidden angularVelocity_5 -1.795437246877856e-13 -2.2923990877219818e-10 -5.704474103324747e-09
+  hidden position_6_0 -9.889033457467605e-10
+  hidden linearVelocity_6 -1.7938679085200147e-10 -4.146518380573014e-12 2.942124354586937e-12
+  hidden angularVelocity_6 9.006281112994666e-10 -2.2923831414967194e-10 -5.704466897741756e-09
+  hidden linearVelocity_7 -1.90722615914246e-10 -4.356983367686231e-11 3.503103713508932e-12
+  hidden angularVelocity_7 9.006016172733129e-10 4.694017221701609e-09 -6.047779425345495e-09
+  translation -25.559999561867322 248.17493542679964 0.1157535132707783
+  rotation -0.03478206891915877 -0.03478221509955108 -0.9987894699056812 1.572003793038196
+  controller "drone_controller"
+}
+Mavic2Pro {
+  hidden position_0_0 1.1145157318215404e-09
+  hidden linearVelocity_0 1.1399516444098205e-10 -8.604633103046845e-17 1.2056967490972373e-14
+  hidden angularVelocity_0 -1.8123837870226212e-13 -6.603787093167191e-13 -2.4264505671716915e-09
+  hidden position_5_0 -2.608002522200645e-09
+  hidden linearVelocity_5 -1.8938853091542186e-10 2.8777585086341767e-11 -6.670673352987439e-13
+  hidden angularVelocity_5 -1.8154862361606353e-13 -2.2924764187138306e-10 -5.704475444135733e-09
+  hidden position_6_0 -9.889034535078451e-10
+  hidden linearVelocity_6 -1.7938663977752288e-10 -4.147017439158585e-12 2.941857633953439e-12
+  hidden angularVelocity_6 9.006180394988764e-10 -2.2924061639434235e-10 -5.704474546407035e-09
+  hidden linearVelocity_7 -1.9072232730747438e-10 -4.357049735184989e-11 3.5018034519092385e-12
+  hidden angularVelocity_7 9.005898735773938e-10 4.694018789780005e-09 -6.047791890082656e-09
+  translation -27.229999800611065 248.2351987835966 0.1157535132707799
+  rotation -0.034782068818661874 -0.03478229805424145 -0.9987894670203326 1.5720014080679547
+  name "Mavic 2 PRO(1)"
+  controller "<none>"
+}
